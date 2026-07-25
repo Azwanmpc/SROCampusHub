@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Role: SUPERADMIN | ADMIN | PEMOHON | PENGADU
+// BookingStatus: MENUNGGU | DISAHKAN | DITOLAK | DIBATALKAN
+// FacilityStatus: TERSEDIA | DITEMPAH | PENYELENGGARAAN
+// ComplaintStatus: BARU | DALAM_TINDAKAN | SELESAI
+// RepairType: DALAMAN | KONTRAKTOR
+// ArrangementStyle: ROUND_TABLE | CLASSROOM | SEMINAR | THEATER | U_SHAPE | TIADA
+// SQLite connector has no native enum support, so these are validated as strings at the app layer (see src/lib/validation.ts).
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  username     String   @unique
+  phone        String?
+  passwordHash String
+  role         String   @default("PEMOHON")
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  bookings      Booking[]
+  complaints    Complaint[]
+  notifications Notification[]
+}
+
+model Facility {
+  id          String   @id @default(cuid())
+  name        String
+  type        String
+  capacity    Int
+  description String?
+  imageUrl    String?
+  status      String   @default("TERSEDIA")
+  costPerUse  Float    @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  bookings   Booking[]
+  complaints Complaint[]
+}
+
+model Booking {
+  id                 String    @id @default(cuid())
+  facilityId         String
+  facility           Facility  @relation(fields: [facilityId], references: [id])
+  userId             String
+  user               User      @relation(fields: [userId], references: [id])
+  startDateTime      DateTime
+  endDateTime        DateTime
+  purpose            String
+  participantCount   Int
+  arrangement        String    @default("TIADA")
+  addOnProjector     Int       @default(0)
+  addOnTv100         Int       @default(0)
+  earlyAccess        Boolean   @default(false)
+  earlyAccessMinutes Int       @default(0)
+  status             String    @default("MENUNGGU")
+  rejectionReason    String?
+  checkInAt          DateTime?
+  checkOutAt         DateTime?
+  roomNumber         String?
+  revenue            Float     @default(0)
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  notifications Notification[]
+}
+
+model Complaint {
+  id          String    @id @default(cuid())
+  facilityId  String?
+  facility    Facility? @relation(fields: [facilityId], references: [id])
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  location    String
+  description String
+  photoUrl    String?
+  status      String    @default("BARU")
+  repairType  String?
+  resolvedAt  DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Notification {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  bookingId String?
+  booking   Booking?  @relation(fields: [bookingId], references: [id])
+  channel   String    @default("whatsapp")
+  type      String
+  message   String
+  sent      Boolean   @default(false)
+  sentAt    DateTime?
+  createdAt DateTime  @default(now())
+}
+
+model Setting {
+  key   String @id
+  value String
+}

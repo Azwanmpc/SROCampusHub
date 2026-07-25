@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SRO CampusHub
 
-## Getting Started
+Sistem Pengurusan Penempahan Fasiliti & Penyelenggaraan Kampus — PPM Wilayah Selatan.
 
-First, run the development server:
+Dibina dengan Next.js (App Router) + TypeScript + Tailwind CSS + Prisma (SQLite).
+
+## Menjalankan Secara Tempatan
 
 ```bash
+npm install
+npm run seed   # isi semula data demo (fasiliti, pengguna, tempahan, aduan)
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Buka [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Akaun Demo (selepas `npm run seed`)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Peranan | Username | Kata Laluan |
+|---|---|---|
+| Superadmin | `superadmin` | `super123` |
+| Admin (Pelulus) | `admin1` atau `admin2` | `admin123` |
+| Pemohon | `ahmad.faiz` atau `dayang.salmah` | `pemohon123` |
+| Pengadu | `siti.aminah` atau `razak.mahmud` | `pengadu123` |
 
-## Learn More
+## Struktur
 
-To learn more about Next.js, take a look at the following resources:
+- `prisma/schema.prisma` — model data (User, Facility, Booking, Complaint, Notification)
+- `prisma/seed.ts` — data demo
+- `src/lib/auth.ts` — sesi log masuk (JWT dalam cookie)
+- `src/lib/whatsapp.ts` — integrasi WaSenderAPI (one-way notification)
+- `src/middleware.ts` — kawalan akses ikut peranan
+- `src/app/(app)/*` — halaman selepas log masuk
+- `src/app/api/*` — API routes
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Integrasi WhatsApp (WaSenderAPI)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Isi `.env`:
 
-## Deploy on Vercel
+```
+WASENDER_API_URL="https://.../send-message"
+WASENDER_API_KEY="..."
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Jika tidak diisi, notifikasi tetap direkod dalam jadual `Notification` (untuk audit/testing) tetapi tidak dihantar sebenar melalui WhatsApp.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Reminder H-1 tidak berjalan automatik (belum ada scheduler/hosting ditetapkan). Panggil `POST /api/cron/reminders` setiap hari (contohnya melalui Windows Task Scheduler atau cron luaran) untuk menghantar peringatan tempahan esok.
+
+## Pangkalan Data
+
+SQLite tempatan (`prisma/dev.db`), sesuai untuk demo/pembangunan. Untuk pengeluaran (production), tukar `DATABASE_URL` dalam `.env` kepada pangkalan data Postgres/MySQL dan kemas kini `provider` dalam `prisma/schema.prisma`.
