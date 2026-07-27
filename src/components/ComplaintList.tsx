@@ -12,6 +12,7 @@ type Complaint = {
   status: string;
   priority: string;
   repairType: string | null;
+  category: string | null;
   staffNote: string | null;
   estimatedCost: number;
   createdAt: string;
@@ -26,6 +27,22 @@ const FILTERS = [
   { key: "SELESAI", label: "Selesai" },
 ];
 
+const STATUS_ORDER: Record<string, number> = {
+  BARU: 0,
+  DALAM_TINDAKAN: 1,
+  MENUNGGU_PENGESAHAN: 2,
+  SELESAI: 3,
+};
+
+const SORT_OPTIONS = [
+  { key: "TARIKH", label: "Semua" },
+  { key: "BARU", label: "Baru" },
+  { key: "DALAM_TINDAKAN", label: "Belum Selesai" },
+  { key: "SELESAI", label: "Selesai" },
+  { key: "JENIS_DALAMAN", label: "Tindakan Dalaman" },
+  { key: "JENIS_KONTRAKTOR", label: "Kontraktor Luar" },
+];
+
 export default function ComplaintList({
   complaints,
   role,
@@ -37,11 +54,22 @@ export default function ComplaintList({
 }) {
   const router = useRouter();
   const [filter, setFilter] = useState("SEMUA");
+  const [sort, setSort] = useState("TARIKH");
+  const canApprove = role === "SUPERADMIN" || role === "ADMIN";
 
-  const filtered = useMemo(
-    () => (filter === "SEMUA" ? complaints : complaints.filter((c) => c.status === filter)),
-    [complaints, filter]
-  );
+  const filtered = useMemo(() => {
+    const base = filter === "SEMUA" ? complaints : complaints.filter((c) => c.status === filter);
+    if (!canApprove || filter !== "SEMUA" || sort === "TARIKH") return base;
+    if (sort === "JENIS_DALAMAN" || sort === "JENIS_KONTRAKTOR") {
+      const wanted = sort === "JENIS_DALAMAN" ? "DALAMAN" : "KONTRAKTOR";
+      return [...base].sort(
+        (a, b) => (a.repairType === wanted ? 0 : 1) - (b.repairType === wanted ? 0 : 1) || STATUS_ORDER[a.status] - STATUS_ORDER[b.status]
+      );
+    }
+    return [...base].sort(
+      (a, b) => (a.status === sort ? 0 : 1) - (b.status === sort ? 0 : 1) || STATUS_ORDER[a.status] - STATUS_ORDER[b.status]
+    );
+  }, [complaints, filter, sort, canApprove]);
 
   async function handleDelete(id: string) {
     if (!confirm("Padam aduan ini?")) return;
@@ -52,18 +80,36 @@ export default function ComplaintList({
   return (
     <div>
       {showFilters && (
-        <div className="mb-4 flex w-fit flex-wrap border border-[rgba(32,30,29,0.4)]">
-          {FILTERS.map((f) => (
-            <button
-              key={f.key}
-              onClick={() => setFilter(f.key)}
-              className={`border-r border-[rgba(32,30,29,0.4)] px-4 py-2 text-[12.5px] font-bold last:border-r-0 ${
-                filter === f.key ? "bg-[#6d28d9] text-[#f3f2f2]" : "bg-[#f3f2f2] text-[#201e1d]"
-              }`}
-            >
-              {f.label}
-            </button>
-          ))}
+        <div className="mb-4 flex flex-wrap items-center gap-3">
+          <div className="flex w-fit flex-wrap border border-[rgba(32,30,29,0.4)]">
+            {FILTERS.map((f) => (
+              <button
+                key={f.key}
+                onClick={() => setFilter(f.key)}
+                className={`border-r border-[rgba(32,30,29,0.4)] px-4 py-2 text-[12.5px] font-bold last:border-r-0 ${
+                  filter === f.key ? "bg-[#6d28d9] text-[#f3f2f2]" : "bg-[#f3f2f2] text-[#201e1d]"
+                }`}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
+          {canApprove && filter === "SEMUA" && (
+            <label className="flex items-center gap-2 text-[12.5px] font-semibold text-[rgba(32,30,29,0.7)]">
+              Susun ikut status:
+              <select
+                value={sort}
+                onChange={(e) => setSort(e.target.value)}
+                className="border border-[rgba(32,30,29,0.4)] bg-[#f3f2f2] px-2.5 py-2 text-[12.5px]"
+              >
+                {SORT_OPTIONS.map((o) => (
+                  <option key={o.key} value={o.key}>
+                    {o.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+          )}
         </div>
       )}
 

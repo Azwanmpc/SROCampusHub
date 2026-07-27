@@ -17,6 +17,8 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       ...(body.capacity !== undefined ? { capacity: Number(body.capacity) } : {}),
       ...(body.description !== undefined ? { description: body.description } : {}),
       ...(body.costPerUse !== undefined ? { costPerUse: Number(body.costPerUse) } : {}),
+      ...(body.halfDayRate !== undefined ? { halfDayRate: body.halfDayRate === null ? null : Number(body.halfDayRate) } : {}),
+      ...(body.fullDayRate !== undefined ? { fullDayRate: body.fullDayRate === null ? null : Number(body.fullDayRate) } : {}),
       ...(body.status !== undefined ? { status: body.status } : {}),
       ...(body.imageUrl !== undefined ? { imageUrl: body.imageUrl } : {}),
     },

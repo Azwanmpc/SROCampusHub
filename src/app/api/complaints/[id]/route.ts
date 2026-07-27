@@ -19,6 +19,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       data: {
         status: "DALAM_TINDAKAN",
         repairType: action === "AMBIL_DALAMAN" ? "DALAMAN" : "KONTRAKTOR",
+        ...(body.category !== undefined ? { category: body.category } : {}),
       },
       include: { facility: true, user: true },
     });

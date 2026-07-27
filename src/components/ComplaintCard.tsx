@@ -9,6 +9,7 @@ import {
   PRIORITY_LABEL,
   PRIORITY_COLOR,
   REPAIR_TYPE_LABEL,
+  COMPLAINT_CATEGORY_LABEL,
 } from "@/lib/constants";
 
 type Complaint = {
@@ -19,6 +20,7 @@ type Complaint = {
   status: string;
   priority: string;
   repairType: string | null;
+  category: string | null;
   staffNote: string | null;
   estimatedCost: number;
   createdAt: string;
@@ -42,6 +44,7 @@ export default function ComplaintCard({
   const [loading, setLoading] = useState(false);
   const [staffNote, setStaffNote] = useState(complaint.staffNote ?? "");
   const [estimatedCost, setEstimatedCost] = useState(String(complaint.estimatedCost || ""));
+  const [category, setCategory] = useState(complaint.category ?? "");
 
   const canApprove = role === "SUPERADMIN" || role === "ADMIN";
   const isStaffWorker = role === "TEKNIKAL" || canApprove;
@@ -86,6 +89,11 @@ export default function ComplaintCard({
             <span className={`text-[10px] font-bold uppercase tracking-[0.03em] px-2 py-0.5 ${PRIORITY_COLOR[complaint.priority]}`}>
               {PRIORITY_LABEL[complaint.priority]}
             </span>
+            {complaint.category && (
+              <span className="bg-[#eae7e7] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.03em] text-[#605d5d]">
+                {COMPLAINT_CATEGORY_LABEL[complaint.category] ?? complaint.category}
+              </span>
+            )}
           </div>
           <div className="mt-0.5 text-[12.5px] text-[rgba(32,30,29,0.6)]">{complaint.description}</div>
           <div className="mt-1 text-xs text-[rgba(32,30,29,0.6)]">
@@ -139,16 +147,28 @@ export default function ComplaintCard({
       )}
 
       {canApprove && complaint.status === "BARU" && (
-        <div className="mt-3 flex flex-wrap gap-2 border-t border-[rgba(32,30,29,0.2)] pt-3">
+        <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-[rgba(32,30,29,0.2)] pt-3">
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="border border-[rgba(32,30,29,0.4)] bg-white px-2.5 py-2 text-[12.5px] font-bold"
+          >
+            <option value="">Jenis Kerosakan…</option>
+            {Object.entries(COMPLAINT_CATEGORY_LABEL).map(([key, label]) => (
+              <option key={key} value={key}>
+                {label}
+              </option>
+            ))}
+          </select>
           <button
-            onClick={() => callAction("AMBIL_DALAMAN")}
+            onClick={() => callAction("AMBIL_DALAMAN", { category: category || undefined })}
             disabled={loading}
             className="border border-[rgba(32,30,29,0.4)] bg-[#f3f2f2] px-3.5 py-2 text-[12.5px] font-bold disabled:opacity-60"
           >
             Tindakan (Dalaman)
           </button>
           <button
-            onClick={() => callAction("AMBIL_KONTRAKTOR")}
+            onClick={() => callAction("AMBIL_KONTRAKTOR", { category: category || undefined })}
             disabled={loading}
             className="border border-[rgba(32,30,29,0.4)] bg-[#f3f2f2] px-3.5 py-2 text-[12.5px] font-bold disabled:opacity-60"
           >

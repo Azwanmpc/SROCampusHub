@@ -20,6 +20,9 @@ type ReportData = {
   locationBreakdown: { lokasi: string; count: number; pct: number }[];
   hasilByMonth: { label: string; rmLabel: string; pct: number }[];
   kosByMonth: { label: string; kosLabel: string; kosPct: number }[];
+  recurringComplaints: { lokasi: string; isu: string; bil: number; kos: number; kosLabel: string }[];
+  topOrganisasi: { label: string; bil: number; pct: number; color: string }[];
+  orgRentalGradient: string;
 };
 
 export default function ReportsCharts() {
@@ -151,6 +154,59 @@ export default function ReportsCharts() {
               ))}
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-px border border-[rgba(32,30,29,0.4)] bg-[rgba(32,30,29,0.4)] lg:grid-cols-2">
+        <div className="overflow-x-auto bg-white p-[18px]">
+          <div className="mb-3.5 font-archivo text-sm font-extrabold">Top 5 Aduan Berulang (Jenis Kerosakan)</div>
+          {data.recurringComplaints.length === 0 && <p className="text-xs text-[rgba(32,30,29,0.5)]">Tiada data.</p>}
+          <table className="w-full min-w-[260px] border-collapse text-xs">
+            <thead>
+              <tr>
+                <th className="border-b border-[rgba(32,30,29,0.2)] py-1.5 text-left text-[9.5px] uppercase text-[rgba(32,30,29,0.55)]">
+                  Lokasi / Jenis Kerosakan
+                </th>
+                <th className="border-b border-[rgba(32,30,29,0.2)] py-1.5 text-right text-[9.5px] uppercase text-[rgba(32,30,29,0.55)]">
+                  Bil.
+                </th>
+                <th className="border-b border-[rgba(32,30,29,0.2)] py-1.5 text-right text-[9.5px] uppercase text-[rgba(32,30,29,0.55)]">
+                  Kos
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.recurringComplaints.map((r) => (
+                <tr key={`${r.lokasi}-${r.isu}`}>
+                  <td className="border-b border-[rgba(32,30,29,0.1)] py-1.5">
+                    <div className="font-bold">{r.isu}</div>
+                    <div className="text-[11px] text-[rgba(32,30,29,0.55)]">{r.lokasi}</div>
+                  </td>
+                  <td className="border-b border-[rgba(32,30,29,0.1)] py-1.5 text-right font-bold">{r.bil}</td>
+                  <td className="border-b border-[rgba(32,30,29,0.1)] py-1.5 text-right font-bold">{r.kosLabel}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="bg-white p-[18px]">
+          <div className="mb-3.5 font-archivo text-sm font-extrabold">Top 5 Organisasi Penyewa Fasiliti</div>
+          {data.topOrganisasi.length === 0 ? (
+            <p className="text-xs text-[rgba(32,30,29,0.5)]">Tiada data.</p>
+          ) : (
+            <div className="flex items-center gap-[18px]">
+              <div className="h-[120px] w-[120px] flex-none rounded-full" style={{ background: data.orgRentalGradient }} />
+              <div className="flex flex-1 flex-col gap-1.5 text-[11.5px]">
+                {data.topOrganisasi.map((o) => (
+                  <div key={o.label} className="flex items-center gap-1.5">
+                    <span className="h-2 w-2 flex-none" style={{ background: o.color }} />
+                    <span className="flex-1">{o.label}</span>
+                    <span className="font-bold">{o.pct}%</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

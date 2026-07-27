@@ -29,7 +29,7 @@ export async function GET() {
   }
 
   const [bookings, complaints, facilities] = await Promise.all([
-    prisma.booking.findMany({ where: { status: "DISAHKAN" } }),
+    prisma.booking.findMany({ where: { status: "DISAHKAN" }, include: { user: true } }),
     prisma.complaint.findMany(),
     prisma.facility.findMany(),
   ]);
@@ -113,5 +113,51 @@ export async function GET() {
   const maxMonthlyCost = Math.max(1, ...monthly.map((m) => m.kosPenyelenggaraan));
   const kosByMonth = monthly.map((m) => ({ label: m.label, kosLabel: `RM ${m.kosPenyelenggaraan.toLocaleString("ms-MY")}`, kosPct: Math.round((m.kosPenyelenggaraan / maxMonthlyCost) * 100) }));
 
-  return NextResponse.json({ monthly, facilitiesDown, repairTypeBreakdown, hasilByFacility, locationBreakdown, hasilByMonth, kosByMonth });
+  const recurringMap = new Map<string, { lokasi: string; isu: string; bil: number; kos: number }>();
+  for (const c of complaints) {
+    const key = `${c.location}|${c.description}`;
+    const entry = recurringMap.get(key) ?? { lokasi: c.location, isu: c.description, bil: 0, kos: 0 };
+    entry.bil += 1;
+    entry.kos += c.estimatedCost;
+    recurringMap.set(key, entry);
+  }
+  const recurringComplaints = [...recurringMap.values()]
+    .sort((a, b) => b.bil - a.bil)
+    .slice(0, 5)
+    .map((r) => ({ ...r, kosLabel: `RM ${r.kos.toLocaleString("ms-MY")}` }));
+
+  const ORG_COLORS = ["#4a72a8", "#4a8a63", "#8a6d1f", "#7c1405", "#6d28d9", "#5b3a8a", "#605d5d"];
+  const orgCountMap = new Map<string, number>();
+  for (const b of bookings) {
+    const org = b.organisasi || b.user.name;
+    if (org) orgCountMap.set(org, (orgCountMap.get(org) ?? 0) + 1);
+  }
+  const orgTotalBookings = [...orgCountMap.values()].reduce((a, n) => a + n, 0) || 1;
+  let orgAcc = 0;
+  const topOrganisasi = [...orgCountMap.entries()]
+    .map(([label, bil]) => ({ label, bil, pct: Math.round((bil / orgTotalBookings) * 100) }))
+    .sort((a, b) => b.bil - a.bil)
+    .slice(0, 5)
+    .map((o, i) => {
+      const seg = { ...o, color: ORG_COLORS[i % ORG_COLORS.length], from: orgAcc, to: orgAcc + o.pct };
+      orgAcc += o.pct;
+      return seg;
+    });
+  const orgRentalGradient =
+    topOrganisasi.length > 0
+      ? `conic-gradient(${topOrganisasi.map((o) => `${o.color} ${o.from}% ${o.to}%`).join(", ")})`
+      : "#e2e1e0";
+
+  return NextResponse.json({
+    monthly,
+    facilitiesDown,
+    repairTypeBreakdown,
+    hasilByFacility,
+    locationBreakdown,
+    hasilByMonth,
+    kosByMonth,
+    recurringComplaints,
+    topOrganisasi,
+    orgRentalGradient,
+  });
 }
