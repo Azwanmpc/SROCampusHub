@@ -18,15 +18,23 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Saiz fail melebihi 8MB" }, { status: 400 });
   }
 
+  const ALLOWED_FOLDERS = ["complaints", "facilities"];
+  const requestedFolder = String(form.get("folder") ?? "complaints");
+  const folder = ALLOWED_FOLDERS.includes(requestedFolder) ? requestedFolder : "complaints";
+
+  if (folder === "facilities" && session.role !== "SUPERADMIN" && session.role !== "ADMIN") {
+    return NextResponse.json({ error: "Tiada kebenaran" }, { status: 403 });
+  }
+
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);
 
-  const uploadDir = path.join(process.cwd(), "public", "uploads", "complaints");
+  const uploadDir = path.join(process.cwd(), "public", "uploads", folder);
   await mkdir(uploadDir, { recursive: true });
 
   const ext = (file.name.split(".").pop() || "jpg").replace(/[^a-zA-Z0-9]/g, "");
   const filename = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
   await writeFile(path.join(uploadDir, filename), buffer);
 
-  return NextResponse.json({ url: `/uploads/complaints/${filename}` });
+  return NextResponse.json({ url: `/uploads/${folder}/${filename}` });
 }

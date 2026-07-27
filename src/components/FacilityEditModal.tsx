@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { X } from "@phosphor-icons/react/dist/ssr";
+import { X, Image as ImageIcon } from "@phosphor-icons/react/dist/ssr";
 import { FACILITY_STATUS_LABEL } from "@/lib/constants";
 
 type Facility = {
@@ -15,6 +15,7 @@ type Facility = {
   costPerUse: number;
   halfDayRate: number | null;
   fullDayRate: number | null;
+  imageUrl: string | null;
 };
 
 export default function FacilityEditModal({
@@ -25,12 +26,37 @@ export default function FacilityEditModal({
   onClose: () => void;
 }) {
   const router = useRouter();
+  const fileRef = useRef<HTMLInputElement>(null);
   const [description, setDescription] = useState(facility.description ?? "");
   const [status, setStatus] = useState(facility.status);
   const [costPerUse, setCostPerUse] = useState(String(facility.costPerUse ?? 0));
   const [halfDayRate, setHalfDayRate] = useState(facility.halfDayRate != null ? String(facility.halfDayRate) : "");
   const [fullDayRate, setFullDayRate] = useState(facility.fullDayRate != null ? String(facility.fullDayRate) : "");
+  const [imageUrl, setImageUrl] = useState(facility.imageUrl ?? "");
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState("");
   const [saving, setSaving] = useState(false);
+
+  async function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadError("");
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("folder", "facilities");
+      const res = await fetch("/api/upload", { method: "POST", body: formData });
+      const data = await res.json();
+      if (!res.ok) {
+        setUploadError(data.error ?? "Muat naik gambar gagal");
+        return;
+      }
+      setImageUrl(data.url);
+    } finally {
+      setUploading(false);
+    }
+  }
 
   async function handleSave() {
     setSaving(true);
@@ -44,6 +70,7 @@ export default function FacilityEditModal({
           costPerUse: Number(costPerUse) || 0,
           halfDayRate: halfDayRate === "" ? null : Number(halfDayRate),
           fullDayRate: fullDayRate === "" ? null : Number(fullDayRate),
+          imageUrl: imageUrl === "" ? null : imageUrl,
         }),
       });
       router.refresh();
@@ -67,6 +94,34 @@ export default function FacilityEditModal({
         </div>
 
         <div className="flex flex-col gap-4 p-5">
+          <div>
+            <label className="mb-1 block text-[11px] font-extrabold uppercase tracking-[0.05em] text-[rgba(32,30,29,0.55)]">
+              Gambar Fasiliti
+            </label>
+            <div className="flex items-center gap-3 border border-dashed border-[rgba(32,30,29,0.5)] bg-[#f3f2f2] p-3">
+              {imageUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={imageUrl} alt="Pratonton fasiliti" className="h-14 w-14 flex-none object-cover" />
+              ) : (
+                <div className="flex h-14 w-14 flex-none items-center justify-center bg-[repeating-linear-gradient(135deg,#d7d3d3_0_8px,#bab6b6_8px_16px)] text-[#605d5d]">
+                  <ImageIcon weight="duotone" size={20} />
+                </div>
+              )}
+              <label className="cursor-pointer text-xs text-[rgba(32,30,29,0.6)]">
+                <div className="font-mono font-bold">{uploading ? "Memuat naik..." : "Pilih gambar…"}</div>
+                <input
+                  ref={fileRef}
+                  type="file"
+                  accept="image/*"
+                  disabled={uploading}
+                  onChange={handleImageChange}
+                  className="hidden"
+                />
+              </label>
+            </div>
+            {uploadError && <div className="mt-1 text-xs text-[#7c1405]">{uploadError}</div>}
+          </div>
+
           <div>
             <label className="mb-1 block text-[11px] font-extrabold uppercase tracking-[0.05em] text-[rgba(32,30,29,0.55)]">
               Ringkasan
@@ -145,7 +200,7 @@ export default function FacilityEditModal({
           </button>
           <button
             onClick={handleSave}
-            disabled={saving}
+            disabled={saving || uploading}
             className="bg-[#6d28d9] px-4 py-2 text-[13px] font-extrabold text-white hover:bg-[#4c1d95] disabled:opacity-60"
           >
             {saving ? "Menyimpan..." : "Simpan"}

@@ -18,6 +18,7 @@ type Facility = {
   costPerUse: number;
   halfDayRate: number | null;
   fullDayRate: number | null;
+  imageUrl: string | null;
 };
 
 export default function FacilityCard({ facility: f, isStaff }: { facility: Facility; isStaff: boolean }) {
@@ -27,9 +28,14 @@ export default function FacilityCard({ facility: f, isStaff }: { facility: Facil
 
   return (
     <div className="flex h-full flex-col border border-[rgba(32,30,29,0.3)] bg-white">
-      <div className="flex h-[110px] items-center justify-center bg-[repeating-linear-gradient(135deg,#e7e5e5_0_10px,#d7d3d3_10px_20px)] text-xs font-semibold text-[rgba(32,30,29,0.4)]">
-        Gambar {f.name}
-      </div>
+      {f.imageUrl ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={f.imageUrl} alt={f.name} className="h-[110px] w-full object-cover" />
+      ) : (
+        <div className="flex h-[110px] items-center justify-center bg-[repeating-linear-gradient(135deg,#e7e5e5_0_10px,#d7d3d3_10px_20px)] text-xs font-semibold text-[rgba(32,30,29,0.4)]">
+          Gambar {f.name}
+        </div>
+      )}
       <div className="flex flex-1 flex-col p-4">
         <div className="mb-1.5 flex items-center justify-between gap-2">
           <div className="text-[14.5px] font-bold">{f.name}</div>
