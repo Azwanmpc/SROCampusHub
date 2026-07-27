@@ -48,13 +48,13 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#201e1d] p-6">
-      <div className="relative w-full max-w-[420px] bg-[#f3f2f2] p-10 px-[34px]">
+    <div className="flex min-h-screen items-center justify-center bg-[#201e1d] p-4 sm:p-6">
+      <div className="relative w-full max-w-[420px] bg-[#f3f2f2] p-6 px-5 sm:p-10 sm:px-[34px]">
         <div className="mb-2 flex items-center gap-2.5">
-          <div className="flex h-[38px] w-[38px] items-center justify-center bg-[#6d28d9] font-archivo text-sm font-extrabold text-[#f3f2f2]">
+          <div className="flex h-[38px] w-[38px] flex-none items-center justify-center bg-[#6d28d9] font-archivo text-sm font-extrabold text-[#f3f2f2]">
             SRO
           </div>
-          <div className="whitespace-nowrap font-archivo text-[13px] font-extrabold leading-[1.3] tracking-[-0.005em]">
+          <div className="font-archivo text-[13px] font-extrabold leading-[1.3] tracking-[-0.005em]">
             PERBADANAN PRODUKTIVITI MALAYSIA
             <br />
             WILAYAH SELATAN
@@ -122,7 +122,7 @@ export default function LoginPage() {
         </form>
 
         {forgotOpen && (
-          <div className="absolute inset-0 flex flex-col justify-center bg-[rgba(243,242,242,0.97)] p-10 px-[34px]">
+          <div className="absolute inset-0 flex flex-col justify-center bg-[rgba(243,242,242,0.97)] p-6 px-5 sm:p-10 sm:px-[34px]">
             <div className="mb-2 font-archivo text-lg font-extrabold">Lupa Kata Laluan?</div>
             <div className="mb-[18px] text-[13px] text-[rgba(32,30,29,0.7)]">
               Masukkan emel anda — pautan set semula kata laluan akan dihantar.

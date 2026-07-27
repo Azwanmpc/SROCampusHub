@@ -85,7 +85,7 @@ export default function QuotationModal({ booking, onClose }: { booking: Booking;
     <div className="fixed inset-0 z-[120] flex items-center justify-center bg-[rgba(32,30,29,0.5)] p-4">
       <div
         id="quotation-print-area"
-        className="relative max-h-[92vh] w-full max-w-[620px] overflow-y-auto bg-white p-9 font-archivo text-[#201e1d] shadow-[0_12px_32px_rgba(45,43,43,0.22)]"
+        className="relative max-h-[92vh] w-full max-w-[620px] overflow-y-auto bg-white p-5 font-archivo text-[#201e1d] shadow-[0_12px_32px_rgba(45,43,43,0.22)] sm:p-9"
       >
         <button
           onClick={onClose}
@@ -301,7 +301,7 @@ export default function QuotationModal({ booking, onClose }: { booking: Booking;
         <div className="mb-2.5 text-xs">No. Faks : 07 – 238 0798</div>
         <div className="text-[11px] text-[rgba(32,30,29,0.6)]">*Potong yang tidak berkenaan</div>
 
-        <div className="mt-3.5 flex gap-2 print:hidden">
+        <div className="mt-3.5 flex flex-col gap-2 print:hidden sm:flex-row">
           <button
             onClick={() => window.print()}
             className="flex flex-1 items-center justify-center gap-2 border border-[rgba(32,30,29,0.4)] bg-[#f3f2f2] py-3 font-archivo text-[13.5px] font-extrabold"

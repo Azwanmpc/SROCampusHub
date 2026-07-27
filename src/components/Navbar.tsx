@@ -2,10 +2,18 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { CaretDown, Moon, Sun, SignOut } from "@phosphor-icons/react";
+import { CaretDown, List, Moon, Sun, SignOut } from "@phosphor-icons/react";
 import { ROLE_LABEL } from "@/lib/constants";
 
-export default function Navbar({ name, role }: { name: string; role: string }) {
+export default function Navbar({
+  name,
+  role,
+  onMenuClick,
+}: {
+  name: string;
+  role: string;
+  onMenuClick: () => void;
+}) {
   const router = useRouter();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [dark, setDark] = useState(false);
@@ -39,18 +47,25 @@ export default function Navbar({ name, role }: { name: string; role: string }) {
     .toUpperCase();
 
   return (
-    <div className="flex h-16 flex-none items-center justify-between border-b-2 border-[rgba(32,30,29,0.4)] bg-[#f3f2f2] px-6 text-[#201e1d]">
-      <div className="flex items-center gap-2.5">
+    <div className="flex h-16 flex-none items-center justify-between border-b-2 border-[rgba(32,30,29,0.4)] bg-[#f3f2f2] px-3 text-[#201e1d] sm:px-6">
+      <div className="flex items-center gap-2 sm:gap-2.5">
+        <button
+          onClick={onMenuClick}
+          className="flex h-[38px] w-[38px] flex-none items-center justify-center border border-[rgba(32,30,29,0.4)] bg-[#f3f2f2] text-[#201e1d] md:hidden"
+          aria-label="Buka menu"
+        >
+          <List weight="bold" size={18} />
+        </button>
         <div className="flex h-8 w-8 flex-none items-center justify-center bg-[#6d28d9] font-archivo text-xs font-extrabold text-[#f3f2f2]">
           SRO
         </div>
         <div className="font-archivo text-[17px] font-extrabold leading-none tracking-[-0.01em]">CampusHub</div>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 sm:gap-3">
         <button
           onClick={toggleDark}
-          className="flex h-[38px] w-[38px] items-center justify-center border border-[rgba(32,30,29,0.4)] bg-[#f3f2f2] text-[17px] text-[#201e1d]"
+          className="flex h-[38px] w-[38px] flex-none items-center justify-center border border-[rgba(32,30,29,0.4)] bg-[#f3f2f2] text-[17px] text-[#201e1d]"
           aria-label="Tukar mod gelap"
         >
           {dark ? <Sun weight="duotone" /> : <Moon weight="duotone" />}
@@ -59,12 +74,12 @@ export default function Navbar({ name, role }: { name: string; role: string }) {
         <div className="relative">
           <button
             onClick={() => setUserMenuOpen((v) => !v)}
-            className="flex h-[38px] items-center gap-2 border border-[rgba(32,30,29,0.4)] bg-[#f3f2f2] py-[5px] pl-[5px] pr-3"
+            className="flex h-[38px] items-center gap-2 border border-[rgba(32,30,29,0.4)] bg-[#f3f2f2] py-[5px] pl-[5px] pr-2.5 sm:pr-3"
           >
             <div className="flex h-7 w-7 flex-none items-center justify-center rounded-full bg-[#201e1d] text-[10px] font-bold text-[#f3f2f2]">
               {initials}
             </div>
-            <span className="max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap text-[13px] font-bold">
+            <span className="hidden max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap text-[13px] font-bold sm:inline">
               {name}
             </span>
             <CaretDown weight="duotone" size={13} />

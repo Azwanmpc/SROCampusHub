@@ -143,49 +143,51 @@ export default function CalendarView({ facilities, defaultFacilityId }: { facili
           </div>
         </div>
 
-        <div className="border border-[rgba(32,30,29,0.4)] bg-white p-6">
-          <div className="mb-2 grid grid-cols-7 text-center text-[11px] font-bold text-[rgba(32,30,29,0.6)]">
-            {WEEKDAYS.map((w) => (
-              <div key={w}>{w}</div>
-            ))}
-          </div>
-          <div className="grid grid-cols-7 gap-0.5 bg-[rgba(32,30,29,0.25)]">
-            {gridDays.map((day, i) => {
-              if (!day) return <div key={i} className="min-h-[104px] bg-[#f8f4f4]" />;
-              const key = toDateKey(day);
-              const dayBookings = bookingsByDay.get(key) ?? [];
-              const isToday = day.getTime() === today.getTime();
-              return (
-                <button
-                  key={i}
-                  onClick={() => {
-                    setSelectedDate(key);
-                    setShowForm(true);
-                  }}
-                  className={`min-h-[104px] p-2 text-left align-top ${dayBookings.length ? "bg-white" : "bg-[#f8f4f4]"} ${
-                    isToday ? "outline outline-2 -outline-offset-2 outline-[#6d28d9]" : ""
-                  }`}
-                >
-                  <div className="mb-1 text-xs font-bold">{day.getDate()}</div>
-                  <div className="flex flex-col gap-0.5">
-                    {dayBookings.slice(0, 3).map((b) => (
-                      <div
-                        key={b.id}
-                        title={`${b.facility.name} - ${b.purpose}`}
-                        className={`truncate px-1.5 py-0.5 text-[11.5px] font-bold text-black ${
-                          b.status === "DISAHKAN" ? "bg-[#4bff5e]" : "bg-[#fff300]"
-                        }`}
-                      >
-                        {b.facility.name}
-                      </div>
-                    ))}
-                    {dayBookings.length > 3 && (
-                      <div className="text-[10px] text-[rgba(32,30,29,0.5)]">+{dayBookings.length - 3} lagi</div>
-                    )}
-                  </div>
-                </button>
-              );
-            })}
+        <div className="overflow-x-auto border border-[rgba(32,30,29,0.4)] bg-white p-3 sm:p-6">
+          <div className="min-w-[560px]">
+            <div className="mb-2 grid grid-cols-7 text-center text-[11px] font-bold text-[rgba(32,30,29,0.6)]">
+              {WEEKDAYS.map((w) => (
+                <div key={w}>{w}</div>
+              ))}
+            </div>
+            <div className="grid grid-cols-7 gap-0.5 bg-[rgba(32,30,29,0.25)]">
+              {gridDays.map((day, i) => {
+                if (!day) return <div key={i} className="min-h-[80px] bg-[#f8f4f4] sm:min-h-[104px]" />;
+                const key = toDateKey(day);
+                const dayBookings = bookingsByDay.get(key) ?? [];
+                const isToday = day.getTime() === today.getTime();
+                return (
+                  <button
+                    key={i}
+                    onClick={() => {
+                      setSelectedDate(key);
+                      setShowForm(true);
+                    }}
+                    className={`min-h-[80px] p-1.5 text-left align-top sm:min-h-[104px] sm:p-2 ${dayBookings.length ? "bg-white" : "bg-[#f8f4f4]"} ${
+                      isToday ? "outline outline-2 -outline-offset-2 outline-[#6d28d9]" : ""
+                    }`}
+                  >
+                    <div className="mb-1 text-xs font-bold">{day.getDate()}</div>
+                    <div className="flex flex-col gap-0.5">
+                      {dayBookings.slice(0, 3).map((b) => (
+                        <div
+                          key={b.id}
+                          title={`${b.facility.name} - ${b.purpose}`}
+                          className={`truncate px-1.5 py-0.5 text-[11.5px] font-bold text-black ${
+                            b.status === "DISAHKAN" ? "bg-[#4bff5e]" : "bg-[#fff300]"
+                          }`}
+                        >
+                          {b.facility.name}
+                        </div>
+                      ))}
+                      {dayBookings.length > 3 && (
+                        <div className="text-[10px] text-[rgba(32,30,29,0.5)]">+{dayBookings.length - 3} lagi</div>
+                      )}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
           <div className="mt-4 flex gap-4 text-xs font-bold">

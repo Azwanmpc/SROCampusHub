@@ -188,7 +188,7 @@ export default function BookingForm({
         </select>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <div>
           <label className={labelClass}>Tarikh Mula</label>
           <input type="date" required value={startDate} onChange={(e) => setStartDate(e.target.value)} className={fieldClass} />
@@ -261,7 +261,7 @@ export default function BookingForm({
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <div>
           <label className={labelClass}>Bilangan Peserta</label>
           <input
@@ -292,20 +292,20 @@ export default function BookingForm({
             const st = addons[a.key] ?? { checked: false, qty: 1, rateType: "FULL" as const };
             return (
               <div key={a.key}>
-                <div className="flex items-center gap-2.5">
-                  <input type="checkbox" checked={st.checked} onChange={() => toggleAddon(a.key)} className="h-[17px] w-[17px]" />
-                  <div className="flex-1 text-[13px] font-semibold">{a.label}</div>
+                <div className="flex flex-wrap items-center gap-2.5">
+                  <input type="checkbox" checked={st.checked} onChange={() => toggleAddon(a.key)} className="h-[17px] w-[17px] flex-none" />
+                  <div className="min-w-[80px] flex-1 text-[13px] font-semibold">{a.label}</div>
                   <button
                     type="button"
                     onClick={() => setAddons((p) => ({ ...p, [a.key]: { ...st, checked: true, rateType: "HALF" } }))}
-                    className="border border-[rgba(32,30,29,0.3)] bg-white px-2 py-1 text-[10.5px] font-bold"
+                    className="flex-none border border-[rgba(32,30,29,0.3)] bg-white px-2 py-1 text-[10.5px] font-bold"
                   >
                     Separuh ({fmtRM(a.half)})
                   </button>
                   <button
                     type="button"
                     onClick={() => setAddons((p) => ({ ...p, [a.key]: { ...st, checked: true, rateType: "FULL" } }))}
-                    className="border border-[rgba(32,30,29,0.3)] bg-white px-2 py-1 text-[10.5px] font-bold"
+                    className="flex-none border border-[rgba(32,30,29,0.3)] bg-white px-2 py-1 text-[10.5px] font-bold"
                   >
                     1 Hari ({fmtRM(a.full)})
                   </button>
@@ -314,7 +314,7 @@ export default function BookingForm({
                     min={1}
                     value={st.qty}
                     onChange={(e) => setAddons((p) => ({ ...p, [a.key]: { ...st, qty: Number(e.target.value) } }))}
-                    className="w-[50px] border border-[rgba(32,30,29,0.4)] px-2 py-1.5"
+                    className="w-[50px] flex-none border border-[rgba(32,30,29,0.4)] px-2 py-1.5"
                   />
                 </div>
                 {st.checked && (
@@ -366,7 +366,7 @@ export default function BookingForm({
       </div>
 
       <div className="mt-1 text-xs font-bold text-[rgba(32,30,29,0.7)]">Maklumat Sebutharga (jika berkaitan)</div>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <div>
           <label className={labelClass}>Nama</label>
           <input value={sebutNama} onChange={(e) => setSebutNama(e.target.value)} placeholder="Nama penuh" className={fieldClass} />
