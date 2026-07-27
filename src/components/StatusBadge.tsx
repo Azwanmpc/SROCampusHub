@@ -6,7 +6,7 @@ export default function StatusBadge({
   colorClass: string;
 }) {
   return (
-    <span className={`inline-block rounded-full px-2.5 py-1 text-xs font-semibold ${colorClass}`}>
+    <span className={`inline-block whitespace-nowrap px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.03em] ${colorClass}`}>
       {label}
     </span>
   );

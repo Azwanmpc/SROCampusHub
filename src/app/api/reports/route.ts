@@ -64,6 +64,31 @@ export async function GET() {
     .filter((f) => f.status === "PENYELENGGARAAN")
     .map((f) => ({ id: f.id, name: f.name, type: f.type }));
 
+  const revenueByFacility = facilities
+    .map((f) => ({
+      name: f.name,
+      revenue: bookings.filter((b) => b.facilityId === f.id).reduce((sum, b) => sum + b.revenue, 0),
+    }))
+    .filter((f) => f.revenue > 0)
+    .sort((a, b) => b.revenue - a.revenue)
+    .slice(0, 6);
+  const maxFacilityRevenue = Math.max(1, ...revenueByFacility.map((f) => f.revenue));
+  const hasilByFacility = revenueByFacility.map((f) => ({
+    nama: f.name,
+    rmLabel: `RM ${f.revenue.toLocaleString("ms-MY")}`,
+    pct: Math.round((f.revenue / maxFacilityRevenue) * 100),
+  }));
+
+  const locationCounts = new Map<string, number>();
+  for (const c of complaints) {
+    locationCounts.set(c.location, (locationCounts.get(c.location) ?? 0) + 1);
+  }
+  const totalComplaintsCount = complaints.length || 1;
+  const locationBreakdown = [...locationCounts.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 6)
+    .map(([lokasi, count]) => ({ lokasi, count, pct: Math.round((count / totalComplaintsCount) * 100) }));
+
   const repairTypeBreakdown = ["DALAMAN", "KONTRAKTOR"].map((type) => {
     const items = complaints.filter((c) => c.repairType === type);
     const resolvedItems = items.filter((c) => c.status === "SELESAI" && c.resolvedAt);
@@ -83,5 +108,10 @@ export async function GET() {
     };
   });
 
-  return NextResponse.json({ monthly, facilitiesDown, repairTypeBreakdown });
+  const maxMonthlyRevenue = Math.max(1, ...monthly.map((m) => m.hasil));
+  const hasilByMonth = monthly.map((m) => ({ label: m.label, rmLabel: `RM ${m.hasil.toLocaleString("ms-MY")}`, pct: Math.round((m.hasil / maxMonthlyRevenue) * 100) }));
+  const maxMonthlyCost = Math.max(1, ...monthly.map((m) => m.kosPenyelenggaraan));
+  const kosByMonth = monthly.map((m) => ({ label: m.label, kosLabel: `RM ${m.kosPenyelenggaraan.toLocaleString("ms-MY")}`, kosPct: Math.round((m.kosPenyelenggaraan / maxMonthlyCost) * 100) }));
+
+  return NextResponse.json({ monthly, facilitiesDown, repairTypeBreakdown, hasilByFacility, locationBreakdown, hasilByMonth, kosByMonth });
 }

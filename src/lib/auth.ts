@@ -21,11 +21,12 @@ export async function verifyPassword(password: string, hash: string) {
   return bcrypt.compare(password, hash);
 }
 
-export async function createSession(payload: SessionPayload) {
+export async function createSession(payload: SessionPayload, rememberMe = false) {
+  const maxAgeSeconds = rememberMe ? 60 * 60 * 24 * 30 : 60 * 60 * 24;
   const token = await new SignJWT({ ...payload })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
-    .setExpirationTime("7d")
+    .setExpirationTime(rememberMe ? "30d" : "1d")
     .sign(SECRET);
 
   const store = await cookies();
@@ -36,7 +37,7 @@ export async function createSession(payload: SessionPayload) {
     secure: process.env.COOKIE_SECURE === "true",
     sameSite: "lax",
     path: "/",
-    maxAge: 60 * 60 * 24 * 7,
+    maxAge: maxAgeSeconds,
   });
 }
 

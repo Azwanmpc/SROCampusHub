@@ -3,10 +3,11 @@ import ReportsCharts from "@/components/ReportsCharts";
 export default function LaporanPage() {
   return (
     <div>
-      <h1 className="mb-1 text-xl font-bold text-slate-800">Laporan & Analitik</h1>
-      <p className="mb-6 text-sm text-slate-500">
-        Laporan bulanan aduan, hasil sewaan fasiliti dan kos penyelenggaraan.
-      </p>
+      <div className="mb-0.5 font-archivo text-[26px] font-extrabold">Laporan &amp; Analitik</div>
+      <div className="mb-3.5 text-[13.5px] text-[rgba(32,30,29,0.6)]">
+        Laporan bulanan aduan, hasil sewaan fasiliti dan kos penyelenggaraan
+      </div>
+      <div className="mb-5 h-0.5 bg-[rgba(32,30,29,0.4)]" />
       <ReportsCharts />
     </div>
   );

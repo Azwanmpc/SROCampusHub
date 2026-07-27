@@ -33,6 +33,7 @@ export async function POST(req: NextRequest) {
       userId: session.userId,
       location: parsed.data.location,
       description: parsed.data.description,
+      priority: parsed.data.priority,
       photoUrl: body.photoUrl || null,
     },
     include: { facility: true, user: true },

@@ -63,6 +63,26 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Slot masa ini bertindih dengan tempahan sedia ada" }, { status: 409 });
   }
 
+  let addonsTotal = 0;
+  if (data.addonsJson) {
+    try {
+      const items = JSON.parse(data.addonsJson) as { price: number }[];
+      addonsTotal = items.reduce((sum, it) => sum + (Number(it.price) || 0), 0);
+    } catch {
+      addonsTotal = 0;
+    }
+  }
+  let facilityPrice = facility.costPerUse;
+  if (data.asramaRoomsJson) {
+    try {
+      const rooms = JSON.parse(data.asramaRoomsJson) as { price: number }[];
+      const roomsTotal = rooms.reduce((sum, r) => sum + (Number(r.price) || 0), 0);
+      if (roomsTotal > 0) facilityPrice = roomsTotal;
+    } catch {
+      // keep default facilityPrice
+    }
+  }
+
   const booking = await prisma.booking.create({
     data: {
       facilityId: data.facilityId,
@@ -77,7 +97,13 @@ export async function POST(req: NextRequest) {
       earlyAccess: data.earlyAccess,
       earlyAccessMinutes: data.earlyAccessMinutes,
       roomNumber: data.roomNumber,
-      revenue: facility.costPerUse,
+      organisasi: data.organisasi,
+      sebutNama: data.sebutNama,
+      sebutTel: data.sebutTel,
+      sebutEmel: data.sebutEmel,
+      addonsJson: data.addonsJson,
+      asramaRoomsJson: data.asramaRoomsJson,
+      revenue: facilityPrice + addonsTotal,
     },
     include: { facility: true, user: true },
   });

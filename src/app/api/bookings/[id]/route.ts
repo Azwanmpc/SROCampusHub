@@ -75,5 +75,19 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     return NextResponse.json(updated);
   }
 
+  if (action === "SET_QUOTATION_PRICE") {
+    if (!isStaff) return NextResponse.json({ error: "Tiada kebenaran" }, { status: 403 });
+    const finalPrice = Number(body.finalPrice);
+    const updated = await prisma.booking.update({
+      where: { id },
+      data: {
+        finalPrice,
+        discount: Math.max(0, booking.revenue - finalPrice),
+        quotationNumber: body.quotationNumber ?? booking.quotationNumber,
+      },
+    });
+    return NextResponse.json(updated);
+  }
+
   return NextResponse.json({ error: "Tindakan tidak sah" }, { status: 400 });
 }

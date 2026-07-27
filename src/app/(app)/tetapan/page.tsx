@@ -17,8 +17,9 @@ export default async function TetapanPage() {
 
   return (
     <div>
-      <h1 className="mb-1 text-xl font-bold text-slate-800">Tetapan & Urus Pengguna</h1>
-      <p className="mb-6 text-sm text-slate-500">Urus akaun pengguna dan peranan sistem.</p>
+      <div className="mb-0.5 font-archivo text-[26px] font-extrabold">Tetapan / Urus Pengguna</div>
+      <div className="mb-3.5 text-[13.5px] text-[rgba(32,30,29,0.6)]">Urus akaun &amp; peranan pengguna sistem</div>
+      <div className="mb-[18px] h-0.5 bg-[rgba(32,30,29,0.4)]" />
       <UserManagement users={users} />
     </div>
   );

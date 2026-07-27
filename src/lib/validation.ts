@@ -12,6 +12,7 @@ export const registerSchema = z.object({
 export const loginSchema = z.object({
   identifier: z.string().min(1, "Sila masukkan email/username"),
   password: z.string().min(1, "Sila masukkan kata laluan"),
+  rememberMe: z.boolean().optional(),
 });
 
 export const bookingSchema = z.object({
@@ -26,10 +27,17 @@ export const bookingSchema = z.object({
   earlyAccess: z.coerce.boolean().default(false),
   earlyAccessMinutes: z.coerce.number().min(0).default(0),
   roomNumber: z.string().optional(),
+  organisasi: z.string().optional(),
+  sebutNama: z.string().optional(),
+  sebutTel: z.string().optional(),
+  sebutEmel: z.string().optional(),
+  addonsJson: z.string().optional(),
+  asramaRoomsJson: z.string().optional(),
 });
 
 export const complaintSchema = z.object({
   facilityId: z.string().optional(),
   location: z.string().min(2, "Sila nyatakan lokasi"),
   description: z.string().min(5, "Sila nyatakan butiran kerosakan"),
+  priority: z.enum(["TINGGI", "SEDERHANA", "RENDAH"]).default("SEDERHANA"),
 });

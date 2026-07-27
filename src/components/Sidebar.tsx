@@ -2,29 +2,57 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import {
+  House,
+  CalendarBlank,
+  Buildings,
+  SealCheck,
+  WarningCircle,
+  ChartBar,
+  ChartLine,
+  Gear,
+  SignOut,
+} from "@phosphor-icons/react";
 import { ROLE_LABEL } from "@/lib/constants";
 
-type NavItem = { href: string; label: string; roles: string[] };
+type NavItem = { href: string; label: string; roles: string[]; icon: React.ElementType };
 
-const NAV_ITEMS: NavItem[] = [
-  { href: "/dashboard", label: "Dashboard", roles: ["SUPERADMIN", "ADMIN", "PEMOHON", "PENGADU", "TEKNIKAL"] },
-  { href: "/kalendar", label: "Kalendar Tempahan", roles: ["SUPERADMIN", "ADMIN", "PEMOHON"] },
-  { href: "/tempahan-saya", label: "Tempahan Saya", roles: ["PEMOHON"] },
-  { href: "/kelulusan", label: "Kelulusan Tempahan", roles: ["SUPERADMIN", "ADMIN"] },
-  { href: "/fasiliti", label: "Maklumat Fasiliti", roles: ["SUPERADMIN", "ADMIN", "PEMOHON", "PENGADU", "TEKNIKAL"] },
-  { href: "/aduan", label: "Aduan Kerosakan", roles: ["SUPERADMIN", "ADMIN", "PENGADU", "TEKNIKAL"] },
-  { href: "/prestasi", label: "Prestasi Penyelenggaraan", roles: ["SUPERADMIN", "ADMIN"] },
-  { href: "/laporan", label: "Laporan & Analitik", roles: ["SUPERADMIN", "ADMIN"] },
-  { href: "/tetapan", label: "Tetapan & Pengguna", roles: ["SUPERADMIN"] },
+type NavGroup = { label: string; items: NavItem[] };
+
+const NAV_GROUPS: NavGroup[] = [
+  {
+    label: "Utama",
+    items: [{ href: "/dashboard", label: "Dashboard", roles: ["SUPERADMIN", "ADMIN", "PEMOHON", "PENGADU", "TEKNIKAL"], icon: House }],
+  },
+  {
+    label: "Tempahan",
+    items: [
+      { href: "/kalendar", label: "Kalendar Tempahan", roles: ["SUPERADMIN", "ADMIN", "PEMOHON"], icon: CalendarBlank },
+      { href: "/tempahan-saya", label: "Tempahan Saya", roles: ["PEMOHON"], icon: Buildings },
+      { href: "/kelulusan", label: "Kelulusan Tempahan", roles: ["SUPERADMIN", "ADMIN"], icon: SealCheck },
+    ],
+  },
+  {
+    label: "Fasiliti",
+    items: [{ href: "/fasiliti", label: "Maklumat Fasiliti", roles: ["SUPERADMIN", "ADMIN", "PEMOHON", "PENGADU", "TEKNIKAL"], icon: Buildings }],
+  },
+  {
+    label: "Penyelenggaraan",
+    items: [
+      { href: "/aduan", label: "Aduan Kerosakan", roles: ["SUPERADMIN", "ADMIN", "PENGADU", "TEKNIKAL"], icon: WarningCircle },
+      { href: "/prestasi", label: "Prestasi Penyelenggaraan", roles: ["SUPERADMIN", "ADMIN"], icon: ChartBar },
+    ],
+  },
+  {
+    label: "Pentadbiran",
+    items: [
+      { href: "/laporan", label: "Laporan & Analitik", roles: ["SUPERADMIN", "ADMIN"], icon: ChartLine },
+      { href: "/tetapan", label: "Tetapan & Pengguna", roles: ["SUPERADMIN"], icon: Gear },
+    ],
+  },
 ];
 
-export default function Sidebar({
-  name,
-  role,
-}: {
-  name: string;
-  role: string;
-}) {
+export default function Sidebar({ name, role }: { name: string; role: string }) {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -34,49 +62,49 @@ export default function Sidebar({
     router.refresh();
   }
 
-  const items = NAV_ITEMS.filter((item) => item.roles.includes(role));
-
   return (
-    <aside className="flex h-full w-64 shrink-0 flex-col border-r border-slate-200 bg-white">
-      <div className="flex items-center gap-3 border-b border-slate-200 px-5 py-5">
-        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-700 text-xs font-extrabold text-white">
-          SRO
-        </div>
-        <div className="text-xs font-bold leading-tight text-slate-800">
-          CampusHub
-          <div className="text-[10px] font-normal text-slate-400">PPM Wilayah Selatan</div>
-        </div>
-      </div>
-
-      <nav className="flex-1 overflow-y-auto px-3 py-4">
-        {items.map((item) => {
-          const active = pathname === item.href || pathname.startsWith(item.href + "/");
+    <aside className="flex h-full w-[246px] shrink-0 flex-col overflow-y-auto border-r-2 border-[rgba(32,30,29,0.4)] bg-white py-[18px] text-[#201e1d]">
+      <div className="flex-1">
+        {NAV_GROUPS.map((grp) => {
+          const items = grp.items.filter((it) => it.roles.includes(role));
+          if (items.length === 0) return null;
           return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`mb-1 block rounded-md px-3 py-2 text-sm font-medium transition ${
-                active
-                  ? "bg-indigo-50 text-indigo-700"
-                  : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-              }`}
-            >
-              {item.label}
-            </Link>
+            <div key={grp.label} className="mb-5">
+              <div className="mb-1.5 px-[18px] text-[10px] font-bold uppercase tracking-[0.08em] text-[rgba(32,30,29,0.55)]">
+                {grp.label}
+              </div>
+              {items.map((item) => {
+                const active = pathname === item.href || pathname.startsWith(item.href + "/");
+                const Icon = item.icon;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`flex items-center gap-2.5 px-[18px] py-2.5 text-[13.5px] font-bold ${
+                      active ? "bg-[#f3f2f2] text-[#6d28d9]" : "text-[#201e1d] hover:bg-[#f7f6f6]"
+                    }`}
+                  >
+                    <Icon weight="duotone" size={18} className="flex-none" />
+                    <span>{item.label}</span>
+                  </Link>
+                );
+              })}
+            </div>
           );
         })}
-      </nav>
+      </div>
 
-      <div className="border-t border-slate-200 px-4 py-4">
-        <div className="mb-3 text-xs">
-          <div className="font-semibold text-slate-800">{name}</div>
-          <div className="text-slate-400">{ROLE_LABEL[role] ?? role}</div>
+      <div className="flex-none border-t-2 border-[rgba(32,30,29,0.15)] px-[18px] pt-3">
+        <div className="mb-2 text-xs">
+          <div className="font-bold text-[#201e1d]">{name}</div>
+          <div className="text-[rgba(32,30,29,0.55)]">{ROLE_LABEL[role] ?? role}</div>
         </div>
         <button
           onClick={handleLogout}
-          className="w-full rounded-md border border-slate-300 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-50"
+          className="flex items-center gap-2.5 py-3 text-[13.5px] font-bold text-[#6d28d9]"
         >
-          Log Keluar
+          <SignOut weight="duotone" size={18} />
+          <span>Log Keluar</span>
         </button>
       </div>
     </aside>

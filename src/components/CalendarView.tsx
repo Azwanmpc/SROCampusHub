@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useState, useCallback } from "react";
+import { CaretLeft, CaretRight, PlusCircle } from "@phosphor-icons/react";
 import BookingForm from "@/components/BookingForm";
 import StatusBadge from "@/components/StatusBadge";
 import { BOOKING_STATUS_LABEL, BOOKING_STATUS_COLOR } from "@/lib/constants";
 
-type Facility = { id: string; name: string; type: string; status: string };
+type Facility = { id: string; name: string; type: string; status: string; halfDayRate: number | null; fullDayRate: number | null; costPerUse: number };
 type Booking = {
   id: string;
   facilityId: string;
@@ -17,7 +18,7 @@ type Booking = {
   user: { name: string };
 };
 
-const WEEKDAYS = ["Ahad", "Isnin", "Selasa", "Rabu", "Khamis", "Jumaat", "Sabtu"];
+const WEEKDAYS = ["Ahd", "Isn", "Sel", "Rab", "Kha", "Jum", "Sab"];
 const MONTHS = [
   "Januari", "Februari", "Mac", "April", "Mei", "Jun",
   "Julai", "Ogos", "September", "Oktober", "November", "Disember",
@@ -27,7 +28,7 @@ function toDateKey(d: Date) {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
 
-export default function CalendarView({ facilities }: { facilities: Facility[] }) {
+export default function CalendarView({ facilities, defaultFacilityId }: { facilities: Facility[]; defaultFacilityId?: string }) {
   const [cursor, setCursor] = useState(() => {
     const d = new Date();
     d.setDate(1);
@@ -102,18 +103,18 @@ export default function CalendarView({ facilities }: { facilities: Facility[] })
           <div className="flex items-center gap-2">
             <button
               onClick={() => changeMonth(-1)}
-              className="rounded-md border border-slate-300 px-3 py-1.5 text-sm hover:bg-slate-50"
+              className="flex h-9 w-9 items-center justify-center border border-[rgba(32,30,29,0.4)] bg-[#f3f2f2]"
             >
-              &larr;
+              <CaretLeft weight="duotone" />
             </button>
-            <div className="w-40 text-center text-sm font-bold text-slate-800">
+            <div className="w-40 text-center font-archivo text-[15px] font-extrabold">
               {MONTHS[cursor.getMonth()]} {cursor.getFullYear()}
             </div>
             <button
               onClick={() => changeMonth(1)}
-              className="rounded-md border border-slate-300 px-3 py-1.5 text-sm hover:bg-slate-50"
+              className="flex h-9 w-9 items-center justify-center border border-[rgba(32,30,29,0.4)] bg-[#f3f2f2]"
             >
-              &rarr;
+              <CaretRight weight="duotone" />
             </button>
           </div>
 
@@ -121,7 +122,7 @@ export default function CalendarView({ facilities }: { facilities: Facility[] })
             <select
               value={facilityFilter}
               onChange={(e) => setFacilityFilter(e.target.value)}
-              className="rounded-md border border-slate-300 px-3 py-1.5 text-sm"
+              className="border border-[rgba(32,30,29,0.4)] bg-white px-3 py-1.5 text-sm"
             >
               <option value="ALL">Semua Fasiliti</option>
               {facilities.map((f) => (
@@ -135,24 +136,22 @@ export default function CalendarView({ facilities }: { facilities: Facility[] })
                 setSelectedDate(undefined);
                 setShowForm(true);
               }}
-              className="rounded-md bg-indigo-700 px-3 py-1.5 text-sm font-semibold text-white hover:bg-indigo-800"
+              className="flex items-center gap-1.5 bg-[#6d28d9] px-4 py-2 font-archivo text-[13.5px] font-extrabold text-[#f3f2f2]"
             >
-              + Tempahan Baharu
+              <PlusCircle weight="duotone" /> Tempah Fasiliti
             </button>
           </div>
         </div>
 
-        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
-          <div className="grid grid-cols-7 border-b border-slate-200 bg-slate-50 text-center text-xs font-semibold text-slate-500">
+        <div className="border border-[rgba(32,30,29,0.4)] bg-white p-6">
+          <div className="mb-2 grid grid-cols-7 text-center text-[11px] font-bold text-[rgba(32,30,29,0.6)]">
             {WEEKDAYS.map((w) => (
-              <div key={w} className="py-2">
-                {w}
-              </div>
+              <div key={w}>{w}</div>
             ))}
           </div>
-          <div className="grid grid-cols-7">
+          <div className="grid grid-cols-7 gap-0.5 bg-[rgba(32,30,29,0.25)]">
             {gridDays.map((day, i) => {
-              if (!day) return <div key={i} className="min-h-24 border-b border-r border-slate-100 bg-slate-50/40" />;
+              if (!day) return <div key={i} className="min-h-[104px] bg-[#f8f4f4]" />;
               const key = toDateKey(day);
               const dayBookings = bookingsByDay.get(key) ?? [];
               const isToday = day.getTime() === today.getTime();
@@ -163,58 +162,55 @@ export default function CalendarView({ facilities }: { facilities: Facility[] })
                     setSelectedDate(key);
                     setShowForm(true);
                   }}
-                  className={`min-h-24 border-b border-r border-slate-100 p-1.5 text-left align-top hover:bg-indigo-50/50 ${
-                    isToday ? "bg-indigo-50/70" : ""
+                  className={`min-h-[104px] p-2 text-left align-top ${dayBookings.length ? "bg-white" : "bg-[#f8f4f4]"} ${
+                    isToday ? "outline outline-2 -outline-offset-2 outline-[#6d28d9]" : ""
                   }`}
                 >
-                  <div className={`mb-1 text-xs ${isToday ? "font-bold text-indigo-700" : "text-slate-500"}`}>
-                    {day.getDate()}
-                  </div>
+                  <div className="mb-1 text-xs font-bold">{day.getDate()}</div>
                   <div className="flex flex-col gap-0.5">
                     {dayBookings.slice(0, 3).map((b) => (
                       <div
                         key={b.id}
                         title={`${b.facility.name} - ${b.purpose}`}
-                        className={`truncate rounded px-1 py-0.5 text-[10px] font-medium ${
-                          b.status === "DISAHKAN"
-                            ? "bg-green-100 text-green-700"
-                            : "bg-blue-100 text-blue-700"
+                        className={`truncate px-1.5 py-0.5 text-[11.5px] font-bold text-black ${
+                          b.status === "DISAHKAN" ? "bg-[#4bff5e]" : "bg-[#fff300]"
                         }`}
                       >
                         {b.facility.name}
                       </div>
                     ))}
                     {dayBookings.length > 3 && (
-                      <div className="text-[10px] text-slate-400">+{dayBookings.length - 3} lagi</div>
+                      <div className="text-[10px] text-[rgba(32,30,29,0.5)]">+{dayBookings.length - 3} lagi</div>
                     )}
                   </div>
                 </button>
               );
             })}
           </div>
-        </div>
 
-        <div className="mt-3 flex gap-4 text-xs text-slate-500">
-          <div className="flex items-center gap-1.5">
-            <span className="h-3 w-3 rounded bg-blue-100 border border-blue-300" /> Menunggu Pengesahan
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="h-3 w-3 rounded bg-green-100 border border-green-300" /> Disahkan
+          <div className="mt-4 flex gap-4 text-xs font-bold">
+            <div className="flex items-center gap-1.5">
+              <span className="h-3.5 w-3.5 border border-[rgba(32,30,29,0.3)] bg-[#fff300]" /> Tempahan belum disahkan
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="h-3.5 w-3.5 border border-[rgba(32,30,29,0.3)] bg-[#4bff5e]" /> Tempahan telah disahkan
+            </div>
           </div>
         </div>
       </div>
 
       <div>
         {showForm ? (
-          <div className="rounded-xl border border-slate-200 bg-white p-5">
+          <div className="border border-[rgba(32,30,29,0.4)] bg-white p-6">
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-sm font-bold text-slate-800">Borang Tempahan</h2>
-              <button onClick={() => setShowForm(false)} className="text-xs text-slate-400 hover:text-slate-600">
+              <h2 className="font-archivo text-sm font-extrabold">Borang Tempahan Fasiliti</h2>
+              <button onClick={() => setShowForm(false)} className="text-xs font-bold text-[rgba(32,30,29,0.5)]">
                 Tutup
               </button>
             </div>
             <BookingForm
               facilities={facilities}
+              defaultFacilityId={defaultFacilityId}
               defaultDate={selectedDate}
               onDone={() => {
                 loadBookings();
@@ -222,24 +218,24 @@ export default function CalendarView({ facilities }: { facilities: Facility[] })
             />
           </div>
         ) : (
-          <div className="rounded-xl border border-slate-200 bg-white p-5">
-            <h2 className="mb-3 text-sm font-bold text-slate-800">Tempahan Terkini</h2>
-            {loading && <p className="text-sm text-slate-400">Memuatkan...</p>}
-            <div className="flex flex-col gap-3">
+          <div className="border border-[rgba(32,30,29,0.4)] bg-white p-6">
+            <h2 className="mb-3 font-archivo text-sm font-extrabold">Tempahan Terkini</h2>
+            {loading && <p className="text-sm text-[rgba(32,30,29,0.5)]">Memuatkan...</p>}
+            <div className="flex flex-col gap-1 divide-y divide-[rgba(32,30,29,0.15)]">
               {bookings.slice(0, 8).map((b) => (
-                <div key={b.id} className="rounded-lg border border-slate-100 p-3">
+                <div key={b.id} className="py-3">
                   <div className="mb-1 flex items-center justify-between">
-                    <span className="text-sm font-semibold text-slate-800">{b.facility.name}</span>
+                    <span className="text-sm font-bold">{b.facility.name}</span>
                     <StatusBadge label={BOOKING_STATUS_LABEL[b.status]} colorClass={BOOKING_STATUS_COLOR[b.status]} />
                   </div>
-                  <div className="text-xs text-slate-500">{b.purpose}</div>
-                  <div className="text-xs text-slate-400">
+                  <div className="text-xs text-[rgba(32,30,29,0.6)]">{b.purpose}</div>
+                  <div className="text-xs text-[rgba(32,30,29,0.5)]">
                     {new Date(b.startDateTime).toLocaleString("ms-MY")} — {b.user.name}
                   </div>
                 </div>
               ))}
               {!loading && bookings.length === 0 && (
-                <p className="text-sm text-slate-400">Tiada tempahan lagi.</p>
+                <p className="py-2 text-sm text-[rgba(32,30,29,0.5)]">Tiada tempahan lagi.</p>
               )}
             </div>
           </div>

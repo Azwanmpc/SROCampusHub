@@ -1,18 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  BarChart,
-  Bar,
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
 import { REPAIR_TYPE_LABEL } from "@/lib/constants";
 
 type MonthlyRow = {
@@ -28,6 +16,10 @@ type ReportData = {
   monthly: MonthlyRow[];
   facilitiesDown: { id: string; name: string; type: string }[];
   repairTypeBreakdown: { type: string; total: number; selesai: number; belumSelesai: number; purataHariSiap: number }[];
+  hasilByFacility: { nama: string; rmLabel: string; pct: number }[];
+  locationBreakdown: { lokasi: string; count: number; pct: number }[];
+  hasilByMonth: { label: string; rmLabel: string; pct: number }[];
+  kosByMonth: { label: string; kosLabel: string; kosPct: number }[];
 };
 
 export default function ReportsCharts() {
@@ -39,68 +31,154 @@ export default function ReportsCharts() {
       .then(setData);
   }, []);
 
-  if (!data) return <p className="text-sm text-slate-400">Memuatkan laporan...</p>;
+  if (!data) return <p className="text-sm text-[rgba(32,30,29,0.5)]">Memuatkan laporan...</p>;
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="rounded-xl border border-slate-200 bg-white p-5">
-        <h2 className="mb-4 text-sm font-bold text-slate-800">Bilangan Aduan vs Status Siap (Bulanan)</h2>
-        <ResponsiveContainer width="100%" height={280}>
-          <BarChart data={data.monthly}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-            <XAxis dataKey="label" tick={{ fontSize: 12 }} />
-            <YAxis tick={{ fontSize: 12 }} allowDecimals={false} />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="aduan" name="Jumlah Aduan" fill="#3b82f6" radius={[4, 4, 0, 0]} />
-            <Bar dataKey="selesai" name="Selesai" fill="#22c55e" radius={[4, 4, 0, 0]} />
-          </BarChart>
-        </ResponsiveContainer>
+    <div className="flex flex-col gap-5">
+      <div>
+        <div className="mb-2 text-[11px] font-extrabold uppercase tracking-[0.06em] text-[rgba(32,30,29,0.5)]">Prestasi Aduan</div>
+        <div className="border border-[rgba(32,30,29,0.4)] bg-white p-[18px]">
+          <div className="mb-3.5 font-archivo text-sm font-extrabold">Status Aduan Mengikut Bulan</div>
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[380px] border-collapse text-xs">
+              <thead>
+                <tr>
+                  <th className="border-b border-[rgba(32,30,29,0.3)] py-1.5 pr-0 text-left text-[9.5px] uppercase text-[rgba(32,30,29,0.55)]">Bulan</th>
+                  <th className="border-b border-[rgba(32,30,29,0.3)] px-0.5 py-1.5 text-right text-[9.5px] uppercase text-[rgba(32,30,29,0.55)]">Bil. Aduan</th>
+                  <th className="border-b border-[rgba(32,30,29,0.3)] px-0.5 py-1.5 text-right text-[9.5px] uppercase text-[rgba(32,30,29,0.55)]">Bil. Selesai</th>
+                  <th className="border-b border-[rgba(32,30,29,0.3)] py-1.5 pl-0.5 text-right text-[9.5px] uppercase text-[rgba(32,30,29,0.55)]">% Selesai</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.monthly.map((m) => (
+                  <tr key={m.key}>
+                    <td className="border-b border-[rgba(32,30,29,0.15)] py-1.5 pr-0 font-bold">{m.label}</td>
+                    <td className="border-b border-[rgba(32,30,29,0.15)] px-0.5 py-1.5 text-right">{m.aduan}</td>
+                    <td className="border-b border-[rgba(32,30,29,0.15)] px-0.5 py-1.5 text-right">{m.selesai}</td>
+                    <td className="border-b border-[rgba(32,30,29,0.15)] py-1.5 pl-0.5 text-right font-bold">
+                      {m.aduan > 0 ? Math.round((m.selesai / m.aduan) * 100) : 0}%
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td className="border-t-2 border-[rgba(32,30,29,0.4)] py-2 font-extrabold">Jumlah</td>
+                  <td className="border-t-2 border-[rgba(32,30,29,0.4)] py-2 text-right font-extrabold">
+                    {data.monthly.reduce((s, m) => s + m.aduan, 0)}
+                  </td>
+                  <td className="border-t-2 border-[rgba(32,30,29,0.4)] py-2 text-right font-extrabold">
+                    {data.monthly.reduce((s, m) => s + m.selesai, 0)}
+                  </td>
+                  <td className="border-t-2 border-[rgba(32,30,29,0.4)] py-2 text-right font-extrabold">
+                    {(() => {
+                      const totalA = data.monthly.reduce((s, m) => s + m.aduan, 0);
+                      const totalS = data.monthly.reduce((s, m) => s + m.selesai, 0);
+                      return totalA > 0 ? Math.round((totalS / totalA) * 100) : 0;
+                    })()}
+                    %
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
       </div>
 
-      <div className="rounded-xl border border-slate-200 bg-white p-5">
-        <h2 className="mb-4 text-sm font-bold text-slate-800">Hasil Sewaan vs Kos Penyelenggaraan (RM)</h2>
-        <ResponsiveContainer width="100%" height={280}>
-          <LineChart data={data.monthly}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-            <XAxis dataKey="label" tick={{ fontSize: 12 }} />
-            <YAxis tick={{ fontSize: 12 }} />
-            <Tooltip />
-            <Legend />
-            <Line type="monotone" dataKey="hasil" name="Hasil Sewaan" stroke="#4f46e5" strokeWidth={2} />
-            <Line type="monotone" dataKey="kosPenyelenggaraan" name="Kos Penyelenggaraan" stroke="#f59e0b" strokeWidth={2} />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
-
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <div className="rounded-xl border border-slate-200 bg-white p-5">
-          <h2 className="mb-4 text-sm font-bold text-slate-800">Prestasi Mengikut Jenis Pembaikan</h2>
-          <div className="flex flex-col gap-3">
-            {data.repairTypeBreakdown.map((r) => (
-              <div key={r.type} className="rounded-lg border border-slate-100 p-3">
-                <div className="mb-1 text-sm font-semibold text-slate-700">{REPAIR_TYPE_LABEL[r.type]}</div>
-                <div className="text-xs text-slate-500">
-                  Jumlah: {r.total} &middot; Selesai: {r.selesai} &middot; Pending: {r.belumSelesai} &middot; Purata:{" "}
-                  {r.purataHariSiap} hari
-                </div>
+      <div className="grid grid-cols-1 gap-px border border-[rgba(32,30,29,0.4)] bg-[rgba(32,30,29,0.4)] lg:grid-cols-2">
+        <div className="bg-white p-[18px]">
+          <div className="mb-3.5 font-archivo text-sm font-extrabold">Hasil (RM) Mengikut Bulan</div>
+          <div className="flex h-[150px] items-end gap-1.5">
+            {data.hasilByMonth.map((m) => (
+              <div key={m.label} className="flex h-full flex-1 flex-col items-center justify-end">
+                <div className="mb-0.5 text-[8.5px] font-bold text-[rgba(32,30,29,0.6)]">{m.rmLabel}</div>
+                <div className="w-full bg-[#4a72a8]" style={{ height: `${m.pct}%` }} />
+                <div className="mt-1 text-[10px] font-bold text-[rgba(32,30,29,0.55)]">{m.label}</div>
               </div>
             ))}
           </div>
         </div>
-
-        <div className="rounded-xl border border-slate-200 bg-white p-5">
-          <h2 className="mb-4 text-sm font-bold text-slate-800">Fasiliti Dalam Penyelenggaraan</h2>
-          {data.facilitiesDown.length === 0 && (
-            <p className="text-sm text-slate-400">Tiada fasiliti dalam penyelenggaraan.</p>
-          )}
-          <div className="flex flex-col gap-2">
-            {data.facilitiesDown.map((f) => (
-              <div key={f.id} className="rounded-lg bg-yellow-50 px-3 py-2 text-sm text-yellow-800">
-                {f.name} <span className="text-xs text-yellow-600">({f.type})</span>
+        <div className="bg-white p-[18px]">
+          <div className="mb-3.5 font-archivo text-sm font-extrabold">Kos Penyelenggaraan Mengikut Bulan</div>
+          <div className="flex h-[150px] items-end gap-3.5">
+            {data.kosByMonth.map((m) => (
+              <div key={m.label} className="flex h-full flex-1 flex-col items-center justify-end gap-1.5">
+                <div className="text-[9.5px] font-bold text-[rgba(32,30,29,0.7)]">{m.kosLabel}</div>
+                <div className="w-full bg-[#8a6d1f]" style={{ height: `${m.kosPct}%` }} />
+                <div className="text-[10.5px] font-bold text-[rgba(32,30,29,0.6)]">{m.label}</div>
               </div>
             ))}
           </div>
+        </div>
+      </div>
+
+      <div>
+        <div className="mb-2 text-[11px] font-extrabold uppercase tracking-[0.06em] text-[rgba(32,30,29,0.5)]">Fasiliti &amp; Organisasi</div>
+        <div className="grid grid-cols-1 gap-px border border-[rgba(32,30,29,0.4)] bg-[rgba(32,30,29,0.4)] lg:grid-cols-2">
+          <div className="bg-white p-[18px]">
+            <div className="mb-3.5 font-archivo text-sm font-extrabold">Hasil Mengikut Fasiliti</div>
+            {data.hasilByFacility.length === 0 && <p className="text-xs text-[rgba(32,30,29,0.5)]">Tiada data.</p>}
+            <div className="flex flex-col gap-2.5">
+              {data.hasilByFacility.map((f) => (
+                <div key={f.nama}>
+                  <div className="mb-1 flex justify-between text-[11.5px] font-bold">
+                    <span>{f.nama}</span>
+                    <span>{f.rmLabel}</span>
+                  </div>
+                  <div className="h-2 bg-[#e2e1e0]">
+                    <div className="h-full bg-[#4a72a8]" style={{ width: `${f.pct}%` }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="bg-white p-[18px]">
+            <div className="mb-3.5 font-archivo text-sm font-extrabold">Punca Aduan Mengikut Lokasi</div>
+            {data.locationBreakdown.length === 0 && <p className="text-xs text-[rgba(32,30,29,0.5)]">Tiada data.</p>}
+            <div className="flex flex-col gap-2.5">
+              {data.locationBreakdown.map((l) => (
+                <div key={l.lokasi}>
+                  <div className="mb-1 flex justify-between text-[11.5px] font-bold">
+                    <span>{l.lokasi}</span>
+                    <span>
+                      {l.count} ({l.pct}%)
+                    </span>
+                  </div>
+                  <div className="h-2 bg-[#e2e1e0]">
+                    <div className="h-full bg-[#201e1d]" style={{ width: `${l.pct}%` }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-px border border-[rgba(32,30,29,0.4)] bg-[rgba(32,30,29,0.4)] lg:grid-cols-2">
+        {data.repairTypeBreakdown.map((r) => (
+          <div key={r.type} className="bg-white p-[18px]">
+            <div className="mb-3.5 font-archivo text-sm font-extrabold">{REPAIR_TYPE_LABEL[r.type]}</div>
+            <div className="text-xs text-[rgba(32,30,29,0.6)]">
+              Jumlah: <strong className="text-[#201e1d]">{r.total}</strong> · Selesai:{" "}
+              <strong className="text-[#4a8a63]">{r.selesai}</strong> · Pending:{" "}
+              <strong className="text-[#7c1405]">{r.belumSelesai}</strong>
+            </div>
+            <div className="mt-1.5 text-xs text-[rgba(32,30,29,0.6)]">
+              Purata masa penyelesaian: <strong className="text-[#201e1d]">{r.purataHariSiap} hari</strong>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="border border-[rgba(32,30,29,0.4)] bg-white p-[18px]">
+        <div className="mb-3.5 font-archivo text-sm font-extrabold">Fasiliti Dalam Penyelenggaraan</div>
+        {data.facilitiesDown.length === 0 && <p className="text-xs text-[rgba(32,30,29,0.5)]">Tiada fasiliti dalam penyelenggaraan.</p>}
+        <div className="flex flex-col gap-2">
+          {data.facilitiesDown.map((f) => (
+            <div key={f.id} className="bg-[#fff2ef] px-3.5 py-2.5 text-sm text-[#7c1405]">
+              {f.name} <span className="text-xs">({f.type})</span>
+            </div>
+          ))}
         </div>
       </div>
     </div>

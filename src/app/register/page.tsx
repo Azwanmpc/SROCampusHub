@@ -43,103 +43,100 @@ export default function RegisterPage() {
     }
   }
 
+  const fieldClass =
+    "min-h-9 w-full border border-[rgba(32,30,29,0.4)] bg-white px-2.5 py-1.5 text-sm text-[#201e1d] outline-none";
+  const labelClass = "mb-[5px] block text-xs text-[rgba(32,30,29,0.7)]";
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-900 px-4 py-10">
-      <div className="w-full max-w-md rounded-xl bg-white p-8 shadow-xl">
-        <div className="mb-6 flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-indigo-700 text-sm font-extrabold text-white">
+    <div className="flex min-h-screen items-center justify-center bg-[#201e1d] p-6">
+      <div className="w-full max-w-[420px] bg-[#f3f2f2] p-10 px-[34px]">
+        <div className="mb-2 flex items-center gap-2.5">
+          <div className="flex h-[38px] w-[38px] items-center justify-center bg-[#6d28d9] font-archivo text-sm font-extrabold text-[#f3f2f2]">
             SRO
           </div>
-          <div className="text-sm font-bold leading-tight text-slate-800">
+          <div className="whitespace-nowrap font-archivo text-[13px] font-extrabold leading-[1.3] tracking-[-0.005em]">
             PERBADANAN PRODUKTIVITI MALAYSIA
             <br />
             WILAYAH SELATAN
           </div>
         </div>
-        <p className="mb-6 text-sm text-slate-500">Daftar Akaun Baharu</p>
+        <div className="mb-2 text-[13px] text-[rgba(32,30,29,0.6)]">Daftar Akaun Baharu</div>
+        <div className="mb-[26px] h-0.5 bg-[rgba(32,30,29,0.4)]" />
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div>
-            <label className="mb-1 block text-xs font-medium text-slate-600">Nama Penuh</label>
+            <label className={labelClass}>Nama Penuh</label>
             <input
               required
+              placeholder="Nama seperti IC"
               value={form.name}
               onChange={(e) => update("name", e.target.value)}
-              className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-600 focus:outline-none focus:ring-1 focus:ring-indigo-600"
+              className={fieldClass}
             />
           </div>
           <div>
-            <label className="mb-1 block text-xs font-medium text-slate-600">Email</label>
+            <label className={labelClass}>Email</label>
             <input
               type="email"
               required
+              placeholder="nama@kampus.edu.my"
               value={form.email}
               onChange={(e) => update("email", e.target.value)}
-              className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-600 focus:outline-none focus:ring-1 focus:ring-indigo-600"
+              className={fieldClass}
             />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="mb-1 block text-xs font-medium text-slate-600">Username</label>
-              <input
-                required
-                value={form.username}
-                onChange={(e) => update("username", e.target.value)}
-                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-600 focus:outline-none focus:ring-1 focus:ring-indigo-600"
-              />
+              <label className={labelClass}>Username</label>
+              <input required value={form.username} onChange={(e) => update("username", e.target.value)} className={fieldClass} />
             </div>
             <div>
-              <label className="mb-1 block text-xs font-medium text-slate-600">Telefon</label>
+              <label className={labelClass}>Telefon</label>
               <input
                 required
                 placeholder="60123456789"
                 value={form.phone}
                 onChange={(e) => update("phone", e.target.value)}
-                className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-600 focus:outline-none focus:ring-1 focus:ring-indigo-600"
+                className={fieldClass}
               />
             </div>
           </div>
           <div>
-            <label className="mb-1 block text-xs font-medium text-slate-600">Kata Laluan</label>
+            <label className={labelClass}>Kata Laluan</label>
             <input
               type="password"
               required
+              placeholder="********"
               value={form.password}
               onChange={(e) => update("password", e.target.value)}
-              className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-600 focus:outline-none focus:ring-1 focus:ring-indigo-600"
+              className={fieldClass}
             />
           </div>
           <div>
-            <label className="mb-1 block text-xs font-medium text-slate-600">Daftar Sebagai</label>
-            <select
-              value={form.role}
-              onChange={(e) => update("role", e.target.value)}
-              className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-600 focus:outline-none focus:ring-1 focus:ring-indigo-600"
-            >
-              <option value="PEMOHON">Pemohon (Buat Tempahan Fasiliti)</option>
-              <option value="PENGADU">Pengadu (Buat Aduan Kerosakan)</option>
+            <label className={labelClass}>Daftar Sebagai</label>
+            <select value={form.role} onChange={(e) => update("role", e.target.value)} className={fieldClass}>
+              <option value="PEMOHON">Pemohon</option>
+              <option value="PENGADU">Pengadu</option>
             </select>
           </div>
 
-          {error && (
-            <div className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>
-          )}
+          {error && <div className="bg-[#fff2ef] px-3 py-2 text-sm text-[#7c1405]">{error}</div>}
 
           <button
             type="submit"
             disabled={loading}
-            className="mt-2 rounded-md bg-indigo-700 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-800 disabled:opacity-60"
+            className="mt-1.5 bg-[#6d28d9] py-[11px] text-left font-archivo text-sm font-extrabold text-[#f3f2f2] hover:bg-[#4c1d95] disabled:opacity-60"
           >
             {loading ? "Mendaftar..." : "Daftar"}
           </button>
-        </form>
 
-        <p className="mt-6 text-center text-sm text-slate-500">
-          Sudah ada akaun?{" "}
-          <Link href="/login" className="font-semibold text-indigo-700 hover:underline">
-            Log masuk
-          </Link>
-        </p>
+          <div className="text-[13px] text-[rgba(32,30,29,0.7)]">
+            Sudah ada akaun?{" "}
+            <Link href="/login" className="font-bold text-[#6d28d9] hover:underline">
+              Log Masuk
+            </Link>
+          </div>
+        </form>
       </div>
     </div>
   );

@@ -27,9 +27,10 @@ model User {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  bookings      Booking[]
-  complaints    Complaint[]
-  notifications Notification[]
+  bookings            Booking[]
+  complaints          Complaint[]
+  notifications       Notification[]
+  passwordResetTokens PasswordResetToken[]
 }
 
 model Facility {
@@ -41,6 +42,8 @@ model Facility {
   imageUrl    String?
   status      String   @default("TERSEDIA")
   costPerUse  Float    @default(0)
+  halfDayRate Float?
+  fullDayRate Float?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -69,6 +72,15 @@ model Booking {
   checkOutAt         DateTime?
   roomNumber         String?
   revenue            Float     @default(0)
+  organisasi         String?
+  sebutNama          String?
+  sebutTel           String?
+  sebutEmel          String?
+  addonsJson         String?
+  asramaRoomsJson    String?
+  quotationNumber    String?
+  finalPrice         Float?
+  discount           Float     @default(0)
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
 
@@ -84,11 +96,16 @@ model Complaint {
   location    String
   description String
   photoUrl    String?
-  status      String    @default("BARU")
-  repairType  String?
-  resolvedAt  DateTime?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  status             String    @default("BARU")
+  repairType         String?
+  priority           String    @default("SEDERHANA")
+  category           String?
+  staffNote          String?
+  estimatedCost      Float     @default(0)
+  confirmationStatus String?
+  resolvedAt         DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
 }
 
 model Notification {
@@ -108,4 +125,14 @@ model Notification {
 model Setting {
   key   String @id
   value String
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  token     String   @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
 }

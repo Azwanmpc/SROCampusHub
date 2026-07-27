@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { identifier, password } = parsed.data;
+  const { identifier, password, rememberMe } = parsed.data;
 
   const user = await prisma.user.findFirst({
     where: { OR: [{ email: identifier }, { username: identifier }] },
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Kata laluan salah" }, { status: 401 });
   }
 
-  await createSession({ userId: user.id, name: user.name, role: user.role as never });
+  await createSession({ userId: user.id, name: user.name, role: user.role as never }, rememberMe);
 
   return NextResponse.json({ ok: true });
 }

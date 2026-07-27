@@ -7,41 +7,64 @@ export const ROLE_LABEL: Record<string, string> = {
 };
 
 export const BOOKING_STATUS_LABEL: Record<string, string> = {
-  MENUNGGU: "Menunggu Pengesahan",
+  MENUNGGU: "Menunggu",
   DISAHKAN: "Disahkan",
   DITOLAK: "Ditolak",
   DIBATALKAN: "Dibatalkan",
 };
 
 export const BOOKING_STATUS_COLOR: Record<string, string> = {
-  MENUNGGU: "bg-blue-100 text-blue-700 border border-blue-300",
-  DISAHKAN: "bg-green-100 text-green-700 border border-green-300",
-  DITOLAK: "bg-red-100 text-red-700 border border-red-300",
-  DIBATALKAN: "bg-gray-100 text-gray-600 border border-gray-300",
+  MENUNGGU: "bg-[#4a72a8] text-white",
+  DISAHKAN: "bg-[#4bff5e] text-[#003d0f]",
+  DITOLAK: "bg-[#fff2ef] text-[#7c1405]",
+  DIBATALKAN: "bg-[#eae7e7] text-[#605d5d]",
 };
 
 export const FACILITY_STATUS_LABEL: Record<string, string> = {
   TERSEDIA: "Tersedia",
   DITEMPAH: "Ditempah",
-  PENYELENGGARAAN: "Dalam Penyelenggaraan",
+  PENYELENGGARAAN: "Penyelenggaraan",
 };
 
 export const FACILITY_STATUS_COLOR: Record<string, string> = {
-  TERSEDIA: "bg-green-100 text-green-700 border border-green-300",
-  DITEMPAH: "bg-blue-100 text-blue-700 border border-blue-300",
-  PENYELENGGARAAN: "bg-yellow-100 text-yellow-800 border border-yellow-300",
+  TERSEDIA: "bg-[#e6f0e9] text-[#4a8a63]",
+  DITEMPAH: "bg-[#e8edf3] text-[#4a72a8]",
+  PENYELENGGARAAN: "bg-[#fff2ef] text-[#7c1405]",
 };
 
 export const COMPLAINT_STATUS_LABEL: Record<string, string> = {
   BARU: "Baru",
   DALAM_TINDAKAN: "Dalam Tindakan",
+  MENUNGGU_PENGESAHAN: "Menunggu Pengesahan",
   SELESAI: "Selesai",
 };
 
 export const COMPLAINT_STATUS_COLOR: Record<string, string> = {
-  BARU: "bg-red-100 text-red-700 border border-red-300",
-  DALAM_TINDAKAN: "bg-yellow-100 text-yellow-800 border border-yellow-300",
-  SELESAI: "bg-green-100 text-green-700 border border-green-300",
+  BARU: "bg-[#e8edf3] text-[#4a72a8]",
+  DALAM_TINDAKAN: "bg-[#fff300] text-[#4a3800]",
+  MENUNGGU_PENGESAHAN: "bg-[#fdeee0] text-[#a34e00]",
+  SELESAI: "bg-[#4bff5e] text-[#003d0f]",
+};
+
+export const PRIORITY_LABEL: Record<string, string> = {
+  TINGGI: "Keutamaan Tinggi",
+  SEDERHANA: "Keutamaan Sederhana",
+  RENDAH: "Keutamaan Rendah",
+};
+
+export const PRIORITY_COLOR: Record<string, string> = {
+  TINGGI: "bg-[#fff2ef] text-[#7c1405]",
+  SEDERHANA: "bg-[#f5eedd] text-[#8a6d1f]",
+  RENDAH: "bg-[#eae7e7] text-[#605d5d]",
+};
+
+export const COMPLAINT_CATEGORY_LABEL: Record<string, string> = {
+  ELEKTRIK: "Elektrik",
+  PLUMBING: "Plumbing",
+  HVAC: "HVAC",
+  STRUKTUR: "Struktur",
+  LANDSKAP: "Landskap",
+  LAIN: "Lain-lain",
 };
 
 export const REPAIR_TYPE_LABEL: Record<string, string> = {

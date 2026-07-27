@@ -8,8 +8,12 @@ export default function LoginPage() {
   const router = useRouter();
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [forgotOpen, setForgotOpen] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotSent, setForgotSent] = useState(false);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -19,7 +23,7 @@ export default function LoginPage() {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ identifier, password }),
+        body: JSON.stringify({ identifier, password, rememberMe }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -33,75 +37,145 @@ export default function LoginPage() {
     }
   }
 
+  async function handleForgotSubmit(e: FormEvent) {
+    e.preventDefault();
+    await fetch("/api/auth/forgot-password", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: forgotEmail }),
+    });
+    setForgotSent(true);
+  }
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-900 px-4 py-10">
-      <div className="w-full max-w-md rounded-xl bg-white p-8 shadow-xl">
-        <div className="mb-6 flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-indigo-700 text-sm font-extrabold text-white">
+    <div className="flex min-h-screen items-center justify-center bg-[#201e1d] p-6">
+      <div className="relative w-full max-w-[420px] bg-[#f3f2f2] p-10 px-[34px]">
+        <div className="mb-2 flex items-center gap-2.5">
+          <div className="flex h-[38px] w-[38px] items-center justify-center bg-[#6d28d9] font-archivo text-sm font-extrabold text-[#f3f2f2]">
             SRO
           </div>
-          <div className="text-sm font-bold leading-tight text-slate-800">
+          <div className="whitespace-nowrap font-archivo text-[13px] font-extrabold leading-[1.3] tracking-[-0.005em]">
             PERBADANAN PRODUKTIVITI MALAYSIA
             <br />
             WILAYAH SELATAN
           </div>
         </div>
-        <p className="mb-6 text-sm text-slate-500">
+        <div className="mb-2 text-[13px] text-[rgba(32,30,29,0.6)]">
           Sistem Pengurusan Penempahan Fasiliti &amp; Penyelenggaraan Kampus
-        </p>
+        </div>
+        <div className="mb-[26px] h-0.5 bg-[rgba(32,30,29,0.4)]" />
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div>
-            <label className="mb-1 block text-xs font-medium text-slate-600">
-              Email / Username
-            </label>
+            <label className="mb-[5px] block text-xs text-[rgba(32,30,29,0.7)]">Email / Username</label>
             <input
               type="text"
               required
               value={identifier}
               onChange={(e) => setIdentifier(e.target.value)}
               placeholder="ahmad.faiz@kampus.edu.my"
-              className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-600 focus:outline-none focus:ring-1 focus:ring-indigo-600"
+              className="min-h-9 w-full border border-[rgba(32,30,29,0.4)] bg-white px-2.5 py-1.5 text-sm text-[#201e1d] outline-none"
             />
           </div>
           <div>
-            <label className="mb-1 block text-xs font-medium text-slate-600">
-              Kata Laluan
-            </label>
+            <label className="mb-[5px] block text-xs text-[rgba(32,30,29,0.7)]">Kata Laluan</label>
             <input
               type="password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="********"
-              className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-indigo-600 focus:outline-none focus:ring-1 focus:ring-indigo-600"
+              className="min-h-9 w-full border border-[rgba(32,30,29,0.4)] bg-white px-2.5 py-1.5 text-sm text-[#201e1d] outline-none"
             />
           </div>
 
-          {error && (
-            <div className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
-              {error}
-            </div>
-          )}
+          {error && <div className="bg-[#fff2ef] px-3 py-2 text-sm text-[#7c1405]">{error}</div>}
 
           <button
             type="submit"
             disabled={loading}
-            className="mt-2 rounded-md bg-indigo-700 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-800 disabled:opacity-60"
+            className="mt-1.5 bg-[#6d28d9] py-[11px] text-left font-archivo text-sm font-extrabold text-[#f3f2f2] transition hover:bg-[#4c1d95] disabled:opacity-60"
           >
             {loading ? "Log masuk..." : "Log Masuk"}
           </button>
+
+          <div className="-mt-1 flex items-center justify-between text-[12.5px]">
+            <label className="flex cursor-pointer items-center gap-1.5 text-[rgba(32,30,29,0.75)]">
+              <input type="checkbox" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
+              Ingat Saya
+            </label>
+            <button
+              type="button"
+              onClick={() => setForgotOpen(true)}
+              className="font-bold text-[#6d28d9] hover:underline"
+            >
+              Lupa Kata Laluan?
+            </button>
+          </div>
+
+          <div className="mt-0.5 text-[13px] text-[rgba(32,30,29,0.7)]">
+            Belum ada akaun?{" "}
+            <Link href="/register" className="font-bold text-[#6d28d9] hover:underline">
+              Daftar
+            </Link>
+          </div>
         </form>
 
-        <p className="mt-6 text-center text-sm text-slate-500">
-          Belum ada akaun?{" "}
-          <Link href="/register" className="font-semibold text-indigo-700 hover:underline">
-            Daftar di sini
-          </Link>
-        </p>
+        {forgotOpen && (
+          <div className="absolute inset-0 flex flex-col justify-center bg-[rgba(243,242,242,0.97)] p-10 px-[34px]">
+            <div className="mb-2 font-archivo text-lg font-extrabold">Lupa Kata Laluan?</div>
+            <div className="mb-[18px] text-[13px] text-[rgba(32,30,29,0.7)]">
+              Masukkan emel anda — pautan set semula kata laluan akan dihantar.
+            </div>
+            {!forgotSent ? (
+              <form onSubmit={handleForgotSubmit}>
+                <label className="mb-[5px] block text-xs text-[rgba(32,30,29,0.7)]">Email</label>
+                <input
+                  type="email"
+                  required
+                  value={forgotEmail}
+                  onChange={(e) => setForgotEmail(e.target.value)}
+                  placeholder="nama@kampus.edu.my"
+                  className="mb-4 min-h-9 w-full border border-[rgba(32,30,29,0.4)] bg-white px-2.5 py-1.5 text-sm outline-none"
+                />
+                <div className="flex gap-2.5">
+                  <button
+                    type="submit"
+                    className="flex-1 bg-[#6d28d9] py-[11px] font-archivo text-[13.5px] font-extrabold text-[#f3f2f2]"
+                  >
+                    Hantar Pautan
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setForgotOpen(false)}
+                    className="flex-1 border border-[rgba(32,30,29,0.4)] bg-transparent py-[11px] font-archivo text-[13.5px] font-extrabold text-[#201e1d]"
+                  >
+                    Batal
+                  </button>
+                </div>
+              </form>
+            ) : (
+              <div>
+                <div className="mb-4 text-sm text-[rgba(32,30,29,0.75)]">
+                  Jika akaun dengan emel tersebut wujud, pautan set semula kata laluan telah dihantar.
+                </div>
+                <button
+                  onClick={() => {
+                    setForgotOpen(false);
+                    setForgotSent(false);
+                    setForgotEmail("");
+                  }}
+                  className="w-full bg-[#6d28d9] py-[11px] font-archivo text-[13.5px] font-extrabold text-[#f3f2f2]"
+                >
+                  OK
+                </button>
+              </div>
+            )}
+          </div>
+        )}
 
-        <div className="mt-6 rounded-md bg-slate-50 p-3 text-xs text-slate-500">
-          <p className="mb-1 font-semibold">Akaun demo:</p>
+        <div className="mt-6 bg-[rgba(32,30,29,0.06)] p-3 text-xs text-[rgba(32,30,29,0.6)]">
+          <p className="mb-1 font-bold">Akaun demo:</p>
           <p>Superadmin: superadmin / super123</p>
           <p>Admin: admin1 / admin123</p>
           <p>Pemohon: ahmad.faiz / pemohon123</p>
