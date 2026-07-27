@@ -3,6 +3,7 @@ export const ROLE_LABEL: Record<string, string> = {
   ADMIN: "Admin (Pelulus)",
   PEMOHON: "Pemohon",
   PENGADU: "Pengadu",
+  TEKNIKAL: "Staf Penyelenggaraan",
 };
 
 export const BOOKING_STATUS_LABEL: Record<string, string> = {

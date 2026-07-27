@@ -8,7 +8,7 @@ import { COMPLAINT_STATUS_LABEL, COMPLAINT_STATUS_COLOR, REPAIR_TYPE_LABEL } fro
 export default async function AduanPage() {
   const session = await getSession();
   if (!session) return null;
-  const isStaff = session.role === "SUPERADMIN" || session.role === "ADMIN";
+  const isStaff = ["SUPERADMIN", "ADMIN", "TEKNIKAL"].includes(session.role);
 
   const [facilities, complaints] = await Promise.all([
     prisma.facility.findMany({ orderBy: { name: "asc" } }),

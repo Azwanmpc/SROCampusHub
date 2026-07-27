@@ -7,7 +7,7 @@ export async function GET() {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "Tiada sesi" }, { status: 401 });
 
-  const isStaff = session.role === "SUPERADMIN" || session.role === "ADMIN";
+  const isStaff = ["SUPERADMIN", "ADMIN", "TEKNIKAL"].includes(session.role);
   const complaints = await prisma.complaint.findMany({
     where: isStaff ? {} : { userId: session.userId },
     include: { facility: true, user: true },

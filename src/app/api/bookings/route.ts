@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "Tiada sesi" }, { status: 401 });
-  if (session.role === "PENGADU") {
+  if (session.role === "PENGADU" || session.role === "TEKNIKAL") {
     return NextResponse.json({ error: "Peranan ini tidak boleh membuat tempahan" }, { status: 403 });
   }
 

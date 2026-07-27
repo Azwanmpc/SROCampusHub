@@ -10,7 +10,7 @@ const COOKIE_NAME = "sro_session";
 export type SessionPayload = {
   userId: string;
   name: string;
-  role: "SUPERADMIN" | "ADMIN" | "PEMOHON" | "PENGADU";
+  role: "SUPERADMIN" | "ADMIN" | "PEMOHON" | "PENGADU" | "TEKNIKAL";
 };
 
 export async function hashPassword(password: string) {

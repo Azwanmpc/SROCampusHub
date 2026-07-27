@@ -164,6 +164,49 @@ export default async function DashboardPage() {
     );
   }
 
+  if (session.role === "TEKNIKAL") {
+    const complaints = await prisma.complaint.findMany({
+      include: { facility: true, user: true },
+      orderBy: { createdAt: "desc" },
+    });
+
+    return (
+      <div>
+        <h1 className="mb-1 text-xl font-bold text-slate-800">Dashboard Staf Penyelenggaraan</h1>
+        <p className="mb-6 text-sm text-slate-500">Selamat kembali, {session.name}.</p>
+
+        <div className="mb-6 grid grid-cols-2 gap-4 md:grid-cols-3">
+          <StatCard label="Jumlah Aduan" value={complaints.length} />
+          <StatCard label="Belum Selesai" value={complaints.filter((c) => c.status !== "SELESAI").length} />
+          <StatCard label="Selesai" value={complaints.filter((c) => c.status === "SELESAI").length} />
+        </div>
+
+        <div className="rounded-xl border border-slate-200 bg-white p-5">
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="text-sm font-bold text-slate-700">Aduan Terkini</h2>
+            <Link href="/aduan" className="text-xs font-semibold text-indigo-700 hover:underline">
+              Urus semua aduan
+            </Link>
+          </div>
+          <div className="flex flex-col gap-3">
+            {complaints.length === 0 && <p className="text-sm text-slate-400">Tiada aduan.</p>}
+            {complaints.slice(0, 8).map((c) => (
+              <div key={c.id} className="flex items-center justify-between rounded-lg border border-slate-100 p-3">
+                <div>
+                  <div className="text-sm font-semibold text-slate-800">{c.location}</div>
+                  <div className="text-xs text-slate-500">
+                    {c.user.name} &middot; {new Date(c.createdAt).toLocaleDateString("ms-MY")}
+                  </div>
+                </div>
+                <StatusBadge label={COMPLAINT_STATUS_LABEL[c.status]} colorClass={COMPLAINT_STATUS_COLOR[c.status]} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // PENGADU
   const complaints = await prisma.complaint.findMany({
     where: { userId: session.userId },

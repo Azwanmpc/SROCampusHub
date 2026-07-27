@@ -7,12 +7,12 @@ import { ROLE_LABEL } from "@/lib/constants";
 type NavItem = { href: string; label: string; roles: string[] };
 
 const NAV_ITEMS: NavItem[] = [
-  { href: "/dashboard", label: "Dashboard", roles: ["SUPERADMIN", "ADMIN", "PEMOHON", "PENGADU"] },
+  { href: "/dashboard", label: "Dashboard", roles: ["SUPERADMIN", "ADMIN", "PEMOHON", "PENGADU", "TEKNIKAL"] },
   { href: "/kalendar", label: "Kalendar Tempahan", roles: ["SUPERADMIN", "ADMIN", "PEMOHON"] },
   { href: "/tempahan-saya", label: "Tempahan Saya", roles: ["PEMOHON"] },
   { href: "/kelulusan", label: "Kelulusan Tempahan", roles: ["SUPERADMIN", "ADMIN"] },
-  { href: "/fasiliti", label: "Maklumat Fasiliti", roles: ["SUPERADMIN", "ADMIN", "PEMOHON", "PENGADU"] },
-  { href: "/aduan", label: "Aduan Kerosakan", roles: ["SUPERADMIN", "ADMIN", "PENGADU"] },
+  { href: "/fasiliti", label: "Maklumat Fasiliti", roles: ["SUPERADMIN", "ADMIN", "PEMOHON", "PENGADU", "TEKNIKAL"] },
+  { href: "/aduan", label: "Aduan Kerosakan", roles: ["SUPERADMIN", "ADMIN", "PENGADU", "TEKNIKAL"] },
   { href: "/prestasi", label: "Prestasi Penyelenggaraan", roles: ["SUPERADMIN", "ADMIN"] },
   { href: "/laporan", label: "Laporan & Analitik", roles: ["SUPERADMIN", "ADMIN"] },
   { href: "/tetapan", label: "Tetapan & Pengguna", roles: ["SUPERADMIN"] },
