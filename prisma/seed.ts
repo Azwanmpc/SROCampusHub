@@ -14,7 +14,7 @@ async function main() {
   await prisma.facility.deleteMany();
   await prisma.user.deleteMany();
 
-  const [superadmin, admin1, admin2, faiz, dayang, siti, razak] = await Promise.all([
+  const [superadmin, admin1, admin2, faiz, dayang, siti, razak, zulkifli] = await Promise.all([
     prisma.user.create({
       data: {
         name: "Nor Azlina Superadmin",
@@ -83,6 +83,16 @@ async function main() {
         phone: "60123456786",
         passwordHash: await hash("pengadu123"),
         role: "PENGADU",
+      },
+    }),
+    prisma.user.create({
+      data: {
+        name: "Zulkifli Rahman",
+        email: "zulkifli.r@kampus.edu.my",
+        username: "zulkifli.rahman",
+        phone: "60123456787",
+        passwordHash: await hash("staf123"),
+        role: "TEKNIKAL",
       },
     }),
   ]);

@@ -180,6 +180,7 @@ export default function LoginPage() {
           <p>Admin: admin1 / admin123</p>
           <p>Pemohon: ahmad.faiz / pemohon123</p>
           <p>Pengadu: siti.aminah / pengadu123</p>
+          <p>Staf Penyelenggaraan: zulkifli.rahman / staf123</p>
         </div>
       </div>
     </div>
