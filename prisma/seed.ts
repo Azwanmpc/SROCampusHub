@@ -109,7 +109,7 @@ async function main() {
       status: "TERSEDIA",
     },
     {
-      name: "Asrama (Blok A)",
+      name: "Asrama",
       type: "Asrama",
       capacity: 40,
       description: "Suit Eksekutif, Bilik Biasa & Bilik Dorm — proses check-in & check-out.",
