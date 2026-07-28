@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState, useCallback } from "react";
-import { CaretLeft, CaretRight, PlusCircle } from "@phosphor-icons/react";
+import { CaretLeft, CaretRight, PlusCircle, X } from "@phosphor-icons/react";
 import BookingForm from "@/components/BookingForm";
 import StatusBadge from "@/components/StatusBadge";
 import { BOOKING_STATUS_LABEL, BOOKING_STATUS_COLOR } from "@/lib/constants";
@@ -202,12 +202,42 @@ export default function CalendarView({ facilities, defaultFacilityId }: { facili
       </div>
 
       <div>
-        {showForm ? (
-          <div className="border border-[rgba(32,30,29,0.4)] bg-white p-6">
+        <div className="border border-[rgba(32,30,29,0.4)] bg-white p-6">
+          <h2 className="mb-3 font-archivo text-sm font-extrabold">Tempahan Terkini</h2>
+          {loading && <p className="text-sm text-[rgba(32,30,29,0.5)]">Memuatkan...</p>}
+          <div className="flex flex-col gap-1 divide-y divide-[rgba(32,30,29,0.15)]">
+            {bookings.slice(0, 8).map((b) => (
+              <div key={b.id} className="py-3">
+                <div className="mb-1 flex items-center justify-between">
+                  <span className="text-sm font-bold">{b.facility.name}</span>
+                  <StatusBadge label={BOOKING_STATUS_LABEL[b.status]} colorClass={BOOKING_STATUS_COLOR[b.status]} />
+                </div>
+                <div className="text-xs text-[rgba(32,30,29,0.6)]">{b.purpose}</div>
+                <div className="text-xs text-[rgba(32,30,29,0.5)]">
+                  {new Date(b.startDateTime).toLocaleString("ms-MY")} — {b.user.name}
+                </div>
+              </div>
+            ))}
+            {!loading && bookings.length === 0 && (
+              <p className="py-2 text-sm text-[rgba(32,30,29,0.5)]">Tiada tempahan lagi.</p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {showForm && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(32,30,29,0.5)] p-4"
+          onClick={() => setShowForm(false)}
+        >
+          <div
+            className="max-h-[90vh] w-full max-w-lg overflow-y-auto border border-[rgba(32,30,29,0.4)] bg-white p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="mb-4 flex items-center justify-between">
               <h2 className="font-archivo text-sm font-extrabold">Borang Tempahan Fasiliti</h2>
-              <button onClick={() => setShowForm(false)} className="text-xs font-bold text-[rgba(32,30,29,0.5)]">
-                Tutup
+              <button onClick={() => setShowForm(false)} className="text-[#201e1d]" aria-label="Tutup">
+                <X weight="bold" size={18} />
               </button>
             </div>
             <BookingForm
@@ -219,30 +249,8 @@ export default function CalendarView({ facilities, defaultFacilityId }: { facili
               }}
             />
           </div>
-        ) : (
-          <div className="border border-[rgba(32,30,29,0.4)] bg-white p-6">
-            <h2 className="mb-3 font-archivo text-sm font-extrabold">Tempahan Terkini</h2>
-            {loading && <p className="text-sm text-[rgba(32,30,29,0.5)]">Memuatkan...</p>}
-            <div className="flex flex-col gap-1 divide-y divide-[rgba(32,30,29,0.15)]">
-              {bookings.slice(0, 8).map((b) => (
-                <div key={b.id} className="py-3">
-                  <div className="mb-1 flex items-center justify-between">
-                    <span className="text-sm font-bold">{b.facility.name}</span>
-                    <StatusBadge label={BOOKING_STATUS_LABEL[b.status]} colorClass={BOOKING_STATUS_COLOR[b.status]} />
-                  </div>
-                  <div className="text-xs text-[rgba(32,30,29,0.6)]">{b.purpose}</div>
-                  <div className="text-xs text-[rgba(32,30,29,0.5)]">
-                    {new Date(b.startDateTime).toLocaleString("ms-MY")} — {b.user.name}
-                  </div>
-                </div>
-              ))}
-              {!loading && bookings.length === 0 && (
-                <p className="py-2 text-sm text-[rgba(32,30,29,0.5)]">Tiada tempahan lagi.</p>
-              )}
-            </div>
-          </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

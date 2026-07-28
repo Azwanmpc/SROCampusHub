@@ -1,10 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Clock } from "@phosphor-icons/react";
 import { ARRANGEMENT_LABEL } from "@/lib/constants";
 import { ASRAMA_ROOM_TYPES, addonsForFacility } from "@/lib/facilityRates";
+
+const ARRANGEMENT_ELIGIBLE_FACILITIES = ["Bilik ICC", "Bilik TQM", "Dewan Produktiviti"];
 
 type Facility = {
   id: string;
@@ -56,11 +58,38 @@ export default function BookingForm({
 
   const selectedFacility = facilities.find((f) => f.id === facilityId);
   const isAsrama = selectedFacility?.type === "Asrama";
+  const arrangementEligible = selectedFacility ? ARRANGEMENT_ELIGIBLE_FACILITIES.includes(selectedFacility.name) : false;
   const supportsEarlyAccess =
     selectedFacility?.name?.includes("Dewan") ||
     selectedFacility?.name?.includes("ICC") ||
     selectedFacility?.name?.includes("TQM");
   const availableAddons = selectedFacility ? addonsForFacility(selectedFacility.name) : [];
+  const [asramaAvailability, setAsramaAvailability] = useState<Record<string, number> | null>(null);
+
+  useEffect(() => {
+    if (!arrangementEligible) setArrangement("TIADA");
+  }, [arrangementEligible]);
+
+  useEffect(() => {
+    if (!isAsrama || !facilityId || !startDate || !endDate) {
+      setAsramaAvailability(null);
+      return;
+    }
+    const startISO = new Date(`${startDate}T00:00`).toISOString();
+    const endISO = new Date(`${endDate}T23:59`).toISOString();
+    let cancelled = false;
+    fetch(`/api/bookings/availability?facilityId=${facilityId}&start=${encodeURIComponent(startISO)}&end=${encodeURIComponent(endISO)}`)
+      .then((r) => r.json())
+      .then((data) => {
+        if (!cancelled) setAsramaAvailability(data);
+      })
+      .catch(() => {
+        if (!cancelled) setAsramaAvailability(null);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [isAsrama, facilityId, startDate, endDate]);
 
   const dayCount = useMemo(() => {
     if (!startDate || !endDate) return 1;
@@ -118,6 +147,15 @@ export default function BookingForm({
     if (isAsrama && Object.values(roomQtys).every((q) => !q)) {
       setError("Sila pilih sekurang-kurangnya satu jenis bilik untuk Asrama.");
       return;
+    }
+    if (isAsrama && asramaAvailability) {
+      const overRequested = ASRAMA_ROOM_TYPES.find(
+        (rt) => (roomQtys[rt.key] ?? 0) > (asramaAvailability[rt.key] ?? 0)
+      );
+      if (overRequested) {
+        setError(`${overRequested.label} tidak mencukupi untuk tarikh yang dipilih.`);
+        return;
+      }
     }
 
     setLoading(true);
@@ -229,24 +267,34 @@ export default function BookingForm({
       {isAsrama && (
         <div className="flex flex-col gap-2 border border-[rgba(32,30,29,0.3)] bg-[#f3f2f2] p-3">
           <div className="mb-1 text-xs font-bold text-[rgba(32,30,29,0.7)]">Bilangan Bilik</div>
-          {ASRAMA_ROOM_TYPES.map((rt) => (
-            <div key={rt.key} className="flex items-center gap-2.5 bg-white px-2.5 py-1.5">
-              <div className="flex-1">
-                <div className="text-[11.5px] font-bold">{rt.label}</div>
-                <div className="text-[10.5px] text-[rgba(32,30,29,0.6)]">
-                  RM {rt.rate}/malam · {rt.bilikTersedia} bilik tersedia
-                </div>
-              </div>
-              <input
-                type="number"
-                min={0}
-                max={rt.bilikTersedia}
-                value={roomQtys[rt.key] ?? 0}
-                onChange={(e) => setRoomQtys((prev) => ({ ...prev, [rt.key]: Number(e.target.value) }))}
-                className="w-16 border border-[rgba(32,30,29,0.4)] px-2 py-1 text-sm"
-              />
+          {(!startDate || !endDate) && (
+            <div className="text-[11px] italic text-[rgba(32,30,29,0.55)]">
+              Pilih tarikh mula &amp; tamat untuk lihat bilangan bilik yang masih tersedia.
             </div>
-          ))}
+          )}
+          {ASRAMA_ROOM_TYPES.map((rt) => {
+            const available = asramaAvailability ? (asramaAvailability[rt.key] ?? 0) : rt.bilikTersedia;
+            return (
+              <div key={rt.key} className="flex items-center gap-2.5 bg-white px-2.5 py-1.5">
+                <div className="flex-1">
+                  <div className="text-[11.5px] font-bold">{rt.label}</div>
+                  <div className="text-[10.5px] text-[rgba(32,30,29,0.6)]">
+                    RM {rt.rate}/malam · {available} bilik tersedia
+                  </div>
+                </div>
+                <input
+                  type="number"
+                  min={0}
+                  max={available}
+                  value={roomQtys[rt.key] ?? 0}
+                  onChange={(e) =>
+                    setRoomQtys((prev) => ({ ...prev, [rt.key]: Math.min(Number(e.target.value), available) }))
+                  }
+                  className="w-16 border border-[rgba(32,30,29,0.4)] px-2 py-1 text-sm"
+                />
+              </div>
+            );
+          })}
         </div>
       )}
 
@@ -275,13 +323,23 @@ export default function BookingForm({
         </div>
         <div>
           <label className={labelClass}>Susunan</label>
-          <select value={arrangement} onChange={(e) => setArrangement(e.target.value)} className={fieldClass}>
+          <select
+            value={arrangement}
+            disabled={!arrangementEligible}
+            onChange={(e) => setArrangement(e.target.value)}
+            className={`${fieldClass} disabled:cursor-not-allowed disabled:opacity-60`}
+          >
             {Object.entries(ARRANGEMENT_LABEL).map(([key, label]) => (
               <option key={key} value={key}>
                 {label}
               </option>
             ))}
           </select>
+          {!arrangementEligible && (
+            <div className="mt-1 text-[10.5px] italic text-[rgba(32,30,29,0.5)]">
+              Susunan hanya berkaitan untuk Bilik ICC, Bilik TQM &amp; Dewan Produktiviti.
+            </div>
+          )}
         </div>
       </div>
 

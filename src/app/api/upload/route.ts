@@ -36,5 +36,5 @@ export async function POST(req: NextRequest) {
   const filename = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
   await writeFile(path.join(uploadDir, filename), buffer);
 
-  return NextResponse.json({ url: `/uploads/${folder}/${filename}` });
+  return NextResponse.json({ url: `/api/uploads/${folder}/${filename}` });
 }

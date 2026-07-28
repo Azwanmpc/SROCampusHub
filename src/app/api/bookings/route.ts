@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
 import { bookingSchema } from "@/lib/validation";
 import { sendWhatsAppNotification } from "@/lib/whatsapp";
+import { ASRAMA_ROOM_TYPES } from "@/lib/facilityRates";
 
 export async function GET(req: NextRequest) {
   const session = await getSession();
@@ -51,16 +52,51 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Fasiliti sedang dalam penyelenggaraan" }, { status: 400 });
   }
 
-  const overlap = await prisma.booking.findFirst({
-    where: {
-      facilityId: data.facilityId,
-      status: { in: ["MENUNGGU", "DISAHKAN"] },
-      startDateTime: { lt: end },
-      endDateTime: { gt: start },
-    },
-  });
-  if (overlap) {
-    return NextResponse.json({ error: "Slot masa ini bertindih dengan tempahan sedia ada" }, { status: 409 });
+  if (facility.type === "Asrama") {
+    const requestedRooms = data.asramaRoomsJson
+      ? (JSON.parse(data.asramaRoomsJson) as { key: string; qty: number }[])
+      : [];
+    const overlappingBookings = await prisma.booking.findMany({
+      where: {
+        facilityId: data.facilityId,
+        status: { in: ["MENUNGGU", "DISAHKAN"] },
+        startDateTime: { lt: end },
+        endDateTime: { gt: start },
+      },
+      select: { asramaRoomsJson: true },
+    });
+    const booked: Record<string, number> = {};
+    for (const b of overlappingBookings) {
+      if (!b.asramaRoomsJson) continue;
+      try {
+        const rooms = JSON.parse(b.asramaRoomsJson) as { key: string; qty: number }[];
+        for (const r of rooms) booked[r.key] = (booked[r.key] ?? 0) + r.qty;
+      } catch {
+        // ignore malformed data
+      }
+    }
+    for (const rt of ASRAMA_ROOM_TYPES) {
+      const requestedQty = requestedRooms.find((r) => r.key === rt.key)?.qty ?? 0;
+      const alreadyBooked = booked[rt.key] ?? 0;
+      if (requestedQty > 0 && alreadyBooked + requestedQty > rt.bilikTersedia) {
+        return NextResponse.json(
+          { error: `${rt.label} tidak mencukupi (baki ${Math.max(0, rt.bilikTersedia - alreadyBooked)} bilik) untuk tarikh ini` },
+          { status: 409 }
+        );
+      }
+    }
+  } else {
+    const overlap = await prisma.booking.findFirst({
+      where: {
+        facilityId: data.facilityId,
+        status: { in: ["MENUNGGU", "DISAHKAN"] },
+        startDateTime: { lt: end },
+        endDateTime: { gt: start },
+      },
+    });
+    if (overlap) {
+      return NextResponse.json({ error: "Slot masa ini bertindih dengan tempahan sedia ada" }, { status: 409 });
+    }
   }
 
   let addonsTotal = 0;
