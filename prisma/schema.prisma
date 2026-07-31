@@ -73,6 +73,7 @@ model Booking {
   roomNumber         String?
   revenue            Float     @default(0)
   organisasi         String?
+  alamatOrganisasi   String?
   sebutNama          String?
   sebutTel           String?
   sebutEmel          String?

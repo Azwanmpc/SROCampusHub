@@ -36,7 +36,7 @@ export default async function AduanPage() {
         {!isStaff && (
           <div className="border border-[rgba(32,30,29,0.4)] bg-white p-6">
             <div className="mb-4 font-archivo text-sm font-extrabold">Borang Aduan Baharu</div>
-            <ComplaintForm facilities={facilities} />
+            <ComplaintForm facilities={facilities} role={session.role} />
           </div>
         )}
 

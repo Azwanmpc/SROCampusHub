@@ -28,6 +28,7 @@ export const bookingSchema = z.object({
   earlyAccessMinutes: z.coerce.number().min(0).default(0),
   roomNumber: z.string().optional(),
   organisasi: z.string().optional(),
+  alamatOrganisasi: z.string().optional(),
   sebutNama: z.string().optional(),
   sebutTel: z.string().optional(),
   sebutEmel: z.string().optional(),
@@ -37,7 +38,7 @@ export const bookingSchema = z.object({
 
 export const complaintSchema = z.object({
   facilityId: z.string().optional(),
-  location: z.string().min(2, "Sila nyatakan lokasi"),
+  location: z.string().optional(),
   description: z.string().min(5, "Sila nyatakan butiran kerosakan"),
   priority: z.enum(["TINGGI", "SEDERHANA", "RENDAH"]).default("SEDERHANA"),
 });

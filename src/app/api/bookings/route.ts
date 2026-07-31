@@ -134,6 +134,7 @@ export async function POST(req: NextRequest) {
       earlyAccessMinutes: data.earlyAccessMinutes,
       roomNumber: data.roomNumber,
       organisasi: data.organisasi,
+      alamatOrganisasi: data.alamatOrganisasi,
       sebutNama: data.sebutNama,
       sebutTel: data.sebutTel,
       sebutEmel: data.sebutEmel,

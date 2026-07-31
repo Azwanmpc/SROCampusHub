@@ -9,7 +9,8 @@ type Facility = { id: string; name: string };
 const fieldClass = "min-h-9 w-full border border-[rgba(32,30,29,0.4)] bg-[#f3f2f2] px-2.5 py-1.5 text-sm text-[#201e1d] outline-none";
 const labelClass = "mb-[5px] block text-xs text-[rgba(32,30,29,0.7)]";
 
-export default function ComplaintForm({ facilities }: { facilities: Facility[] }) {
+export default function ComplaintForm({ facilities, role }: { facilities: Facility[]; role?: string }) {
+  const locationRequired = role !== "PENGADU";
   const router = useRouter();
   const fileRef = useRef<HTMLInputElement>(null);
   const [facilityId, setFacilityId] = useState("");
@@ -87,9 +88,9 @@ export default function ComplaintForm({ facilities }: { facilities: Facility[] }
       </div>
 
       <div>
-        <label className={labelClass}>Lokasi</label>
+        <label className={labelClass}>Lokasi{!locationRequired && " (pilihan)"}</label>
         <input
-          required
+          required={locationRequired}
           value={location}
           onChange={(e) => setLocation(e.target.value)}
           placeholder="Cth: Asrama Blok A - Bilik A-12"

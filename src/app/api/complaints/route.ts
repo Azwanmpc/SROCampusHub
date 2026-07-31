@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
     data: {
       facilityId: parsed.data.facilityId || null,
       userId: session.userId,
-      location: parsed.data.location,
+      location: parsed.data.location?.trim() || "Tidak dinyatakan",
       description: parsed.data.description,
       priority: parsed.data.priority,
       photoUrl: body.photoUrl || null,

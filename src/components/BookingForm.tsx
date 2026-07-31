@@ -48,6 +48,7 @@ export default function BookingForm({
   const [earlyAccess, setEarlyAccess] = useState(false);
   const [earlyAccessMinutes, setEarlyAccessMinutes] = useState(30);
   const [organisasi, setOrganisasi] = useState("");
+  const [alamatOrganisasi, setAlamatOrganisasi] = useState("");
   const [sebutNama, setSebutNama] = useState("");
   const [sebutTel, setSebutTel] = useState("");
   const [sebutEmel, setSebutEmel] = useState("");
@@ -69,6 +70,13 @@ export default function BookingForm({
   useEffect(() => {
     if (!arrangementEligible) setArrangement("TIADA");
   }, [arrangementEligible]);
+
+  useEffect(() => {
+    if (isAsrama) {
+      setStartTime("14:00");
+      setEndTime("12:00");
+    }
+  }, [isAsrama]);
 
   useEffect(() => {
     if (!isAsrama || !facilityId || !startDate || !endDate) {
@@ -189,6 +197,7 @@ export default function BookingForm({
                 .join(", ")
             : undefined,
           organisasi,
+          alamatOrganisasi,
           sebutNama,
           sebutTel,
           sebutEmel,
@@ -232,17 +241,21 @@ export default function BookingForm({
           <input type="date" required value={startDate} onChange={(e) => setStartDate(e.target.value)} className={fieldClass} />
         </div>
         <div>
-          <label className={labelClass}>Masa Mula</label>
-          <input type="time" required value={startTime} onChange={(e) => setStartTime(e.target.value)} className={fieldClass} />
-        </div>
-        <div>
           <label className={labelClass}>Tarikh Tamat</label>
           <input type="date" required value={endDate} onChange={(e) => setEndDate(e.target.value)} className={fieldClass} />
         </div>
-        <div>
-          <label className={labelClass}>Masa Tamat</label>
-          <input type="time" required value={endTime} onChange={(e) => setEndTime(e.target.value)} className={fieldClass} />
-        </div>
+        {!isAsrama && (
+          <>
+            <div>
+              <label className={labelClass}>Masa Mula</label>
+              <input type="time" required value={startTime} onChange={(e) => setStartTime(e.target.value)} className={fieldClass} />
+            </div>
+            <div>
+              <label className={labelClass}>Masa Tamat</label>
+              <input type="time" required value={endTime} onChange={(e) => setEndTime(e.target.value)} className={fieldClass} />
+            </div>
+          </>
+        )}
       </div>
 
       {!isAsrama && selectedFacility?.halfDayRate != null && (
@@ -423,7 +436,7 @@ export default function BookingForm({
         />
       </div>
 
-      <div className="mt-1 text-xs font-bold text-[rgba(32,30,29,0.7)]">Maklumat Sebutharga (jika berkaitan)</div>
+      <div className="mt-1 text-xs font-bold text-[rgba(32,30,29,0.7)]">Maklumat Sebutharga</div>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <div>
           <label className={labelClass}>Nama</label>
@@ -440,6 +453,16 @@ export default function BookingForm({
         <div>
           <label className={labelClass}>Emel</label>
           <input value={sebutEmel} onChange={(e) => setSebutEmel(e.target.value)} placeholder="nama@organisasi.com" className={fieldClass} />
+        </div>
+        <div className="sm:col-span-2">
+          <label className={labelClass}>Alamat Organisasi</label>
+          <textarea
+            value={alamatOrganisasi}
+            onChange={(e) => setAlamatOrganisasi(e.target.value)}
+            rows={2}
+            placeholder="Alamat penuh organisasi"
+            className={`${fieldClass} resize-vertical`}
+          />
         </div>
       </div>
 
