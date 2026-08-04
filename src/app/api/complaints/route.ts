@@ -19,7 +19,6 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   const session = await getSession();
-  if (!session) return NextResponse.json({ error: "Tiada sesi" }, { status: 401 });
 
   const body = await req.json();
   const parsed = complaintSchema.safeParse(body);
@@ -27,10 +26,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: parsed.error.issues[0]?.message ?? "Data tidak sah" }, { status: 400 });
   }
 
+  if (!session && !parsed.data.guestName?.trim()) {
+    return NextResponse.json({ error: "Sila nyatakan nama anda" }, { status: 400 });
+  }
+
   const complaint = await prisma.complaint.create({
     data: {
       facilityId: parsed.data.facilityId || null,
-      userId: session.userId,
+      userId: session?.userId ?? null,
+      guestName: session ? null : parsed.data.guestName?.trim(),
+      guestPhone: session ? null : parsed.data.guestPhone?.trim() || null,
       location: parsed.data.location?.trim() || "Tidak dinyatakan",
       description: parsed.data.description,
       priority: parsed.data.priority,

@@ -7,15 +7,28 @@ export default async function AduanPage() {
   const session = await getSession();
   if (!session) return null;
   const isStaff = ["SUPERADMIN", "ADMIN", "TEKNIKAL"].includes(session.role);
+  const isPengadu = session.role === "PENGADU";
 
-  const [facilities, complaints] = await Promise.all([
-    prisma.facility.findMany({ orderBy: { name: "asc" } }),
-    prisma.complaint.findMany({
-      where: isStaff ? {} : { userId: session.userId },
-      include: { facility: true, user: true },
-      orderBy: { createdAt: "desc" },
-    }),
-  ]);
+  const facilities = await prisma.facility.findMany({ orderBy: { name: "asc" } });
+
+  if (isPengadu) {
+    return (
+      <div>
+        <div className="mb-0.5 font-archivo text-[26px] font-extrabold">Borang Aduan Baharu</div>
+        <div className="mb-3.5 text-[13.5px] text-[rgba(32,30,29,0.6)]">Laporkan kerosakan fasiliti kampus</div>
+        <div className="mb-4 h-0.5 bg-[rgba(32,30,29,0.4)]" />
+        <div className="mx-auto max-w-[560px] border border-[rgba(32,30,29,0.4)] bg-white p-6">
+          <ComplaintForm facilities={facilities} role={session.role} />
+        </div>
+      </div>
+    );
+  }
+
+  const complaints = await prisma.complaint.findMany({
+    where: isStaff ? {} : { userId: session.userId },
+    include: { facility: true, user: true },
+    orderBy: { createdAt: "desc" },
+  });
 
   const complaintsForClient = complaints.map((c) => ({
     ...c,

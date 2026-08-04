@@ -5,7 +5,6 @@ import path from "path";
 
 export async function POST(req: NextRequest) {
   const session = await getSession();
-  if (!session) return NextResponse.json({ error: "Tiada sesi" }, { status: 401 });
 
   const form = await req.formData();
   const file = form.get("file") as File | null;
@@ -22,7 +21,7 @@ export async function POST(req: NextRequest) {
   const requestedFolder = String(form.get("folder") ?? "complaints");
   const folder = ALLOWED_FOLDERS.includes(requestedFolder) ? requestedFolder : "complaints";
 
-  if (folder === "facilities" && session.role !== "SUPERADMIN" && session.role !== "ADMIN") {
+  if (folder === "facilities" && (!session || (session.role !== "SUPERADMIN" && session.role !== "ADMIN"))) {
     return NextResponse.json({ error: "Tiada kebenaran" }, { status: 403 });
   }
 

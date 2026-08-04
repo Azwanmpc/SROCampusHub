@@ -16,7 +16,8 @@ type Complaint = {
   staffNote: string | null;
   estimatedCost: number;
   createdAt: string;
-  user: { name: string };
+  user: { name: string } | null;
+  guestName: string | null;
 };
 
 const FILTERS = [

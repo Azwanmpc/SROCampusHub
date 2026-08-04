@@ -112,14 +112,6 @@ export default function RegisterPage() {
               className={fieldClass}
             />
           </div>
-          <div>
-            <label className={labelClass}>Daftar Sebagai</label>
-            <select value={form.role} onChange={(e) => update("role", e.target.value)} className={fieldClass}>
-              <option value="PEMOHON">Pemohon</option>
-              <option value="PENGADU">Pengadu</option>
-            </select>
-          </div>
-
           {error && <div className="bg-[#fff2ef] px-3 py-2 text-sm text-[#7c1405]">{error}</div>}
 
           <button
@@ -134,6 +126,12 @@ export default function RegisterPage() {
             Sudah ada akaun?{" "}
             <Link href="/login" className="font-bold text-[#6d28d9] hover:underline">
               Log Masuk
+            </Link>
+          </div>
+          <div className="text-[13px] text-[rgba(32,30,29,0.7)]">
+            Nak buat aduan kerosakan sahaja?{" "}
+            <Link href="/aduan-awam" className="font-bold text-[#6d28d9] hover:underline">
+              Tiada perlu daftar
             </Link>
           </div>
         </form>

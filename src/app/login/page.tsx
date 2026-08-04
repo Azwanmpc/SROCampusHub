@@ -30,7 +30,8 @@ export default function LoginPage() {
         setError(data.error ?? "Log masuk gagal");
         return;
       }
-      router.push("/dashboard");
+      const redirectTarget = new URLSearchParams(window.location.search).get("redirect");
+      router.push(redirectTarget?.startsWith("/") ? redirectTarget : "/dashboard");
       router.refresh();
     } finally {
       setLoading(false);
@@ -174,13 +175,14 @@ export default function LoginPage() {
           </div>
         )}
 
-        <div className="mt-6 bg-[rgba(32,30,29,0.06)] p-3 text-xs text-[rgba(32,30,29,0.6)]">
-          <p className="mb-1 font-bold">Akaun demo:</p>
-          <p>Superadmin: superadmin / super123</p>
-          <p>Admin: admin1 / admin123</p>
-          <p>Pemohon: ahmad.faiz / pemohon123</p>
-          <p>Pengadu: siti.aminah / pengadu123</p>
-          <p>Staf Penyelenggaraan: zulkifli.rahman / staf123</p>
+        <div className="mt-6 text-center text-[12.5px] text-[rgba(32,30,29,0.6)]">
+          <Link href="/" className="font-bold text-[#6d28d9] hover:underline">
+            Kembali ke Laman Utama
+          </Link>
+          {" · "}
+          <Link href="/aduan-awam" className="font-bold text-[#6d28d9] hover:underline">
+            Buat Aduan Tanpa Log Masuk
+          </Link>
         </div>
       </div>
     </div>

@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
@@ -48,6 +49,7 @@ function CardsGrid({ children }: { children: React.ReactNode }) {
 export default async function DashboardPage() {
   const session = await getSession();
   if (!session) return null;
+  if (session.role === "PENGADU") redirect("/aduan");
   const isStaff = session.role === "SUPERADMIN" || session.role === "ADMIN";
 
   if (isStaff) {
@@ -125,7 +127,7 @@ export default async function DashboardPage() {
                   <div>
                     <div className="text-sm font-bold">{c.location}</div>
                     <div className="text-xs text-[rgba(32,30,29,0.55)]">
-                      {c.user.name} &middot; {new Date(c.createdAt).toLocaleDateString("ms-MY")}
+                      {c.user?.name ?? c.guestName ?? "Awam"} &middot; {new Date(c.createdAt).toLocaleDateString("ms-MY")}
                     </div>
                   </div>
                   <StatusBadge label={COMPLAINT_STATUS_LABEL[c.status]} colorClass={COMPLAINT_STATUS_COLOR[c.status]} />
@@ -254,7 +256,7 @@ export default async function DashboardPage() {
                 <div>
                   <div className="text-sm font-bold">{c.location}</div>
                   <div className="text-xs text-[rgba(32,30,29,0.55)]">
-                    {c.user.name} &middot; {new Date(c.createdAt).toLocaleDateString("ms-MY")}
+                    {c.user?.name ?? c.guestName ?? "Awam"} &middot; {new Date(c.createdAt).toLocaleDateString("ms-MY")}
                   </div>
                 </div>
                 <StatusBadge label={COMPLAINT_STATUS_LABEL[c.status]} colorClass={COMPLAINT_STATUS_COLOR[c.status]} />
@@ -266,50 +268,5 @@ export default async function DashboardPage() {
     );
   }
 
-  // PENGADU
-  const complaints = await prisma.complaint.findMany({
-    where: { userId: session.userId },
-    include: { facility: true },
-    orderBy: { createdAt: "desc" },
-  });
-
-  return (
-    <div>
-      <div className="mb-0.5 font-archivo text-[26px] font-extrabold">Dashboard</div>
-      <div className="mb-4 text-[13.5px] text-[rgba(32,30,29,0.6)]">Selamat kembali, {session.name} — Pengadu</div>
-      <div className="mb-[22px] h-0.5 bg-[rgba(32,30,29,0.4)]" />
-
-      <div className="mb-6 grid grid-cols-2 gap-px border border-[rgba(32,30,29,0.4)] bg-[rgba(32,30,29,0.4)] md:grid-cols-3">
-        <StatCard label="Jumlah Aduan" value={complaints.length} icon={WarningCircle} iconColor="#4a72a8" />
-        <StatCard label="Belum Selesai" value={complaints.filter((c) => c.status !== "SELESAI").length} icon={Wrench} iconColor="#8a6d1f" />
-        <StatCard label="Selesai" value={complaints.filter((c) => c.status === "SELESAI").length} icon={CalendarCheck} iconColor="#4a8a63" />
-      </div>
-
-      <div className="border border-[rgba(32,30,29,0.4)] bg-white p-[18px]">
-        <div className="mb-3 flex items-center justify-between">
-          <div className="font-archivo text-sm font-extrabold">Aduan Saya — Status Terkini</div>
-          <Link href="/aduan" className="text-xs font-bold text-[#6d28d9] hover:underline">
-            Buat aduan baharu
-          </Link>
-        </div>
-        <div className="flex flex-col divide-y divide-[rgba(32,30,29,0.15)]">
-          {complaints.length === 0 && <p className="py-2 text-sm text-[rgba(32,30,29,0.5)]">Belum ada aduan.</p>}
-          {complaints.map((c) => (
-            <div key={c.id} className="flex items-center gap-3 py-2.5">
-              <Wrench weight="duotone" size={20} color="#7c1405" className="flex-none" />
-              <div className="flex-1">
-                <div className="text-sm font-bold">{c.location}</div>
-                <div className="text-xs text-[rgba(32,30,29,0.55)]">{c.description}</div>
-              </div>
-              <StatusBadge label={COMPLAINT_STATUS_LABEL[c.status]} colorClass={COMPLAINT_STATUS_COLOR[c.status]} />
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="mt-[22px] text-center text-sm font-bold">
-        Untuk pertanyaan lanjut, sila hubungi Hj Hairul Mizan B Hamdan, 013-7984439
-      </div>
-    </div>
-  );
+  return null;
 }

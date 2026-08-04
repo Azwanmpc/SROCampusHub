@@ -24,7 +24,8 @@ type Complaint = {
   staffNote: string | null;
   estimatedCost: number;
   createdAt: string;
-  user: { name: string };
+  user: { name: string } | null;
+  guestName: string | null;
 };
 
 function daysBetween(a: Date, b: Date) {
@@ -97,7 +98,7 @@ export default function ComplaintCard({
           </div>
           <div className="mt-0.5 text-[12.5px] text-[rgba(32,30,29,0.6)]">{complaint.description}</div>
           <div className="mt-1 text-xs text-[rgba(32,30,29,0.6)]">
-            Pengadu: {complaint.user.name}
+            Pengadu: {complaint.user?.name ?? complaint.guestName ?? "Awam"}
             {complaint.repairType && ` · ${REPAIR_TYPE_LABEL[complaint.repairType]}`}
           </div>
           <div className="mt-0.5 text-xs text-[rgba(32,30,29,0.6)]">

@@ -17,11 +17,11 @@ async function main() {
   const [superadmin, admin1, admin2, faiz, dayang, siti, razak, zulkifli] = await Promise.all([
     prisma.user.create({
       data: {
-        name: "Nor Azlina Superadmin",
-        email: "superadmin@sro-campushub.my",
-        username: "superadmin",
+        name: "Mohd Azwan Mohd Salleh",
+        email: "azwan@mpc.gov.my",
+        username: "azwan",
         phone: "60123456780",
-        passwordHash: await hash("super123"),
+        passwordHash: await hash("azwanabc123"),
         role: "SUPERADMIN",
       },
     }),

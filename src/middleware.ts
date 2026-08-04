@@ -6,7 +6,7 @@ const SECRET = new TextEncoder().encode(
 );
 const COOKIE_NAME = "sro_session";
 
-const PUBLIC_PATHS = ["/login", "/register"];
+const PUBLIC_PATHS = ["/login", "/register", "/aduan-awam"];
 
 const ROLE_HOME: Record<string, string> = {
   SUPERADMIN: "/dashboard",
@@ -49,8 +49,10 @@ export async function middleware(req: NextRequest) {
   }
 
   if (session && (pathname === "/login" || pathname === "/register" || pathname === "/")) {
+    const redirectTarget = req.nextUrl.searchParams.get("redirect");
     const url = req.nextUrl.clone();
-    url.pathname = ROLE_HOME[session.role] ?? "/dashboard";
+    url.search = "";
+    url.pathname = redirectTarget?.startsWith("/") ? redirectTarget : (ROLE_HOME[session.role] ?? "/dashboard");
     return NextResponse.redirect(url);
   }
 
@@ -62,7 +64,11 @@ export async function middleware(req: NextRequest) {
 
   if (
     session &&
-    (pathname.startsWith("/kelulusan") || pathname.startsWith("/prestasi") || pathname.startsWith("/laporan")) &&
+    (pathname.startsWith("/kelulusan") ||
+      pathname.startsWith("/prestasi") ||
+      pathname.startsWith("/laporan") ||
+      pathname.startsWith("/aset") ||
+      pathname.startsWith("/rkb")) &&
     session.role !== "SUPERADMIN" &&
     session.role !== "ADMIN"
   ) {

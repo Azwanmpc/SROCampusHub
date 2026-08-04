@@ -10,6 +10,7 @@ import {
   WarningCircle,
   ChartBar,
   ChartLine,
+  Wrench,
   Gear,
   SignOut,
   X,
@@ -23,7 +24,7 @@ type NavGroup = { label: string; items: NavItem[] };
 const NAV_GROUPS: NavGroup[] = [
   {
     label: "Utama",
-    items: [{ href: "/dashboard", label: "Dashboard", roles: ["SUPERADMIN", "ADMIN", "PEMOHON", "PENGADU", "TEKNIKAL"], icon: House }],
+    items: [{ href: "/dashboard", label: "Dashboard", roles: ["SUPERADMIN", "ADMIN", "PEMOHON", "TEKNIKAL"], icon: House }],
   },
   {
     label: "Tempahan",
@@ -48,6 +49,8 @@ const NAV_GROUPS: NavGroup[] = [
     label: "Pentadbiran",
     items: [
       { href: "/laporan", label: "Laporan & Analitik", roles: ["SUPERADMIN", "ADMIN"], icon: ChartLine },
+      { href: "/aset", label: "Dashboard Aset", roles: ["SUPERADMIN", "ADMIN"], icon: Wrench },
+      { href: "/rkb", label: "Dashboard RKB", roles: ["SUPERADMIN", "ADMIN"], icon: ChartBar },
       { href: "/tetapan", label: "Tetapan & Pengguna", roles: ["SUPERADMIN"], icon: Gear },
     ],
   },

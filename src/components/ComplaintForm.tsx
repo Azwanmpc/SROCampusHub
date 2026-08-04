@@ -9,14 +9,24 @@ type Facility = { id: string; name: string };
 const fieldClass = "min-h-9 w-full border border-[rgba(32,30,29,0.4)] bg-[#f3f2f2] px-2.5 py-1.5 text-sm text-[#201e1d] outline-none";
 const labelClass = "mb-[5px] block text-xs text-[rgba(32,30,29,0.7)]";
 
-export default function ComplaintForm({ facilities, role }: { facilities: Facility[]; role?: string }) {
-  const locationRequired = role !== "PENGADU";
+export default function ComplaintForm({
+  facilities,
+  role,
+  guest = false,
+}: {
+  facilities: Facility[];
+  role?: string;
+  guest?: boolean;
+}) {
+  const locationRequired = !guest && role !== "PENGADU";
   const router = useRouter();
   const fileRef = useRef<HTMLInputElement>(null);
   const [facilityId, setFacilityId] = useState("");
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState("SEDERHANA");
+  const [guestName, setGuestName] = useState("");
+  const [guestPhone, setGuestPhone] = useState("");
   const [preview, setPreview] = useState<string | null>(null);
   const [fileName, setFileName] = useState("");
   const [error, setError] = useState("");
@@ -54,7 +64,7 @@ export default function ComplaintForm({ facilities, role }: { facilities: Facili
       const res = await fetch("/api/complaints", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ facilityId, location, description, priority, photoUrl }),
+        body: JSON.stringify({ facilityId, location, description, priority, photoUrl, guestName, guestPhone }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -75,6 +85,30 @@ export default function ComplaintForm({ facilities, role }: { facilities: Facili
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      {guest && (
+        <>
+          <div>
+            <label className={labelClass}>Nama Pengadu</label>
+            <input
+              required
+              value={guestName}
+              onChange={(e) => setGuestName(e.target.value)}
+              placeholder="Nama penuh"
+              className={fieldClass}
+            />
+          </div>
+          <div>
+            <label className={labelClass}>No. Telefon (pilihan)</label>
+            <input
+              value={guestPhone}
+              onChange={(e) => setGuestPhone(e.target.value)}
+              placeholder="cth: 012-3456789"
+              className={fieldClass}
+            />
+          </div>
+        </>
+      )}
+
       <div>
         <label className={labelClass}>Fasiliti Berkaitan (jika ada)</label>
         <select value={facilityId} onChange={(e) => setFacilityId(e.target.value)} className={fieldClass}>
