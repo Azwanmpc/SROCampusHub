@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { Users, PencilSimple } from "@phosphor-icons/react/dist/ssr";
 import StatusBadge from "@/components/StatusBadge";
 import FacilityStatusSelect from "@/components/FacilityStatusSelect";
@@ -24,7 +23,6 @@ type Facility = {
 export default function FacilityCard({ facility: f, isStaff }: { facility: Facility; isStaff: boolean }) {
   const [editing, setEditing] = useState(false);
   const isAsrama = f.type === "Asrama";
-  const canBook = f.status !== "PENYELENGGARAAN";
 
   return (
     <div className="flex h-full flex-col border border-[rgba(32,30,29,0.3)] bg-white">
@@ -73,19 +71,8 @@ export default function FacilityCard({ facility: f, isStaff }: { facility: Facil
           </div>
         ) : null}
 
-        <Link
-          href={canBook ? `/kalendar?facility=${f.id}` : "#"}
-          className={`mt-auto block w-full py-2.5 text-left font-archivo text-[13px] font-extrabold ${
-            canBook
-              ? "bg-[#6d28d9] text-[#f3f2f2] hover:bg-[#4c1d95]"
-              : "pointer-events-none bg-[#eae7e7] text-[#9b9797]"
-          }`}
-        >
-          {canBook ? "Tempah Fasiliti" : "Tidak Tersedia"}
-        </Link>
-
         {isStaff && (
-          <div className="mt-2 flex items-center justify-between gap-2">
+          <div className="mt-auto flex items-center justify-between gap-2 pt-2">
             <FacilityStatusSelect facilityId={f.id} status={f.status} />
             <button
               onClick={() => setEditing(true)}
