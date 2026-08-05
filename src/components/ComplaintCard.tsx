@@ -137,13 +137,15 @@ export default function ComplaintCard({
             placeholder="0"
             className="w-full border border-[rgba(32,30,29,0.3)] bg-[#f3f2f2] px-2.5 py-1.5 text-xs outline-none"
           />
-          <button
-            onClick={() => callAction("TANDAKAN_SIAP")}
-            disabled={loading}
-            className="mt-3 flex items-center gap-1.5 bg-[#6d28d9] px-3.5 py-2 font-archivo text-[12.5px] font-extrabold text-[#f3f2f2] disabled:opacity-60"
-          >
-            <CheckCircle weight="duotone" /> Tandakan Siap
-          </button>
+          {role === "TEKNIKAL" && (
+            <button
+              onClick={() => callAction("TANDAKAN_SIAP")}
+              disabled={loading}
+              className="mt-3 flex items-center gap-1.5 bg-[#6d28d9] px-3.5 py-2 font-archivo text-[12.5px] font-extrabold text-[#f3f2f2] disabled:opacity-60"
+            >
+              <CheckCircle weight="duotone" /> Tandakan Siap
+            </button>
+          )}
         </div>
       )}
 
