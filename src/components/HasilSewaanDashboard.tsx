@@ -102,14 +102,20 @@ export default function HasilSewaanDashboard() {
   const monthsForCompare = monthSel === "ALL" ? commonMonths : [monthSel];
   const monthsFull = monthSel === "ALL" ? allMonths : [monthSel];
 
-  const totalHasilPrev = sumOverMonths(prevYear, monthsForCompare, jenisSel, "hasil");
-  const totalHasilCurr = sumOverMonths(currYear, monthsForCompare, jenisSel, "hasil");
+  // Box 1 & 2 are always whole-year snapshots (prevYear = complete/closed year,
+  // currYear = running total so far) — independent of the Bulan filter, which
+  // only affects the charts/tables below.
+  const totalHasilPrevFullYear = sumOverMonths(prevYear, MONTH_ORDER, jenisSel, "hasil");
+  const totalHasilCurrFullYear = sumOverMonths(currYear, MONTH_ORDER, jenisSel, "hasil");
+  const deltaHasilVsKeseluruhanPrev = totalHasilPrevFullYear
+    ? ((totalHasilCurrFullYear - totalHasilPrevFullYear) / totalHasilPrevFullYear) * 100
+    : 0;
+
   const totalPesertaPrev = sumOverMonths(prevYear, monthsForCompare, jenisSel, "peserta");
   const totalPesertaCurr = sumOverMonths(currYear, monthsForCompare, jenisSel, "peserta");
   const totalBilPrev = sumOverMonths(prevYear, monthsForCompare, jenisSel, "bilangan");
   const totalBilCurr = sumOverMonths(currYear, monthsForCompare, jenisSel, "bilangan");
 
-  const deltaHasil = totalHasilPrev ? ((totalHasilCurr - totalHasilPrev) / totalHasilPrev) * 100 : 0;
   const deltaPeserta = totalPesertaPrev ? ((totalPesertaCurr - totalPesertaPrev) / totalPesertaPrev) * 100 : 0;
   const deltaBil = totalBilPrev ? ((totalBilCurr - totalBilPrev) / totalBilPrev) * 100 : 0;
 
@@ -200,14 +206,20 @@ export default function HasilSewaanDashboard() {
 
       <div className="mb-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="border-l-4 border-[#E4212B] bg-white p-4 shadow-sm">
-          <div className="text-[11.5px] font-bold uppercase tracking-[0.04em] text-[rgba(32,30,29,0.5)]">Hasil Sewaan {prevYear}</div>
-          <div className="mt-1.5 text-[24px] font-extrabold text-[#1a1a1a]">{fmtRM(totalHasilPrev)}</div>
+          <div className="text-[11.5px] font-bold uppercase tracking-[0.04em] text-[rgba(32,30,29,0.5)]">
+            Prestasi Keseluruhan Hasil Sewaan Fasiliti {prevYear}
+          </div>
+          <div className="mt-1.5 text-[24px] font-extrabold text-[#1a1a1a]">{fmtRM(totalHasilPrevFullYear)}</div>
         </div>
         <div className="border-l-4 border-[#1e3a5f] bg-white p-4 shadow-sm">
-          <div className="text-[11.5px] font-bold uppercase tracking-[0.04em] text-[rgba(32,30,29,0.5)]">Hasil Sewaan {currYear}</div>
-          <div className="mt-1.5 text-[24px] font-extrabold text-[#1a1a1a]">{fmtRM(totalHasilCurr)}</div>
-          <div className={`mt-1.5 inline-block rounded-full px-2.5 py-0.5 text-[12px] font-bold ${deltaHasil >= 0 ? "bg-[#dcfce7] text-[#15803d]" : "bg-[#fee2e2] text-[#b91c1c]"}`}>
-            {deltaHasil >= 0 ? "▲" : "▼"} {Math.abs(deltaHasil).toFixed(1)}% vs {prevYear}
+          <div className="text-[11.5px] font-bold uppercase tracking-[0.04em] text-[rgba(32,30,29,0.5)]">
+            Hasil Sewaan Fasiliti Terkini {currYear}
+          </div>
+          <div className="mt-1.5 text-[24px] font-extrabold text-[#1a1a1a]">{fmtRM(totalHasilCurrFullYear)}</div>
+          <div
+            className={`mt-1.5 inline-block rounded-full px-2.5 py-0.5 text-[12px] font-bold ${deltaHasilVsKeseluruhanPrev >= 0 ? "bg-[#dcfce7] text-[#15803d]" : "bg-[#fee2e2] text-[#b91c1c]"}`}
+          >
+            {deltaHasilVsKeseluruhanPrev >= 0 ? "▲" : "▼"} {Math.abs(deltaHasilVsKeseluruhanPrev).toFixed(1)}% vs keseluruhan {prevYear}
           </div>
         </div>
         <div className="border-l-4 border-[#0d9488] bg-white p-4 shadow-sm">
