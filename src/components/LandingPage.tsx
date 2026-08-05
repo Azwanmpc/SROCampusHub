@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { CaretDown, Moon, Sun, ArrowUpRight } from "@phosphor-icons/react";
+import { CaretDown, Moon, Sun, ArrowUpRight, List, X } from "@phosphor-icons/react";
 
 type LoginOption = { label: string; href: string; note?: string };
 type ModuleCard = { badge: string; title: string; description: string; options: LoginOption[] };
@@ -111,6 +111,7 @@ function ModuleCardItem({ mod }: { mod: ModuleCard }) {
 
 export default function LandingPage() {
   const [dark, setDark] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem("sro-theme");
@@ -129,36 +130,79 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-white text-[#201e1d]">
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[rgba(32,30,29,0.2)] px-6 py-4">
-        <div className="font-archivo text-[19px] font-extrabold tracking-[-0.01em]">
-          SRO<span className="text-[#e0342a]">CAMPUSHUB</span>
-        </div>
-        <div className="flex flex-wrap items-center gap-5 text-[13px] font-semibold text-[rgba(32,30,29,0.75)]">
-          {NAV_PLACEHOLDERS.map((label) => (
-            <span key={label} className="cursor-default">
-              {label}
+      <div className="border-b border-[rgba(32,30,29,0.2)] px-6 py-4">
+        <div className="flex items-center justify-between gap-3">
+          <div className="font-archivo text-[19px] font-extrabold tracking-[-0.01em]">
+            SRO<span className="text-[#e0342a]">CAMPUSHUB</span>
+          </div>
+
+          <div className="hidden items-center gap-5 text-[13px] font-semibold text-[rgba(32,30,29,0.75)] md:flex">
+            {NAV_PLACEHOLDERS.map((label) => (
+              <span key={label} className="cursor-default">
+                {label}
+              </span>
+            ))}
+            <span className="flex cursor-default items-center gap-1">
+              Recap SRO <CaretDown size={12} />
             </span>
-          ))}
-          <span className="flex cursor-default items-center gap-1">
-            Recap SRO <CaretDown size={12} />
-          </span>
-          <span className="flex cursor-default items-center gap-1">
-            Facebook SRO <ArrowUpRight size={12} />
-          </span>
+            <span className="flex cursor-default items-center gap-1">
+              Facebook SRO <ArrowUpRight size={12} />
+            </span>
+            <button
+              type="button"
+              onClick={toggleDark}
+              className="flex items-center gap-1.5 text-[rgba(32,30,29,0.75)]"
+            >
+              {dark ? <Sun size={14} /> : <Moon size={14} />} Mod Gelap
+            </button>
+            <Link
+              href="/login"
+              className="bg-[#e0342a] px-4 py-2 font-archivo text-[13px] font-extrabold text-white hover:bg-[#c22b22]"
+            >
+              Login Superadmin
+            </Link>
+          </div>
+
           <button
             type="button"
-            onClick={toggleDark}
-            className="flex items-center gap-1.5 text-[rgba(32,30,29,0.75)]"
+            onClick={() => setMenuOpen((v) => !v)}
+            aria-label={menuOpen ? "Tutup menu" : "Buka menu"}
+            aria-expanded={menuOpen}
+            className="flex h-9 w-9 items-center justify-center border border-[rgba(32,30,29,0.4)] text-[#201e1d] md:hidden"
           >
-            {dark ? <Sun size={14} /> : <Moon size={14} />} Mod Gelap
+            {menuOpen ? <X size={18} /> : <List size={18} />}
           </button>
-          <Link
-            href="/login"
-            className="bg-[#e0342a] px-4 py-2 font-archivo text-[13px] font-extrabold text-white hover:bg-[#c22b22]"
-          >
-            Login Superadmin
-          </Link>
         </div>
+
+        {menuOpen && (
+          <div className="mt-4 flex flex-col gap-1 border-t border-[rgba(32,30,29,0.15)] pt-4 text-[13px] font-semibold text-[rgba(32,30,29,0.75)] md:hidden">
+            {NAV_PLACEHOLDERS.map((label) => (
+              <span key={label} className="cursor-default px-1 py-2">
+                {label}
+              </span>
+            ))}
+            <span className="flex cursor-default items-center gap-1 px-1 py-2">
+              Recap SRO <CaretDown size={12} />
+            </span>
+            <span className="flex cursor-default items-center gap-1 px-1 py-2">
+              Facebook SRO <ArrowUpRight size={12} />
+            </span>
+            <button
+              type="button"
+              onClick={toggleDark}
+              className="flex items-center gap-1.5 px-1 py-2 text-left text-[rgba(32,30,29,0.75)]"
+            >
+              {dark ? <Sun size={14} /> : <Moon size={14} />} Mod Gelap
+            </button>
+            <Link
+              href="/login"
+              onClick={() => setMenuOpen(false)}
+              className="mt-2 bg-[#e0342a] px-4 py-2.5 text-center font-archivo text-[13px] font-extrabold text-white hover:bg-[#c22b22]"
+            >
+              Login Superadmin
+            </Link>
+          </div>
+        )}
       </div>
 
       <div className="mx-auto max-w-[1180px] px-6 py-14">
