@@ -32,6 +32,7 @@ type Booking = {
   sebutTel: string | null;
   sebutEmel: string | null;
   addonsJson: string | null;
+  asramaRoomsJson: string | null;
   checkInAt: string | null;
   checkOutAt: string | null;
 };
@@ -224,6 +225,7 @@ export default function BookingCard({
             facility: booking.facility,
             purpose: booking.purpose,
             startDateTime: booking.startDateTime,
+            endDateTime: booking.endDateTime,
             participantCount: booking.participantCount,
             user: booking.user,
             sebutNama: booking.sebutNama,
@@ -235,6 +237,7 @@ export default function BookingCard({
             discount: booking.discount,
             quotationNumber: booking.quotationNumber,
             addonsJson: booking.addonsJson,
+            asramaRoomsJson: booking.asramaRoomsJson,
           }}
           onClose={() => setShowQuotation(false)}
         />

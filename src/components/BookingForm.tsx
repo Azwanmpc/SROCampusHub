@@ -187,6 +187,7 @@ export default function BookingForm({
           purpose,
           participantCount,
           arrangement,
+          rateType,
           addOnProjector: addons["lcd-projektor"]?.checked ? addons["lcd-projektor"].qty : 0,
           addOnTv100: addons["tv-lcd"]?.checked ? addons["tv-lcd"].qty : 0,
           earlyAccess,

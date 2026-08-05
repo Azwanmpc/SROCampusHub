@@ -117,15 +117,19 @@ export async function POST(req: NextRequest) {
       addonsTotal = 0;
     }
   }
-  let facilityPrice = facility.costPerUse;
+  const dayCount = Math.max(1, Math.round((end.getTime() - start.getTime()) / 86400000) + 1);
+
+  let facilityPrice: number;
   if (data.asramaRoomsJson) {
-    try {
-      const rooms = JSON.parse(data.asramaRoomsJson) as { price: number }[];
-      const roomsTotal = rooms.reduce((sum, r) => sum + (Number(r.price) || 0), 0);
-      if (roomsTotal > 0) facilityPrice = roomsTotal;
-    } catch {
-      // keep default facilityPrice
-    }
+    const rooms = JSON.parse(data.asramaRoomsJson) as { price: number }[];
+    facilityPrice = rooms.reduce((sum, r) => sum + (Number(r.price) || 0), 0);
+    if (facilityPrice <= 0) facilityPrice = facility.costPerUse;
+  } else {
+    const dayRate =
+      data.rateType === "HALF" && facility.halfDayRate != null
+        ? facility.halfDayRate
+        : facility.fullDayRate ?? facility.costPerUse;
+    facilityPrice = dayRate * dayCount;
   }
 
   const booking = await prisma.booking.create({

@@ -22,6 +22,7 @@ export const bookingSchema = z.object({
   purpose: z.string().min(3, "Sila nyatakan tujuan tempahan"),
   participantCount: z.coerce.number().min(1),
   arrangement: z.enum(["ROUND_TABLE", "CLASSROOM", "SEMINAR", "THEATER", "U_SHAPE", "TIADA"]),
+  rateType: z.enum(["HALF", "FULL"]).default("FULL"),
   addOnProjector: z.coerce.number().min(0).default(0),
   addOnTv100: z.coerce.number().min(0).default(0),
   earlyAccess: z.coerce.boolean().default(false),

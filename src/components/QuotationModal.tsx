@@ -4,12 +4,14 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { XCircle, Printer, DownloadSimple, EnvelopeSimple } from "@phosphor-icons/react";
 import { generateQuotationPdf } from "@/lib/quotationPdf";
+import { ASRAMA_ROOM_TYPES } from "@/lib/facilityRates";
 
 type Booking = {
   id: string;
-  facility: { name: string };
+  facility: { name: string; type: string };
   purpose: string;
   startDateTime: string;
+  endDateTime: string;
   participantCount: number;
   user: { name: string };
   sebutNama: string | null;
@@ -21,6 +23,7 @@ type Booking = {
   discount: number;
   quotationNumber: string | null;
   addonsJson: string | null;
+  asramaRoomsJson: string | null;
 };
 
 function fmtRM(n: number) {
@@ -37,6 +40,37 @@ export default function QuotationModal({ booking, onClose }: { booking: Booking;
   const finalPrice = Number(overrideValue) || booking.revenue;
   const discount = booking.revenue - finalPrice;
   const addons = booking.addonsJson ? (JSON.parse(booking.addonsJson) as { label: string; rateType: string; qty: number; price: number }[]) : [];
+  const addonsTotal = addons.reduce((s, a) => s + a.price, 0);
+
+  const dayCount = Math.max(
+    1,
+    Math.round((new Date(booking.endDateTime).getTime() - new Date(booking.startDateTime).getTime()) / 86400000) + 1
+  );
+
+  const asramaRooms = booking.asramaRoomsJson
+    ? (JSON.parse(booking.asramaRoomsJson) as { key: string; label: string; qty: number; price: number }[])
+    : [];
+
+  const facilityItems: { nama: string; rateLabel: string; price: number }[] =
+    booking.facility.type === "Asrama" && asramaRooms.length > 0
+      ? asramaRooms.map((r) => {
+          const rate = ASRAMA_ROOM_TYPES.find((rt) => rt.key === r.key)?.rate ?? Math.round(r.price / r.qty / dayCount);
+          return {
+            nama: r.label,
+            rateLabel: `${fmtRM(rate)}/malam × ${r.qty} bilik × ${dayCount} malam`,
+            price: r.price,
+          };
+        })
+      : [
+          {
+            nama: booking.facility.name,
+            rateLabel:
+              dayCount > 1
+                ? `${fmtRM(Math.round((booking.revenue - addonsTotal) / dayCount))}/hari × ${dayCount} hari`
+                : "Sehari",
+            price: booking.revenue - addonsTotal,
+          },
+        ];
 
   async function savePrice() {
     setSaving(true);
@@ -65,7 +99,7 @@ export default function QuotationModal({ booking, onClose }: { booking: Booking;
       sebutOrganisasi: booking.organisasi || "",
       kos: booking.revenue,
       finalPrice,
-      itemsBreakdown: [{ nama: booking.facility.name, rateLabel: "Sehari", price: booking.revenue - addons.reduce((s, a) => s + a.price, 0) }],
+      itemsBreakdown: facilityItems,
       addonsBreakdown: addons.map((a) => ({ label: a.label, rateTypeLabel: a.rateType === "HALF" ? "Separuh Hari" : "Satu Hari", qty: a.qty, price: a.price })),
       noSebutharga,
       tarikhSebutharga,
@@ -166,13 +200,13 @@ export default function QuotationModal({ booking, onClose }: { booking: Booking;
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="border-b border-[rgba(32,30,29,0.15)] py-1.5 font-bold">{booking.facility.name}</td>
-              <td className="border-b border-[rgba(32,30,29,0.15)] py-1.5 text-[rgba(32,30,29,0.6)]">Sehari</td>
-              <td className="border-b border-[rgba(32,30,29,0.15)] py-1.5 text-right">
-                {fmtRM(booking.revenue - addons.reduce((s, a) => s + a.price, 0))}
-              </td>
-            </tr>
+            {facilityItems.map((it, i) => (
+              <tr key={i}>
+                <td className="border-b border-[rgba(32,30,29,0.15)] py-1.5 font-bold">{it.nama}</td>
+                <td className="border-b border-[rgba(32,30,29,0.15)] py-1.5 text-[rgba(32,30,29,0.6)]">{it.rateLabel}</td>
+                <td className="border-b border-[rgba(32,30,29,0.15)] py-1.5 text-right">{fmtRM(it.price)}</td>
+              </tr>
+            ))}
             {addons.map((a, i) => (
               <tr key={i}>
                 <td className="border-b border-[rgba(32,30,29,0.15)] py-1.5 font-bold">{a.label} (Add-on)</td>
