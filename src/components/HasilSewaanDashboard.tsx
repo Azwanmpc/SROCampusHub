@@ -107,9 +107,7 @@ export default function HasilSewaanDashboard() {
   // only affects the charts/tables below.
   const totalHasilPrevFullYear = sumOverMonths(prevYear, MONTH_ORDER, jenisSel, "hasil");
   const totalHasilCurrFullYear = sumOverMonths(currYear, MONTH_ORDER, jenisSel, "hasil");
-  const deltaHasilVsKeseluruhanPrev = totalHasilPrevFullYear
-    ? ((totalHasilCurrFullYear - totalHasilPrevFullYear) / totalHasilPrevFullYear) * 100
-    : 0;
+  const pctHasilVsKeseluruhanPrev = totalHasilPrevFullYear ? (totalHasilCurrFullYear / totalHasilPrevFullYear) * 100 : 0;
 
   const totalPesertaPrev = sumOverMonths(prevYear, monthsForCompare, jenisSel, "peserta");
   const totalPesertaCurr = sumOverMonths(currYear, monthsForCompare, jenisSel, "peserta");
@@ -216,10 +214,8 @@ export default function HasilSewaanDashboard() {
             Hasil Sewaan Fasiliti Terkini {currYear}
           </div>
           <div className="mt-1.5 text-[24px] font-extrabold text-[#1a1a1a]">{fmtRM(totalHasilCurrFullYear)}</div>
-          <div
-            className={`mt-1.5 inline-block rounded-full px-2.5 py-0.5 text-[12px] font-bold ${deltaHasilVsKeseluruhanPrev >= 0 ? "bg-[#dcfce7] text-[#15803d]" : "bg-[#fee2e2] text-[#b91c1c]"}`}
-          >
-            {deltaHasilVsKeseluruhanPrev >= 0 ? "▲" : "▼"} {Math.abs(deltaHasilVsKeseluruhanPrev).toFixed(1)}% vs keseluruhan {prevYear}
+          <div className="mt-1.5 inline-block rounded-full bg-[#dcfce7] px-2.5 py-0.5 text-[12px] font-bold text-[#15803d]">
+            ✓ Telah mencapai {pctHasilVsKeseluruhanPrev.toFixed(1)}% vs keseluruhan {prevYear}
           </div>
         </div>
         <div className="border-l-4 border-[#0d9488] bg-white p-4 shadow-sm">
