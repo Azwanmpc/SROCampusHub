@@ -38,11 +38,13 @@ body {
   font-family: "Archivo", system-ui, sans-serif;
 }
 
-a {
-  color: var(--accent);
-}
-a:hover {
-  color: var(--accent-dark);
+@layer base {
+  a {
+    color: var(--accent);
+  }
+  a:hover {
+    color: var(--accent-dark);
+  }
 }
 
 * {

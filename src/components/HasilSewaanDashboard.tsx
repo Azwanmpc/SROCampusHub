@@ -2,16 +2,12 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import Script from "next/script";
+import { Chart, registerables } from "chart.js";
+
+Chart.register(...registerables);
 
 type RawRec = { id: string; tarikh: string; organisasi: string; lokasi: string; bilanganPeserta: number; hasilTerimaan: number };
 type Agg = { hasil: number; peserta: number; bilangan: number };
-
-declare global {
-  interface Window {
-    Chart: any;
-  }
-}
 
 const MONTH_ORDER = ["Januari", "Februari", "Mac", "April", "Mei", "Jun", "Julai", "Ogos", "September", "Oktober", "November", "Disember"];
 const JENIS_COLORS: Record<string, string> = {
@@ -22,8 +18,9 @@ const JENIS_COLORS: Record<string, string> = {
   TQM: "#2563eb",
   MADANI: "#db2777",
 };
-const COLOR_2025 = "#1e3a5f";
-const COLOR_2026 = "#E4212B";
+const COLOR_PREV = "#1e3a5f";
+const COLOR_CURR = "#E4212B";
+const FIRST_SELECTABLE_YEAR = 2026;
 
 function fmtRM(n: number) {
   return "RM " + Math.round(n).toLocaleString("en-US");
@@ -34,9 +31,9 @@ function fmtNum(n: number) {
 
 export default function HasilSewaanDashboard() {
   const [records, setRecords] = useState<RawRec[] | null>(null);
-  const [chartReady, setChartReady] = useState(false);
   const [monthSel, setMonthSel] = useState("ALL");
   const [jenisSel, setJenisSel] = useState("ALL");
+  const [yearSel, setYearSel] = useState(FIRST_SELECTABLE_YEAR);
 
   const barRef = useRef<HTMLCanvasElement>(null);
   const donutRef = useRef<HTMLCanvasElement>(null);
@@ -50,9 +47,8 @@ export default function HasilSewaanDashboard() {
   }, []);
 
   const years = useMemo<Record<string, Record<string, Record<string, Agg>>>>(() => {
-    if (!records) return { "2025": {}, "2026": {} };
     const byYear: Record<string, Record<string, Record<string, Agg>>> = {};
-    for (const r of records) {
+    for (const r of records || []) {
       const d = new Date(r.tarikh);
       const year = String(d.getFullYear());
       const month = MONTH_ORDER[d.getMonth()];
@@ -68,9 +64,21 @@ export default function HasilSewaanDashboard() {
     return byYear;
   }, [records]);
 
+  const yearOptions = useMemo(() => {
+    const now = new Date();
+    const set = new Set<number>([FIRST_SELECTABLE_YEAR, FIRST_SELECTABLE_YEAR + 1, now.getFullYear(), now.getFullYear() + 1]);
+    for (const y of Object.keys(years)) set.add(Number(y));
+    return Array.from(set)
+      .filter((y) => y >= FIRST_SELECTABLE_YEAR)
+      .sort((a, b) => a - b);
+  }, [years]);
+
+  const currYear = String(yearSel);
+  const prevYear = String(yearSel - 1);
+
   const monthsIn = (year: string) => Object.keys(years[year] || {});
-  const allMonths = useMemo(() => MONTH_ORDER.filter((m) => monthsIn("2025").includes(m) || monthsIn("2026").includes(m)), [years]);
-  const commonMonths = useMemo(() => MONTH_ORDER.filter((m) => monthsIn("2025").includes(m) && monthsIn("2026").includes(m)), [years]);
+  const allMonths = useMemo(() => MONTH_ORDER.filter((m) => monthsIn(prevYear).includes(m) || monthsIn(currYear).includes(m)), [years, prevYear, currYear]);
+  const commonMonths = useMemo(() => MONTH_ORDER.filter((m) => monthsIn(prevYear).includes(m) && monthsIn(currYear).includes(m)), [years, prevYear, currYear]);
 
   const jenisList = useMemo(() => {
     const set = new Set<string>();
@@ -94,34 +102,34 @@ export default function HasilSewaanDashboard() {
   const monthsForCompare = monthSel === "ALL" ? commonMonths : [monthSel];
   const monthsFull = monthSel === "ALL" ? allMonths : [monthSel];
 
-  const totalHasil25 = sumOverMonths("2025", monthsForCompare, jenisSel, "hasil");
-  const totalHasil26 = sumOverMonths("2026", monthsForCompare, jenisSel, "hasil");
-  const totalPeserta25 = sumOverMonths("2025", monthsForCompare, jenisSel, "peserta");
-  const totalPeserta26 = sumOverMonths("2026", monthsForCompare, jenisSel, "peserta");
-  const totalBil25 = sumOverMonths("2025", monthsForCompare, jenisSel, "bilangan");
-  const totalBil26 = sumOverMonths("2026", monthsForCompare, jenisSel, "bilangan");
+  const totalHasilPrev = sumOverMonths(prevYear, monthsForCompare, jenisSel, "hasil");
+  const totalHasilCurr = sumOverMonths(currYear, monthsForCompare, jenisSel, "hasil");
+  const totalPesertaPrev = sumOverMonths(prevYear, monthsForCompare, jenisSel, "peserta");
+  const totalPesertaCurr = sumOverMonths(currYear, monthsForCompare, jenisSel, "peserta");
+  const totalBilPrev = sumOverMonths(prevYear, monthsForCompare, jenisSel, "bilangan");
+  const totalBilCurr = sumOverMonths(currYear, monthsForCompare, jenisSel, "bilangan");
 
-  const deltaHasil = totalHasil25 ? ((totalHasil26 - totalHasil25) / totalHasil25) * 100 : 0;
-  const deltaPeserta = totalPeserta25 ? ((totalPeserta26 - totalPeserta25) / totalPeserta25) * 100 : 0;
-  const deltaBil = totalBil25 ? ((totalBil26 - totalBil25) / totalBil25) * 100 : 0;
+  const deltaHasil = totalHasilPrev ? ((totalHasilCurr - totalHasilPrev) / totalHasilPrev) * 100 : 0;
+  const deltaPeserta = totalPesertaPrev ? ((totalPesertaCurr - totalPesertaPrev) / totalPesertaPrev) * 100 : 0;
+  const deltaBil = totalBilPrev ? ((totalBilCurr - totalBilPrev) / totalBilPrev) * 100 : 0;
 
   const jenisForChart = jenisSel === "ALL" ? jenisList : [jenisSel];
 
   useEffect(() => {
-    if (!chartReady || !records || !window.Chart) return;
+    if (!records) return;
 
     if (barChart.current) barChart.current.destroy();
     if (donutChart.current) donutChart.current.destroy();
 
     const ctxH = barRef.current?.getContext("2d");
     if (ctxH) {
-      barChart.current = new window.Chart(ctxH, {
+      barChart.current = new Chart(ctxH, {
         type: "bar",
         data: {
           labels: monthsFull,
           datasets: [
-            { label: "2025", data: monthsFull.map((m) => getVal("2025", m, jenisSel, "hasil")), backgroundColor: COLOR_2025, borderRadius: 6 },
-            { label: "2026", data: monthsFull.map((m) => getVal("2026", m, jenisSel, "hasil")), backgroundColor: COLOR_2026, borderRadius: 6 },
+            { label: prevYear, data: monthsFull.map((m) => getVal(prevYear, m, jenisSel, "hasil")), backgroundColor: COLOR_PREV, borderRadius: 6 },
+            { label: currYear, data: monthsFull.map((m) => getVal(currYear, m, jenisSel, "hasil")), backgroundColor: COLOR_CURR, borderRadius: 6 },
           ],
         },
         options: {
@@ -135,13 +143,13 @@ export default function HasilSewaanDashboard() {
 
     const ctxJ = donutRef.current?.getContext("2d");
     if (ctxJ) {
-      donutChart.current = new window.Chart(ctxJ, {
+      donutChart.current = new Chart(ctxJ, {
         type: "doughnut",
         data: {
           labels: jenisForChart,
           datasets: [
             {
-              data: jenisForChart.map((j) => sumOverMonths("2026", monthsForCompare, j, "hasil")),
+              data: jenisForChart.map((j) => sumOverMonths(currYear, monthsForCompare, j, "hasil")),
               backgroundColor: jenisForChart.map((j) => JENIS_COLORS[j] || "#94a3b8"),
             },
           ],
@@ -157,32 +165,30 @@ export default function HasilSewaanDashboard() {
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chartReady, records, monthSel, jenisSel]);
+  }, [records, monthSel, jenisSel, yearSel]);
 
   const rows = useMemo(() => {
-    const out: { m: string; j: string; h25: number; h26: number; p25: number; p26: number; b25: number; b26: number }[] = [];
+    const out: { m: string; j: string; hPrev: number; hCurr: number; pPrev: number; pCurr: number; bPrev: number; bCurr: number }[] = [];
     for (const m of monthsFull) {
       for (const j of jenisForChart) {
-        const h25 = getVal("2025", m, j, "hasil");
-        const h26 = getVal("2026", m, j, "hasil");
-        const p25 = getVal("2025", m, j, "peserta");
-        const p26 = getVal("2026", m, j, "peserta");
-        const b25 = getVal("2025", m, j, "bilangan");
-        const b26 = getVal("2026", m, j, "bilangan");
-        if (h25 === 0 && h26 === 0 && p25 === 0 && p26 === 0) continue;
-        out.push({ m, j, h25, h26, p25, p26, b25, b26 });
+        const hPrev = getVal(prevYear, m, j, "hasil");
+        const hCurr = getVal(currYear, m, j, "hasil");
+        const pPrev = getVal(prevYear, m, j, "peserta");
+        const pCurr = getVal(currYear, m, j, "peserta");
+        const bPrev = getVal(prevYear, m, j, "bilangan");
+        const bCurr = getVal(currYear, m, j, "bilangan");
+        if (hPrev === 0 && hCurr === 0 && pPrev === 0 && pCurr === 0) continue;
+        out.push({ m, j, hPrev, hCurr, pPrev, pCurr, bPrev, bCurr });
       }
     }
     return out;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [records, monthSel, jenisSel]);
+  }, [records, monthSel, jenisSel, yearSel]);
 
   if (!records) return <p className="text-sm text-[rgba(32,30,29,0.5)]">Memuatkan dashboard...</p>;
 
   return (
     <div>
-      <Script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js" strategy="afterInteractive" onLoad={() => setChartReady(true)} />
-
       <div className="mb-4 flex justify-end">
         <Link
           href="/hasil-sewaan/kemaskini"
@@ -194,33 +200,43 @@ export default function HasilSewaanDashboard() {
 
       <div className="mb-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="border-l-4 border-[#E4212B] bg-white p-4 shadow-sm">
-          <div className="text-[11.5px] font-bold uppercase tracking-[0.04em] text-[rgba(32,30,29,0.5)]">Hasil Sewaan 2025</div>
-          <div className="mt-1.5 text-[24px] font-extrabold text-[#1a1a1a]">{fmtRM(totalHasil25)}</div>
+          <div className="text-[11.5px] font-bold uppercase tracking-[0.04em] text-[rgba(32,30,29,0.5)]">Hasil Sewaan {prevYear}</div>
+          <div className="mt-1.5 text-[24px] font-extrabold text-[#1a1a1a]">{fmtRM(totalHasilPrev)}</div>
         </div>
         <div className="border-l-4 border-[#1e3a5f] bg-white p-4 shadow-sm">
-          <div className="text-[11.5px] font-bold uppercase tracking-[0.04em] text-[rgba(32,30,29,0.5)]">Hasil Sewaan 2026</div>
-          <div className="mt-1.5 text-[24px] font-extrabold text-[#1a1a1a]">{fmtRM(totalHasil26)}</div>
+          <div className="text-[11.5px] font-bold uppercase tracking-[0.04em] text-[rgba(32,30,29,0.5)]">Hasil Sewaan {currYear}</div>
+          <div className="mt-1.5 text-[24px] font-extrabold text-[#1a1a1a]">{fmtRM(totalHasilCurr)}</div>
           <div className={`mt-1.5 inline-block rounded-full px-2.5 py-0.5 text-[12px] font-bold ${deltaHasil >= 0 ? "bg-[#dcfce7] text-[#15803d]" : "bg-[#fee2e2] text-[#b91c1c]"}`}>
-            {deltaHasil >= 0 ? "▲" : "▼"} {Math.abs(deltaHasil).toFixed(1)}% vs 2025
+            {deltaHasil >= 0 ? "▲" : "▼"} {Math.abs(deltaHasil).toFixed(1)}% vs {prevYear}
           </div>
         </div>
         <div className="border-l-4 border-[#0d9488] bg-white p-4 shadow-sm">
-          <div className="text-[11.5px] font-bold uppercase tracking-[0.04em] text-[rgba(32,30,29,0.5)]">Jumlah Peserta 2026</div>
-          <div className="mt-1.5 text-[24px] font-extrabold text-[#1a1a1a]">{fmtNum(totalPeserta26)}</div>
+          <div className="text-[11.5px] font-bold uppercase tracking-[0.04em] text-[rgba(32,30,29,0.5)]">Jumlah Peserta {currYear}</div>
+          <div className="mt-1.5 text-[24px] font-extrabold text-[#1a1a1a]">{fmtNum(totalPesertaCurr)}</div>
           <div className={`mt-1.5 inline-block rounded-full px-2.5 py-0.5 text-[12px] font-bold ${deltaPeserta >= 0 ? "bg-[#dcfce7] text-[#15803d]" : "bg-[#fee2e2] text-[#b91c1c]"}`}>
-            {deltaPeserta >= 0 ? "▲" : "▼"} {Math.abs(deltaPeserta).toFixed(1)}% vs 2025
+            {deltaPeserta >= 0 ? "▲" : "▼"} {Math.abs(deltaPeserta).toFixed(1)}% vs {prevYear}
           </div>
         </div>
         <div className="border-l-4 border-[#f59e0b] bg-white p-4 shadow-sm">
-          <div className="text-[11.5px] font-bold uppercase tracking-[0.04em] text-[rgba(32,30,29,0.5)]">Bilangan Tempahan 2026</div>
-          <div className="mt-1.5 text-[24px] font-extrabold text-[#1a1a1a]">{fmtNum(totalBil26)}</div>
+          <div className="text-[11.5px] font-bold uppercase tracking-[0.04em] text-[rgba(32,30,29,0.5)]">Bilangan Tempahan {currYear}</div>
+          <div className="mt-1.5 text-[24px] font-extrabold text-[#1a1a1a]">{fmtNum(totalBilCurr)}</div>
           <div className={`mt-1.5 inline-block rounded-full px-2.5 py-0.5 text-[12px] font-bold ${deltaBil >= 0 ? "bg-[#dcfce7] text-[#15803d]" : "bg-[#fee2e2] text-[#b91c1c]"}`}>
-            {deltaBil >= 0 ? "▲" : "▼"} {Math.abs(deltaBil).toFixed(1)}% vs 2025
+            {deltaBil >= 0 ? "▲" : "▼"} {Math.abs(deltaBil).toFixed(1)}% vs {prevYear}
           </div>
         </div>
       </div>
 
       <div className="mb-5 flex flex-wrap items-center gap-5 border border-[rgba(32,30,29,0.2)] bg-white p-4">
+        <div>
+          <label className="mr-2 text-[13px] font-bold text-[rgba(32,30,29,0.6)]">Tahun:</label>
+          <select value={yearSel} onChange={(e) => setYearSel(Number(e.target.value))} className="border border-[rgba(32,30,29,0.3)] px-3 py-1.5 text-sm font-semibold">
+            {yearOptions.map((y) => (
+              <option key={y} value={y}>
+                {y}
+              </option>
+            ))}
+          </select>
+        </div>
         <div>
           <label className="mr-2 text-[13px] font-bold text-[rgba(32,30,29,0.6)]">Bulan:</label>
           <select value={monthSel} onChange={(e) => setMonthSel(e.target.value)} className="border border-[rgba(32,30,29,0.3)] px-3 py-1.5 text-sm font-semibold">
@@ -247,7 +263,9 @@ export default function HasilSewaanDashboard() {
 
       <div className="mb-5 border border-[rgba(32,30,29,0.2)] bg-white p-[18px]">
         <div className="mb-0.5 font-archivo text-[15px] font-extrabold">Perbandingan Hasil Sewaan Bulanan (RM)</div>
-        <div className="mb-3 text-xs text-[rgba(32,30,29,0.55)]">Jumlah hasil sewaan kemudahan mengikut bulan, 2025 vs 2026</div>
+        <div className="mb-3 text-xs text-[rgba(32,30,29,0.55)]">
+          Jumlah hasil sewaan kemudahan mengikut bulan, {prevYear} vs {currYear}
+        </div>
         <div className="relative h-[340px]">
           <canvas ref={barRef} />
         </div>
@@ -255,30 +273,32 @@ export default function HasilSewaanDashboard() {
 
       <div className="mb-5 grid grid-cols-1 gap-4 lg:grid-cols-2">
         <div className="border border-[rgba(32,30,29,0.2)] bg-white p-[18px]">
-          <div className="mb-0.5 font-archivo text-[15px] font-extrabold">Hasil Mengikut Jenis Sewaan (2026)</div>
-          <div className="mb-3 text-xs text-[rgba(32,30,29,0.55)]">Agregat tempoh dipilih &mdash; tahun 2026 sahaja</div>
+          <div className="mb-0.5 font-archivo text-[15px] font-extrabold">Hasil Mengikut Jenis Sewaan ({currYear})</div>
+          <div className="mb-3 text-xs text-[rgba(32,30,29,0.55)]">Agregat tempoh dipilih &mdash; tahun {currYear} sahaja</div>
           <div className="relative h-[300px]">
             <canvas ref={donutRef} />
           </div>
         </div>
         <div className="border border-[rgba(32,30,29,0.2)] bg-white p-[18px]">
           <div className="mb-0.5 font-archivo text-[15px] font-extrabold">Kekerapan Tempahan Mengikut Jenis</div>
-          <div className="mb-3 text-xs text-[rgba(32,30,29,0.55)]">Bilangan kekerapan tempahan bagi tahun 2025 &amp; 2026</div>
+          <div className="mb-3 text-xs text-[rgba(32,30,29,0.55)]">
+            Bilangan kekerapan tempahan bagi tahun {prevYear} &amp; {currYear}
+          </div>
           <div className="max-h-[300px] overflow-y-auto">
             <table className="w-full border-collapse text-[13px]">
               <thead>
                 <tr className="bg-[#1a1a1a] text-white">
                   <th className="px-3 py-2 text-left font-semibold">Jenis Sewaan</th>
-                  <th className="px-3 py-2 text-left font-semibold">2025</th>
-                  <th className="px-3 py-2 text-left font-semibold">2026</th>
+                  <th className="px-3 py-2 text-left font-semibold">{prevYear}</th>
+                  <th className="px-3 py-2 text-left font-semibold">{currYear}</th>
                   <th className="px-3 py-2 text-left font-semibold">Perubahan</th>
                 </tr>
               </thead>
               <tbody>
                 {jenisForChart.map((j) => {
-                  const k25 = sumOverMonths("2025", monthsForCompare, j, "bilangan");
-                  const k26 = sumOverMonths("2026", monthsForCompare, j, "bilangan");
-                  const diff = k26 - k25;
+                  const kPrev = sumOverMonths(prevYear, monthsForCompare, j, "bilangan");
+                  const kCurr = sumOverMonths(currYear, monthsForCompare, j, "bilangan");
+                  const diff = kCurr - kPrev;
                   return (
                     <tr key={j} className="odd:bg-white even:bg-[#fafbfd]">
                       <td className="border-b border-[#eef0f4] px-3 py-2">
@@ -286,8 +306,8 @@ export default function HasilSewaanDashboard() {
                           {j}
                         </span>
                       </td>
-                      <td className="border-b border-[#eef0f4] px-3 py-2">{fmtNum(k25)}</td>
-                      <td className="border-b border-[#eef0f4] px-3 py-2">{fmtNum(k26)}</td>
+                      <td className="border-b border-[#eef0f4] px-3 py-2">{fmtNum(kPrev)}</td>
+                      <td className="border-b border-[#eef0f4] px-3 py-2">{fmtNum(kCurr)}</td>
                       <td className="border-b border-[#eef0f4] px-3 py-2">
                         <span className={`rounded-full px-2 py-0.5 text-[12px] font-bold ${diff >= 0 ? "bg-[#dcfce7] text-[#15803d]" : "bg-[#fee2e2] text-[#b91c1c]"}`}>
                           {diff >= 0 ? "+" : ""}
@@ -312,12 +332,12 @@ export default function HasilSewaanDashboard() {
               <tr className="sticky top-0 bg-[#1a1a1a] text-white">
                 <th className="px-3 py-2 text-left font-semibold">Bulan</th>
                 <th className="px-3 py-2 text-left font-semibold">Jenis Sewaan</th>
-                <th className="px-3 py-2 text-left font-semibold">Hasil 2025 (RM)</th>
-                <th className="px-3 py-2 text-left font-semibold">Hasil 2026 (RM)</th>
-                <th className="px-3 py-2 text-left font-semibold">Peserta 2025</th>
-                <th className="px-3 py-2 text-left font-semibold">Peserta 2026</th>
-                <th className="px-3 py-2 text-left font-semibold">Bilangan 2025</th>
-                <th className="px-3 py-2 text-left font-semibold">Bilangan 2026</th>
+                <th className="px-3 py-2 text-left font-semibold">Hasil {prevYear} (RM)</th>
+                <th className="px-3 py-2 text-left font-semibold">Hasil {currYear} (RM)</th>
+                <th className="px-3 py-2 text-left font-semibold">Peserta {prevYear}</th>
+                <th className="px-3 py-2 text-left font-semibold">Peserta {currYear}</th>
+                <th className="px-3 py-2 text-left font-semibold">Bilangan {prevYear}</th>
+                <th className="px-3 py-2 text-left font-semibold">Bilangan {currYear}</th>
               </tr>
             </thead>
             <tbody>
@@ -329,14 +349,21 @@ export default function HasilSewaanDashboard() {
                       {r.j}
                     </span>
                   </td>
-                  <td className="border-b border-[#eef0f4] px-3 py-2">{fmtRM(r.h25)}</td>
-                  <td className="border-b border-[#eef0f4] px-3 py-2">{fmtRM(r.h26)}</td>
-                  <td className="border-b border-[#eef0f4] px-3 py-2">{fmtNum(r.p25)}</td>
-                  <td className="border-b border-[#eef0f4] px-3 py-2">{fmtNum(r.p26)}</td>
-                  <td className="border-b border-[#eef0f4] px-3 py-2">{fmtNum(r.b25)}</td>
-                  <td className="border-b border-[#eef0f4] px-3 py-2">{fmtNum(r.b26)}</td>
+                  <td className="border-b border-[#eef0f4] px-3 py-2">{fmtRM(r.hPrev)}</td>
+                  <td className="border-b border-[#eef0f4] px-3 py-2">{fmtRM(r.hCurr)}</td>
+                  <td className="border-b border-[#eef0f4] px-3 py-2">{fmtNum(r.pPrev)}</td>
+                  <td className="border-b border-[#eef0f4] px-3 py-2">{fmtNum(r.pCurr)}</td>
+                  <td className="border-b border-[#eef0f4] px-3 py-2">{fmtNum(r.bPrev)}</td>
+                  <td className="border-b border-[#eef0f4] px-3 py-2">{fmtNum(r.bCurr)}</td>
                 </tr>
               ))}
+              {rows.length === 0 && (
+                <tr>
+                  <td colSpan={8} className="px-3 py-6 text-center text-sm text-[rgba(32,30,29,0.5)]">
+                    Tiada data untuk tahun {currYear} lagi &mdash; gunakan &quot;Kemaskini Data&quot; untuk tambah rekod
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
