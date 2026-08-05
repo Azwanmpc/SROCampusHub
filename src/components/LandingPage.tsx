@@ -31,7 +31,7 @@ const MODULES: ModuleCard[] = [
     badge: "PAPAN PEMUKA",
     title: "Dashboard Hasil",
     description: "Pencapaian hasil wilayah mengikut tempoh dan sumber.",
-    options: [{ label: "Log Masuk Staf", href: "/login?redirect=/laporan" }],
+    options: [{ label: "Log Masuk Staf", href: "/login?redirect=/hasil-sewaan" }],
   },
   {
     badge: "PAPAN PEMUKA",

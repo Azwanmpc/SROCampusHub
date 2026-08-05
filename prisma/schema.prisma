@@ -139,3 +139,14 @@ model PasswordResetToken {
   usedAt    DateTime?
   createdAt DateTime @default(now())
 }
+
+model HasilSewaan {
+  id              String   @id @default(cuid())
+  tarikh          DateTime
+  organisasi      String
+  lokasi          String
+  bilanganPeserta Float    @default(0)
+  hasilTerimaan   Float    @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}

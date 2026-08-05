@@ -68,7 +68,8 @@ export async function middleware(req: NextRequest) {
       pathname.startsWith("/prestasi") ||
       pathname.startsWith("/laporan") ||
       pathname.startsWith("/aset") ||
-      pathname.startsWith("/rkb")) &&
+      pathname.startsWith("/rkb") ||
+      pathname.startsWith("/hasil-sewaan")) &&
     session.role !== "SUPERADMIN" &&
     session.role !== "ADMIN"
   ) {
