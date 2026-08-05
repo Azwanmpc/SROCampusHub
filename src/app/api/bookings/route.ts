@@ -9,16 +9,25 @@ export async function GET(req: NextRequest) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: "Tiada sesi" }, { status: 401 });
 
-  const isStaff = session.role === "SUPERADMIN" || session.role === "ADMIN";
   const { searchParams } = new URL(req.url);
   const facilityId = searchParams.get("facilityId") ?? undefined;
 
+  // Every logged-in role sees all bookings here (not just their own) so the
+  // shared calendar can show which slots are already taken (MENUNGGU/DISAHKAN).
   const bookings = await prisma.booking.findMany({
     where: {
-      ...(isStaff ? {} : { userId: session.userId }),
       ...(facilityId ? { facilityId } : {}),
     },
-    include: { facility: true, user: true },
+    select: {
+      id: true,
+      facilityId: true,
+      startDateTime: true,
+      endDateTime: true,
+      purpose: true,
+      status: true,
+      facility: { select: { id: true, name: true, type: true } },
+      user: { select: { id: true, name: true } },
+    },
     orderBy: { startDateTime: "desc" },
   });
 
