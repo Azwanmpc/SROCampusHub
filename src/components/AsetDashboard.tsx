@@ -116,26 +116,26 @@ export default function AsetDashboard() {
   return (
     <div>
       <div className="mb-1.5 flex justify-end text-[11.5px] text-[rgba(32,30,29,0.5)]">
-        KEW.PA-7 dijana mengikut penapis Lokasi di bawah &mdash; pilih &quot;Semua Lokasi&quot; untuk jana semua sekali gus
+        Senarai Aset dijana mengikut penapis Lokasi di bawah &mdash; pilih &quot;Semua Lokasi&quot; untuk jana semua sekali gus
       </div>
       <div className="mb-4 flex flex-wrap justify-end gap-2">
         <button
           onClick={() => setShowKewPa7(true)}
           className="border border-[rgba(32,30,29,0.4)] bg-white px-4 py-2 font-archivo text-[13px] font-extrabold text-[#201e1d] hover:bg-[#f7f6f6]"
         >
-          KEW.PA-7 Senarai Aset
+          Senarai Aset
         </button>
         <button
           onClick={() => generateKewPa8(byLokasi)}
           className="border border-[rgba(32,30,29,0.4)] bg-white px-4 py-2 font-archivo text-[13px] font-extrabold text-[#201e1d] hover:bg-[#f7f6f6]"
         >
-          KEW.PA-8 Kedudukan Aset
+          Kedudukan Aset
         </button>
         <button
           onClick={() => generateKewPa14(records.filter((r) => r.status === "ROSAK"))}
           className="border border-[rgba(32,30,29,0.4)] bg-white px-4 py-2 font-archivo text-[13px] font-extrabold text-[#201e1d] hover:bg-[#f7f6f6]"
         >
-          KEW.PA-14 Perlu Penyelenggaraan
+          Perlu Penyelenggaraan
         </button>
         <Link
           href="/aset/kemaskini"
@@ -186,7 +186,7 @@ export default function AsetDashboard() {
           <WarningCircle weight="duotone" size={20} className="mt-0.5 flex-none text-[#7c1405]" />
           <div className="text-[12.5px] text-[#7c1405]">
             <span className="font-bold">{jumlahRosak} aset</span> berstatus rosak dan memerlukan penyelenggaraan. Jana senarai penuh melalui{" "}
-            <span className="font-bold">KEW.PA-14</span> di atas.
+            <span className="font-bold">Perlu Penyelenggaraan</span> di atas.
           </div>
         </div>
       )}
