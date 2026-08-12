@@ -4,7 +4,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { Chart, registerables } from "chart.js";
 import { WarningCircle } from "@phosphor-icons/react";
-import { generateKewPa7, generateKewPa8, generateKewPa14 } from "@/lib/asetPdf";
+import { generateKewPa8, generateKewPa14 } from "@/lib/asetPdf";
+import KewPa7Modal from "@/components/KewPa7Modal";
 
 Chart.register(...registerables);
 
@@ -20,6 +21,7 @@ export default function AsetDashboard() {
   const [records, setRecords] = useState<Aset[] | null>(null);
   const [lokasiSel, setLokasiSel] = useState("ALL");
   const [statusSel, setStatusSel] = useState("ALL");
+  const [showKewPa7, setShowKewPa7] = useState(false);
 
   const barRef = useRef<HTMLCanvasElement>(null);
   const donutRef = useRef<HTMLCanvasElement>(null);
@@ -113,9 +115,12 @@ export default function AsetDashboard() {
 
   return (
     <div>
+      <div className="mb-1.5 flex justify-end text-[11.5px] text-[rgba(32,30,29,0.5)]">
+        KEW.PA-7 dijana mengikut penapis Lokasi di bawah &mdash; pilih &quot;Semua Lokasi&quot; untuk jana semua sekali gus
+      </div>
       <div className="mb-4 flex flex-wrap justify-end gap-2">
         <button
-          onClick={() => generateKewPa7(Array.from(byLokasi.keys()).sort(), records)}
+          onClick={() => setShowKewPa7(true)}
           className="border border-[rgba(32,30,29,0.4)] bg-white px-4 py-2 font-archivo text-[13px] font-extrabold text-[#201e1d] hover:bg-[#f7f6f6]"
         >
           KEW.PA-7 Senarai Aset
@@ -256,6 +261,14 @@ export default function AsetDashboard() {
           )}
         </div>
       </div>
+
+      {showKewPa7 && (
+        <KewPa7Modal
+          lokasiList={lokasiSel === "ALL" ? Array.from(byLokasi.keys()).sort() : [lokasiSel]}
+          records={records}
+          onClose={() => setShowKewPa7(false)}
+        />
+      )}
     </div>
   );
 }

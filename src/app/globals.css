@@ -83,10 +83,13 @@ input[type="checkbox"] {
     visibility: hidden;
   }
   #quotation-print-area,
-  #quotation-print-area * {
+  #quotation-print-area *,
+  .print-area,
+  .print-area * {
     visibility: visible;
   }
-  #quotation-print-area {
+  #quotation-print-area,
+  .print-area {
     position: absolute;
     left: 0;
     top: 0;
@@ -95,5 +98,11 @@ input[type="checkbox"] {
     overflow: visible !important;
     box-shadow: none !important;
     padding: 24px !important;
+  }
+  .print-page-break {
+    break-after: page;
+  }
+  .print-page-break:last-child {
+    break-after: auto;
   }
 }
