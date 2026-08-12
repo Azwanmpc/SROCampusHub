@@ -150,3 +150,15 @@ model HasilSewaan {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
+
+// status: BAIK | ROSAK
+model Aset {
+  id            String   @id @default(cuid())
+  namaAset      String
+  noPendaftaran String
+  tahun         String?
+  lokasi        String
+  status        String   @default("BAIK")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}

@@ -54,6 +54,7 @@ const NAV_GROUPS: NavGroup[] = [
       { href: "/hasil-sewaan", label: "Dashboard Hasil", roles: ["SUPERADMIN", "ADMIN"], icon: CurrencyCircleDollar },
       { href: "/hasil-sewaan/kemaskini", label: "Kemaskini Data Hasil", roles: ["SUPERADMIN", "ADMIN"], icon: PencilSimpleLine },
       { href: "/aset", label: "Dashboard Aset", roles: ["SUPERADMIN", "ADMIN"], icon: Wrench },
+      { href: "/aset/kemaskini", label: "Kemaskini Data Aset", roles: ["SUPERADMIN", "ADMIN"], icon: PencilSimpleLine },
       { href: "/rkb", label: "Dashboard RKB", roles: ["SUPERADMIN", "ADMIN"], icon: ChartBar },
       { href: "/tetapan", label: "Tetapan & Pengguna", roles: ["SUPERADMIN"], icon: Gear },
     ],
