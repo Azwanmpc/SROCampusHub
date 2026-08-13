@@ -4,8 +4,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { Chart, registerables } from "chart.js";
 import { WarningCircle } from "@phosphor-icons/react";
-import { generateKewPa8, generateKewPa14 } from "@/lib/asetPdf";
 import KewPa7Modal from "@/components/KewPa7Modal";
+import KewPa14Modal from "@/components/KewPa14Modal";
 
 Chart.register(...registerables);
 
@@ -22,6 +22,7 @@ export default function AsetDashboard() {
   const [lokasiSel, setLokasiSel] = useState("ALL");
   const [statusSel, setStatusSel] = useState("ALL");
   const [showKewPa7, setShowKewPa7] = useState(false);
+  const [showKewPa14, setShowKewPa14] = useState(false);
 
   const barRef = useRef<HTMLCanvasElement>(null);
   const donutRef = useRef<HTMLCanvasElement>(null);
@@ -115,28 +116,7 @@ export default function AsetDashboard() {
 
   return (
     <div>
-      <div className="mb-1.5 flex justify-end text-[11.5px] text-[rgba(32,30,29,0.5)]">
-        Senarai Aset dijana mengikut penapis Lokasi di bawah &mdash; pilih &quot;Semua Lokasi&quot; untuk jana semua sekali gus
-      </div>
-      <div className="mb-4 flex flex-wrap justify-end gap-2">
-        <button
-          onClick={() => setShowKewPa7(true)}
-          className="border border-[rgba(32,30,29,0.4)] bg-white px-4 py-2 font-archivo text-[13px] font-extrabold text-[#201e1d] hover:bg-[#f7f6f6]"
-        >
-          Senarai Aset
-        </button>
-        <button
-          onClick={() => generateKewPa8(byLokasi)}
-          className="border border-[rgba(32,30,29,0.4)] bg-white px-4 py-2 font-archivo text-[13px] font-extrabold text-[#201e1d] hover:bg-[#f7f6f6]"
-        >
-          Kedudukan Aset
-        </button>
-        <button
-          onClick={() => generateKewPa14(records.filter((r) => r.status === "ROSAK"))}
-          className="border border-[rgba(32,30,29,0.4)] bg-white px-4 py-2 font-archivo text-[13px] font-extrabold text-[#201e1d] hover:bg-[#f7f6f6]"
-        >
-          Perlu Penyelenggaraan
-        </button>
+      <div className="mb-4 flex justify-end">
         <Link
           href="/aset/kemaskini"
           className="bg-[#6d28d9] px-4 py-2 font-archivo text-[13px] font-extrabold text-white hover:bg-[#4c1d95]"
@@ -186,7 +166,7 @@ export default function AsetDashboard() {
           <WarningCircle weight="duotone" size={20} className="mt-0.5 flex-none text-[#7c1405]" />
           <div className="text-[12.5px] text-[#7c1405]">
             <span className="font-bold">{jumlahRosak} aset</span> berstatus rosak dan memerlukan penyelenggaraan. Jana senarai penuh melalui{" "}
-            <span className="font-bold">Perlu Penyelenggaraan</span> di atas.
+            <span className="font-bold">Cetak Perlu Penyelenggaraan</span> di bawah.
           </div>
         </div>
       )}
@@ -211,6 +191,18 @@ export default function AsetDashboard() {
             <option value="ROSAK">Rosak</option>
           </select>
         </div>
+        <button
+          onClick={() => setShowKewPa7(true)}
+          className="border border-[rgba(32,30,29,0.4)] bg-white px-4 py-2 font-archivo text-[13px] font-extrabold text-[#201e1d] hover:bg-[#f7f6f6]"
+        >
+          Cetak KEW.PA 7
+        </button>
+        <button
+          onClick={() => setShowKewPa14(true)}
+          className="border border-[rgba(32,30,29,0.4)] bg-white px-4 py-2 font-archivo text-[13px] font-extrabold text-[#201e1d] hover:bg-[#f7f6f6]"
+        >
+          Cetak Perlu Penyelenggaraan
+        </button>
         <div className="ml-auto text-[12.5px] text-[rgba(32,30,29,0.55)]">{filtered.length} rekod dipaparkan</div>
       </div>
 
@@ -267,6 +259,14 @@ export default function AsetDashboard() {
           lokasiList={lokasiSel === "ALL" ? Array.from(byLokasi.keys()).sort() : [lokasiSel]}
           records={records}
           onClose={() => setShowKewPa7(false)}
+        />
+      )}
+
+      {showKewPa14 && (
+        <KewPa14Modal
+          items={records.filter((r) => r.status === "ROSAK" && (lokasiSel === "ALL" || r.lokasi === lokasiSel))}
+          scopeLabel={lokasiSel === "ALL" ? "Semua Lokasi" : lokasiSel}
+          onClose={() => setShowKewPa14(false)}
         />
       )}
     </div>
