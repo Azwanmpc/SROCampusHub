@@ -1,14 +1,16 @@
 import Link from "next/link";
 
+const PILLARS = ["Reformasi Peraturan", "Teknologi & AI", "Pembangunan Bakat", "Perkhidmatan"];
+
 export default function Hero() {
   return (
-    <section id="top" className="relative flex min-h-[560px] items-end overflow-hidden sm:min-h-[640px]">
+    <section id="top" className="relative flex min-h-[620px] items-end overflow-hidden sm:min-h-[720px]">
       <img
         src="/images/landing/hero-kampus.webp"
         alt="Bangunan utama MPC Wilayah Selatan dikelilingi pokok palma"
         className="absolute inset-0 h-full w-full object-cover"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-[rgba(15,15,17,0.92)] via-[rgba(15,15,17,0.55)] to-[rgba(15,15,17,0.25)]" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[rgba(15,15,17,0.94)] via-[rgba(15,15,17,0.6)] to-[rgba(15,15,17,0.3)]" />
 
       <div className="relative mx-auto w-full max-w-[1240px] px-5 pb-14 pt-32 sm:px-8 sm:pb-20">
         <div className="mb-3 text-[13px] font-bold uppercase tracking-[0.12em] text-[rgba(255,255,255,0.75)]">
@@ -17,9 +19,24 @@ export default function Hero() {
         <h1 className="max-w-[720px] font-archivo text-[42px] font-extrabold leading-[1.08] text-white sm:text-[56px] lg:text-[64px]">
           CampusHub
         </h1>
-        <p className="mt-4 max-w-[520px] text-[16px] leading-[1.55] text-[rgba(255,255,255,0.88)] sm:text-[18px]">
-          Gerbang digital kemudahan dan perkhidmatan MPC Wilayah Selatan.
+        <p className="mt-4 max-w-[600px] font-archivo text-[18px] font-bold leading-[1.4] text-white sm:text-[22px]">
+          Hab Produktiviti, Perkhidmatan dan Transformasi Wilayah Selatan
         </p>
+        <p className="mt-3 max-w-[560px] text-[15px] leading-[1.6] text-[rgba(255,255,255,0.8)] sm:text-[16.5px]">
+          Menghubungkan inisiatif produktiviti, reformasi peraturan, adaptasi teknologi, pembangunan bakat serta
+          perkhidmatan MPC dalam satu ekosistem.
+        </p>
+
+        <div className="mt-5 flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
+          {PILLARS.map((pillar, i) => (
+            <span key={pillar} className="flex items-center gap-2.5">
+              {i > 0 && <span className="text-[rgba(255,255,255,0.3)]">·</span>}
+              <span className="text-[11.5px] font-bold uppercase tracking-[0.06em] text-[rgba(255,255,255,0.65)]">
+                {pillar}
+              </span>
+            </span>
+          ))}
+        </div>
 
         <div className="mt-8 flex flex-wrap items-center gap-3">
           <a

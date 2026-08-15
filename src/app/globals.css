@@ -86,6 +86,24 @@ input[type="checkbox"] {
   border-radius: 0 !important;
 }
 
+.rkb-shimmer {
+  background: linear-gradient(90deg, #ffffff 35%, #ff8a80 50%, #ffffff 65%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: rkb-shimmer 3.2s ease-in-out infinite;
+}
+
+@keyframes rkb-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
 @keyframes slideUp {
   from {
     opacity: 0;

@@ -12,7 +12,7 @@ export default function AnnouncementBar() {
         <span className="flex items-center gap-2">
           <Megaphone weight="fill" size={15} className="flex-none text-[#ed1b26]" />
           <span>
-            <span className="font-bold">Konvensyen RKB Wilayah Selatan</span>
+            <span className="rkb-shimmer font-bold">Konvensyen RKB Wilayah Selatan 2026</span>
             <span className="text-[rgba(255,255,255,0.65)]"> — program akan datang</span>
           </span>
         </span>
