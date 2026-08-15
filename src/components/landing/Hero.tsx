@@ -27,14 +27,14 @@ export default function Hero() {
           serta perkhidmatan MPC dalam satu ekosistem.
         </p>
 
-        <div className="mt-5 flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
-          {PILLARS.map((pillar, i) => (
-            <span key={pillar} className="flex items-center gap-2.5">
-              {i > 0 && <span className="text-[rgba(255,255,255,0.3)]">·</span>}
-              <span className="text-[11.5px] font-bold uppercase tracking-[0.06em] text-[rgba(255,255,255,0.65)]">
+        <div className="mt-5 grid max-w-[420px] grid-cols-2 gap-x-6 gap-y-2">
+          {PILLARS.map((pillar) => (
+            <div key={pillar} className="flex items-center gap-2">
+              <span className="h-[3px] w-[3px] flex-none bg-[rgba(255,255,255,0.4)]" />
+              <span className="text-[11.5px] font-bold uppercase leading-[1.3] tracking-[0.06em] text-[rgba(255,255,255,0.65)]">
                 {pillar}
               </span>
-            </span>
+            </div>
           ))}
         </div>
 

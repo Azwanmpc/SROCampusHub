@@ -82,12 +82,12 @@ export default function ComplaintList({
     <div>
       {showFilters && (
         <div className="mb-4 flex flex-wrap items-center gap-3">
-          <div className="flex w-fit flex-wrap border border-[rgba(32,30,29,0.4)]">
+          <div className="flex w-full overflow-x-auto border border-[rgba(32,30,29,0.4)] sm:w-fit">
             {FILTERS.map((f) => (
               <button
                 key={f.key}
                 onClick={() => setFilter(f.key)}
-                className={`border-r border-[rgba(32,30,29,0.4)] px-4 py-2 text-[12.5px] font-bold last:border-r-0 ${
+                className={`flex-none whitespace-nowrap border-r border-[rgba(32,30,29,0.4)] px-4 py-2 text-[12.5px] font-bold last:border-r-0 ${
                   filter === f.key ? "bg-[#6d28d9] text-[#f3f2f2]" : "bg-[#f3f2f2] text-[#201e1d]"
                 }`}
               >

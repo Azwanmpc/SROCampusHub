@@ -39,12 +39,12 @@ export default function PinjamanAsetView({ userId, role }: { userId: string; rol
   if (isStaff) {
     return (
       <div>
-        <div className="mb-4 flex w-fit flex-wrap border border-[rgba(32,30,29,0.4)]">
+        <div className="mb-4 flex w-full overflow-x-auto border border-[rgba(32,30,29,0.4)] sm:w-fit">
           {STAFF_FILTERS.map((f) => (
             <button
               key={f.key}
               onClick={() => setFilter(f.key)}
-              className={`border-r border-[rgba(32,30,29,0.4)] px-4 py-2 text-[12.5px] font-bold last:border-r-0 ${
+              className={`flex-none whitespace-nowrap border-r border-[rgba(32,30,29,0.4)] px-4 py-2 text-[12.5px] font-bold last:border-r-0 ${
                 filter === f.key ? "bg-[#6d28d9] text-[#f3f2f2]" : "bg-[#f3f2f2] text-[#201e1d]"
               }`}
             >
