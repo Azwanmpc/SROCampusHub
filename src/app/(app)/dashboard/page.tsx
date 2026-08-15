@@ -15,6 +15,7 @@ import {
   BOOKING_STATUS_COLOR,
   COMPLAINT_STATUS_LABEL,
   COMPLAINT_STATUS_COLOR,
+  ROLE_LABEL,
 } from "@/lib/constants";
 
 function StatCard({
@@ -51,7 +52,7 @@ export default async function DashboardPage() {
   if (!session) return null;
   if (session.role === "PENGADU") redirect("/aduan");
   if (session.role === "PEMINJAM") redirect("/pinjaman-aset");
-  const isStaff = session.role === "SUPERADMIN" || session.role === "ADMIN";
+  const isStaff = session.role === "SUPERADMIN" || session.role === "ADMIN" || session.role === "STAFF_MPC";
 
   if (isStaff) {
     const [pendingBookings, activeComplaints, maintenanceFacilities, allBookings, recentBookings, recentComplaints] =
@@ -79,7 +80,7 @@ export default async function DashboardPage() {
       <div>
         <div className="mb-0.5 font-archivo text-[26px] font-extrabold">Dashboard</div>
         <div className="mb-4 text-[13.5px] text-[rgba(32,30,29,0.6)]">
-          Selamat kembali, {session.name} — {session.role === "SUPERADMIN" ? "Superadmin" : "Admin (Pelulus)"}
+          Selamat kembali, {session.name} — {ROLE_LABEL[session.role] ?? session.role}
         </div>
         <div className="mb-[22px] h-0.5 bg-[rgba(32,30,29,0.4)]" />
 

@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
 
 function isStaff(role: string) {
-  return role === "SUPERADMIN" || role === "ADMIN";
+  return role === "SUPERADMIN" || role === "ADMIN" || role === "STAFF_MPC";
 }
 
 export async function GET() {

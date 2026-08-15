@@ -10,6 +10,7 @@ import {
   WarningCircle,
   ChartBar,
   ChartLine,
+  ClipboardText,
   CurrencyCircleDollar,
   Package,
   Wrench,
@@ -26,38 +27,42 @@ type NavGroup = { label: string; items: NavItem[] };
 const NAV_GROUPS: NavGroup[] = [
   {
     label: "Utama",
-    items: [{ href: "/dashboard", label: "Dashboard", roles: ["SUPERADMIN", "ADMIN", "PEMOHON", "TEKNIKAL"], icon: House }],
+    items: [{ href: "/dashboard", label: "Dashboard", roles: ["SUPERADMIN", "ADMIN", "STAFF_MPC", "PEMOHON", "TEKNIKAL"], icon: House }],
   },
   {
     label: "Tempahan",
     items: [
-      { href: "/kalendar", label: "Kalendar Tempahan", roles: ["SUPERADMIN", "ADMIN", "PEMOHON"], icon: CalendarBlank },
+      { href: "/kalendar", label: "Kalendar Tempahan", roles: ["SUPERADMIN", "ADMIN", "STAFF_MPC", "PEMOHON"], icon: CalendarBlank },
       { href: "/tempahan-saya", label: "Tempahan Saya", roles: ["PEMOHON"], icon: Buildings },
       { href: "/kelulusan", label: "Kelulusan Tempahan", roles: ["SUPERADMIN", "ADMIN"], icon: SealCheck },
     ],
   },
   {
     label: "Fasiliti",
-    items: [{ href: "/fasiliti", label: "Maklumat Fasiliti", roles: ["SUPERADMIN", "ADMIN", "PEMOHON", "PENGADU", "TEKNIKAL"], icon: Buildings }],
+    items: [{ href: "/fasiliti", label: "Maklumat Fasiliti", roles: ["SUPERADMIN", "ADMIN", "STAFF_MPC", "PEMOHON", "PENGADU", "TEKNIKAL"], icon: Buildings }],
   },
   {
     label: "Pinjaman Aset",
     items: [{ href: "/pinjaman-aset", label: "Pinjaman Aset", roles: ["SUPERADMIN", "ADMIN", "PEMINJAM"], icon: Package }],
   },
   {
+    label: "Borang Pinjaman Aset",
+    items: [{ href: "/borang-pinjaman-aset", label: "Borang Pinjaman Aset", roles: ["STAFF_MPC"], icon: ClipboardText }],
+  },
+  {
     label: "Penyelenggaraan",
     items: [
       { href: "/aduan", label: "Aduan Kerosakan", roles: ["SUPERADMIN", "ADMIN", "PENGADU", "TEKNIKAL"], icon: WarningCircle },
-      { href: "/prestasi", label: "Prestasi Penyelenggaraan", roles: ["SUPERADMIN", "ADMIN"], icon: ChartBar },
+      { href: "/prestasi", label: "Prestasi Penyelenggaraan", roles: ["SUPERADMIN", "ADMIN", "STAFF_MPC"], icon: ChartBar },
     ],
   },
   {
     label: "Pentadbiran",
     items: [
-      { href: "/laporan", label: "Laporan & Analitik", roles: ["SUPERADMIN", "ADMIN"], icon: ChartLine },
-      { href: "/hasil-sewaan", label: "Dashboard Hasil", roles: ["SUPERADMIN", "ADMIN"], icon: CurrencyCircleDollar },
-      { href: "/aset", label: "Dashboard Aset", roles: ["SUPERADMIN", "ADMIN"], icon: Wrench },
-      { href: "/rkb", label: "Dashboard RKB", roles: ["SUPERADMIN", "ADMIN"], icon: ChartBar },
+      { href: "/laporan", label: "Laporan & Analitik", roles: ["SUPERADMIN", "ADMIN", "STAFF_MPC"], icon: ChartLine },
+      { href: "/hasil-sewaan", label: "Dashboard Hasil", roles: ["SUPERADMIN", "ADMIN", "STAFF_MPC"], icon: CurrencyCircleDollar },
+      { href: "/aset", label: "Dashboard Aset", roles: ["SUPERADMIN", "ADMIN", "STAFF_MPC"], icon: Wrench },
+      { href: "/rkb", label: "Dashboard RKB", roles: ["SUPERADMIN", "ADMIN", "STAFF_MPC"], icon: ChartBar },
       { href: "/tetapan", label: "Tetapan & Pengguna", roles: ["SUPERADMIN"], icon: Gear },
     ],
   },

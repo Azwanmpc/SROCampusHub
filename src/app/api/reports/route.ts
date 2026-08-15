@@ -12,7 +12,7 @@ const REPAIR_COST: Record<string, number> = { KONTRAKTOR: 500, DALAMAN: 150 };
 
 export async function GET() {
   const session = await getSession();
-  if (!session || (session.role !== "SUPERADMIN" && session.role !== "ADMIN")) {
+  if (!session || (session.role !== "SUPERADMIN" && session.role !== "ADMIN" && session.role !== "STAFF_MPC")) {
     return NextResponse.json({ error: "Tiada kebenaran" }, { status: 403 });
   }
 

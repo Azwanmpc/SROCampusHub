@@ -9,7 +9,7 @@ function isStaff(role: string) {
 
 export async function GET() {
   const session = await getSession();
-  if (!session || !["SUPERADMIN", "ADMIN", "PEMINJAM"].includes(session.role)) {
+  if (!session || !["SUPERADMIN", "ADMIN", "PEMINJAM", "STAFF_MPC"].includes(session.role)) {
     return NextResponse.json({ error: "Tiada kebenaran" }, { status: 403 });
   }
 
@@ -27,7 +27,7 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   const session = await getSession();
-  if (!session || session.role !== "PEMINJAM") {
+  if (!session || (session.role !== "PEMINJAM" && session.role !== "STAFF_MPC")) {
     return NextResponse.json({ error: "Hanya peminjam boleh membuat permohonan" }, { status: 403 });
   }
 

@@ -14,6 +14,7 @@ const ROLE_HOME: Record<string, string> = {
   PEMOHON: "/dashboard",
   PENGADU: "/dashboard",
   PEMINJAM: "/dashboard",
+  STAFF_MPC: "/dashboard",
 };
 
 export async function middleware(req: NextRequest) {
@@ -63,14 +64,10 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  // Kelulusan Tempahan stays exclusive to SUPERADMIN/ADMIN — STAFF_MPC does not approve bookings.
   if (
     session &&
-    (pathname.startsWith("/kelulusan") ||
-      pathname.startsWith("/prestasi") ||
-      pathname.startsWith("/laporan") ||
-      pathname.startsWith("/aset") ||
-      pathname.startsWith("/rkb") ||
-      pathname.startsWith("/hasil-sewaan")) &&
+    pathname.startsWith("/kelulusan") &&
     session.role !== "SUPERADMIN" &&
     session.role !== "ADMIN"
   ) {
@@ -81,10 +78,46 @@ export async function middleware(req: NextRequest) {
 
   if (
     session &&
+    (pathname.startsWith("/prestasi") ||
+      pathname.startsWith("/laporan") ||
+      pathname.startsWith("/aset") ||
+      pathname.startsWith("/rkb") ||
+      pathname.startsWith("/hasil-sewaan")) &&
+    session.role !== "SUPERADMIN" &&
+    session.role !== "ADMIN" &&
+    session.role !== "STAFF_MPC"
+  ) {
+    const url = req.nextUrl.clone();
+    url.pathname = "/dashboard";
+    return NextResponse.redirect(url);
+  }
+
+  // Pinjaman Aset (kelulusan/tolak/sahkan pemulangan) stays exclusive to SUPERADMIN/ADMIN/PEMINJAM —
+  // STAFF_MPC has no access to this module at all (they get their own Borang Pinjaman Aset instead).
+  if (
+    session &&
     pathname.startsWith("/pinjaman-aset") &&
     session.role !== "SUPERADMIN" &&
     session.role !== "ADMIN" &&
     session.role !== "PEMINJAM"
+  ) {
+    const url = req.nextUrl.clone();
+    url.pathname = "/dashboard";
+    return NextResponse.redirect(url);
+  }
+
+  // Borang Pinjaman Aset (self-request form) is exclusive to STAFF_MPC.
+  if (session && pathname.startsWith("/borang-pinjaman-aset") && session.role !== "STAFF_MPC") {
+    const url = req.nextUrl.clone();
+    url.pathname = "/dashboard";
+    return NextResponse.redirect(url);
+  }
+
+  // Pengurusan Aduan Kerosakan is disabled for STAFF_MPC (the public /aduan-awam guest form stays open to everyone).
+  if (
+    session &&
+    (pathname === "/aduan" || pathname.startsWith("/aduan/")) &&
+    session.role === "STAFF_MPC"
   ) {
     const url = req.nextUrl.clone();
     url.pathname = "/dashboard";

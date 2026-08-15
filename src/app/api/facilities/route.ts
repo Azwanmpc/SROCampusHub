@@ -9,7 +9,7 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   const session = await getSession();
-  if (!session || (session.role !== "SUPERADMIN" && session.role !== "ADMIN")) {
+  if (!session || (session.role !== "SUPERADMIN" && session.role !== "ADMIN" && session.role !== "STAFF_MPC")) {
     return NextResponse.json({ error: "Tiada kebenaran" }, { status: 403 });
   }
   const body = await req.json();

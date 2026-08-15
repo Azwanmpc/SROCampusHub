@@ -5,6 +5,7 @@ export const ROLE_LABEL: Record<string, string> = {
   PENGADU: "Pengadu",
   TEKNIKAL: "Staf Penyelenggaraan",
   PEMINJAM: "Peminjam Aset",
+  STAFF_MPC: "Staff MPC",
 };
 
 export const PINJAMAN_STATUS_LABEL: Record<string, string> = {
