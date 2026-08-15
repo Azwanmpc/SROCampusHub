@@ -4,6 +4,23 @@ export const ROLE_LABEL: Record<string, string> = {
   PEMOHON: "Pemohon",
   PENGADU: "Pengadu",
   TEKNIKAL: "Staf Penyelenggaraan",
+  PEMINJAM: "Peminjam Aset",
+};
+
+export const PINJAMAN_STATUS_LABEL: Record<string, string> = {
+  MENUNGGU_KELULUSAN: "Menunggu Kelulusan",
+  DITOLAK: "Ditolak",
+  DILULUSKAN: "Dipinjam",
+  DIPULANGKAN: "Menunggu Pengesahan Pulangan",
+  SELESAI: "Selesai",
+};
+
+export const PINJAMAN_STATUS_COLOR: Record<string, string> = {
+  MENUNGGU_KELULUSAN: "bg-[#4a72a8] text-white",
+  DITOLAK: "bg-[#fff2ef] text-[#7c1405]",
+  DILULUSKAN: "bg-[#fff300] text-[#4a3800]",
+  DIPULANGKAN: "bg-[#fdeee0] text-[#a34e00]",
+  SELESAI: "bg-[#4bff5e] text-[#003d0f]",
 };
 
 export const BOOKING_STATUS_LABEL: Record<string, string> = {

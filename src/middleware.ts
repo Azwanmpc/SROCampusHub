@@ -13,6 +13,7 @@ const ROLE_HOME: Record<string, string> = {
   ADMIN: "/dashboard",
   PEMOHON: "/dashboard",
   PENGADU: "/dashboard",
+  PEMINJAM: "/dashboard",
 };
 
 export async function middleware(req: NextRequest) {
@@ -72,6 +73,18 @@ export async function middleware(req: NextRequest) {
       pathname.startsWith("/hasil-sewaan")) &&
     session.role !== "SUPERADMIN" &&
     session.role !== "ADMIN"
+  ) {
+    const url = req.nextUrl.clone();
+    url.pathname = "/dashboard";
+    return NextResponse.redirect(url);
+  }
+
+  if (
+    session &&
+    pathname.startsWith("/pinjaman-aset") &&
+    session.role !== "SUPERADMIN" &&
+    session.role !== "ADMIN" &&
+    session.role !== "PEMINJAM"
   ) {
     const url = req.nextUrl.clone();
     url.pathname = "/dashboard";

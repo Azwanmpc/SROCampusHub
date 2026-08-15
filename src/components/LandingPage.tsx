@@ -19,6 +19,15 @@ const MODULES: ModuleCard[] = [
   },
   {
     badge: "MODUL",
+    title: "Pinjaman Aset",
+    description: "Permohonan pinjaman aset alih, kelulusan dan pemulangan.",
+    options: [
+      { label: "Log Masuk Peminjam", href: "/login?redirect=/pinjaman-aset" },
+      { label: "Log Masuk Admin", href: "/login?redirect=/pinjaman-aset" },
+    ],
+  },
+  {
+    badge: "MODUL",
     title: "Aduan Kerosakan",
     description: "Aduan kerosakan, tugasan staf, jejak status kerja.",
     options: [

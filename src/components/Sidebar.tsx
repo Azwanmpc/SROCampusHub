@@ -11,6 +11,7 @@ import {
   ChartBar,
   ChartLine,
   CurrencyCircleDollar,
+  Package,
   Wrench,
   Gear,
   SignOut,
@@ -38,6 +39,10 @@ const NAV_GROUPS: NavGroup[] = [
   {
     label: "Fasiliti",
     items: [{ href: "/fasiliti", label: "Maklumat Fasiliti", roles: ["SUPERADMIN", "ADMIN", "PEMOHON", "PENGADU", "TEKNIKAL"], icon: Buildings }],
+  },
+  {
+    label: "Pinjaman Aset",
+    items: [{ href: "/pinjaman-aset", label: "Pinjaman Aset", roles: ["SUPERADMIN", "ADMIN", "PEMINJAM"], icon: Package }],
   },
   {
     label: "Penyelenggaraan",

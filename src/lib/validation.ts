@@ -6,7 +6,7 @@ export const registerSchema = z.object({
   username: z.string().min(3, "Username sekurang-kurangnya 3 aksara"),
   phone: z.string().min(9, "Nombor telefon tidak sah"),
   password: z.string().min(6, "Kata laluan sekurang-kurangnya 6 aksara"),
-  role: z.enum(["PEMOHON"]),
+  role: z.enum(["PEMOHON", "PEMINJAM"]),
 });
 
 export const loginSchema = z.object({
@@ -35,6 +35,15 @@ export const bookingSchema = z.object({
   sebutEmel: z.string().optional(),
   addonsJson: z.string().optional(),
   asramaRoomsJson: z.string().optional(),
+});
+
+export const pinjamanAsetSchema = z.object({
+  jawatan: z.string().min(1, "Sila nyatakan jawatan"),
+  bahagian: z.string().min(1, "Sila nyatakan bahagian"),
+  tujuan: z.string().min(3, "Sila nyatakan tujuan pinjaman"),
+  tempatDigunakan: z.string().min(1, "Sila nyatakan tempat digunakan"),
+  tarikhDijangkaPulang: z.string().min(1, "Sila nyatakan tarikh dijangka pulang"),
+  asetIds: z.array(z.string().min(1)).min(1, "Sila pilih sekurang-kurangnya satu aset"),
 });
 
 export const complaintSchema = z.object({

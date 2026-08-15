@@ -50,6 +50,7 @@ export default async function DashboardPage() {
   const session = await getSession();
   if (!session) return null;
   if (session.role === "PENGADU") redirect("/aduan");
+  if (session.role === "PEMINJAM") redirect("/pinjaman-aset");
   const isStaff = session.role === "SUPERADMIN" || session.role === "ADMIN";
 
   if (isStaff) {

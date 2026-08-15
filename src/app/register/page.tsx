@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -16,6 +16,11 @@ export default function RegisterPage() {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const roleParam = new URLSearchParams(window.location.search).get("role");
+    if (roleParam === "PEMINJAM") setForm((f) => ({ ...f, role: "PEMINJAM" }));
+  }, []);
 
   function update<K extends keyof typeof form>(key: K, value: string) {
     setForm((f) => ({ ...f, [key]: value }));
@@ -64,6 +69,33 @@ export default function RegisterPage() {
         <div className="mb-[26px] h-0.5 bg-[rgba(32,30,29,0.4)]" />
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <div>
+            <label className={labelClass}>Daftar Sebagai</label>
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+              <label
+                className={`flex cursor-pointer items-start gap-2 border p-2.5 text-xs ${
+                  form.role === "PEMOHON" ? "border-[#6d28d9] bg-white" : "border-[rgba(32,30,29,0.3)]"
+                }`}
+              >
+                <input type="radio" name="role" checked={form.role === "PEMOHON"} onChange={() => update("role", "PEMOHON")} className="mt-0.5" />
+                <span>
+                  <span className="block font-bold">Pemohon</span>
+                  <span className="text-[rgba(32,30,29,0.6)]">Tempahan fasiliti kampus</span>
+                </span>
+              </label>
+              <label
+                className={`flex cursor-pointer items-start gap-2 border p-2.5 text-xs ${
+                  form.role === "PEMINJAM" ? "border-[#6d28d9] bg-white" : "border-[rgba(32,30,29,0.3)]"
+                }`}
+              >
+                <input type="radio" name="role" checked={form.role === "PEMINJAM"} onChange={() => update("role", "PEMINJAM")} className="mt-0.5" />
+                <span>
+                  <span className="block font-bold">Peminjam</span>
+                  <span className="text-[rgba(32,30,29,0.6)]">Pinjaman aset alih</span>
+                </span>
+              </label>
+            </div>
+          </div>
           <div>
             <label className={labelClass}>Nama Penuh</label>
             <input

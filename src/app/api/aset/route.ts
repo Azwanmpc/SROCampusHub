@@ -8,7 +8,10 @@ function isStaff(role: string) {
 
 export async function GET() {
   const session = await getSession();
-  if (!session || !isStaff(session.role)) {
+  // Read-only access is also open to PEMINJAM so they can search the
+  // inventory when filling a loan request; write endpoints below stay
+  // staff-only.
+  if (!session || !(isStaff(session.role) || session.role === "PEMINJAM")) {
     return NextResponse.json({ error: "Tiada kebenaran" }, { status: 403 });
   }
   const records = await prisma.aset.findMany({ orderBy: [{ lokasi: "asc" }, { namaAset: "asc" }] });

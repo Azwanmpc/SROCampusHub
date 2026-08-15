@@ -31,6 +31,7 @@ model User {
   complaints          Complaint[]
   notifications       Notification[]
   passwordResetTokens PasswordResetToken[]
+  pinjamanAset        PinjamanAset[]
 }
 
 model Facility {
@@ -153,12 +154,52 @@ model HasilSewaan {
 
 // status: BAIK | ROSAK
 model Aset {
-  id            String   @id @default(cuid())
-  namaAset      String
-  noPendaftaran String
-  tahun         String?
-  lokasi        String
-  status        String   @default("BAIK")
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id             String   @id @default(cuid())
+  namaAset       String
+  noPendaftaran  String
+  tahun          String?
+  lokasi         String
+  status         String   @default("BAIK")
+  sedangDipinjam Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  pinjamanItems PinjamanAsetItem[]
+}
+
+// status: MENUNGGU_KELULUSAN | DITOLAK | DILULUSKAN | DIPULANGKAN | SELESAI
+// KEW.PA-9 Borang Permohonan Pergerakan/Pinjaman Aset Alih
+model PinjamanAset {
+  id                   String    @id @default(cuid())
+  pemohonId            String
+  pemohon              User      @relation(fields: [pemohonId], references: [id])
+  jawatan              String
+  bahagian             String
+  tujuan               String
+  tempatDigunakan      String
+  status               String    @default("MENUNGGU_KELULUSAN")
+  tarikhDijangkaPulang DateTime
+  tarikhLulus          DateTime?
+  tarikhDipinjam       DateTime?
+  tarikhDipulangkan    DateTime?
+  tarikhDiterima       DateTime?
+  pelulusNama          String?
+  pelulusJawatan       String?
+  pemulangNama         String?
+  pemulangJawatan      String?
+  penerimaNama         String?
+  penerimaJawatan      String?
+  rejectionReason      String?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  items PinjamanAsetItem[]
+}
+
+model PinjamanAsetItem {
+  id         String       @id @default(cuid())
+  pinjamanId String
+  pinjaman   PinjamanAset @relation(fields: [pinjamanId], references: [id], onDelete: Cascade)
+  asetId     String
+  aset       Aset         @relation(fields: [asetId], references: [id])
 }
