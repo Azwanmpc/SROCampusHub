@@ -15,6 +15,17 @@
   --info: #4a72a8;
   --background: #ffffff;
   --foreground: #201e1d;
+
+  /* Public landing page tokens (kept separate from the authenticated app's --accent) */
+  --brand-red: #ed1b26;
+  --brand-red-dark: #c4141e;
+  --landing-bg: #f8fafc;
+  --landing-surface: #ffffff;
+  --landing-border: #e2e8f0;
+  --landing-ink: #18181b;
+  --landing-slate: #64748b;
+  --landing-staff-bg: #18181b;
+  --landing-staff-surface: #26262b;
 }
 
 @theme inline {
@@ -30,6 +41,14 @@
   --white: #201e1d;
   --background: #171514;
   --foreground: #f3f2f2;
+
+  --landing-bg: #0f0f10;
+  --landing-surface: #1c1c1f;
+  --landing-border: #2f2f34;
+  --landing-ink: #f4f4f5;
+  --landing-slate: #a1a1aa;
+  --landing-staff-bg: #000000;
+  --landing-staff-surface: #19191c;
 }
 
 body {
