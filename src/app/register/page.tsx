@@ -92,6 +92,7 @@ export default function RegisterPage() {
                 <span>
                   <span className="block font-bold">Peminjam</span>
                   <span className="text-[rgba(32,30,29,0.6)]">Pinjaman aset alih</span>
+                  <span className="mt-1 block font-semibold text-[#8a6d1f]">Hanya untuk warga MPC sahaja</span>
                 </span>
               </label>
             </div>

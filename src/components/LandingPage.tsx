@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import AnnouncementBar from "@/components/landing/AnnouncementBar";
 import LandingNav from "@/components/landing/LandingNav";
 import Hero from "@/components/landing/Hero";
 import PublicServices from "@/components/landing/PublicServices";
@@ -29,6 +30,7 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-[var(--landing-bg)] text-[var(--landing-ink)]">
+      <AnnouncementBar />
       <LandingNav dark={dark} onToggleDark={toggleDark} />
       <Hero />
       <PublicServices />
