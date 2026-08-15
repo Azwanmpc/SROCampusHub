@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, FormEvent, useEffect } from "react";
+import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -16,11 +16,6 @@ export default function RegisterPage() {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const roleParam = new URLSearchParams(window.location.search).get("role");
-    if (roleParam === "PEMINJAM") setForm((f) => ({ ...f, role: "PEMINJAM" }));
-  }, []);
 
   function update<K extends keyof typeof form>(key: K, value: string) {
     setForm((f) => ({ ...f, [key]: value }));
@@ -84,11 +79,10 @@ export default function RegisterPage() {
                 </span>
               </label>
               <label
-                className={`flex cursor-pointer items-start gap-2 border p-2.5 text-xs ${
-                  form.role === "PEMINJAM" ? "border-[#6d28d9] bg-white" : "border-[rgba(32,30,29,0.3)]"
-                }`}
+                className="flex cursor-not-allowed items-start gap-2 border border-[rgba(32,30,29,0.2)] bg-[rgba(32,30,29,0.04)] p-2.5 text-xs opacity-60"
+                title="Peranan Peminjam hanya boleh didaftarkan oleh pentadbir untuk warga MPC"
               >
-                <input type="radio" name="role" checked={form.role === "PEMINJAM"} onChange={() => update("role", "PEMINJAM")} className="mt-0.5" />
+                <input type="radio" name="role" disabled className="mt-0.5" />
                 <span>
                   <span className="block font-bold">Peminjam</span>
                   <span className="text-[rgba(32,30,29,0.6)]">Pinjaman aset alih</span>

@@ -6,7 +6,7 @@ export const registerSchema = z.object({
   username: z.string().min(3, "Username sekurang-kurangnya 3 aksara"),
   phone: z.string().min(9, "Nombor telefon tidak sah"),
   password: z.string().min(6, "Kata laluan sekurang-kurangnya 6 aksara"),
-  role: z.enum(["PEMOHON", "PEMINJAM"]),
+  role: z.enum(["PEMOHON"]),
 });
 
 export const loginSchema = z.object({

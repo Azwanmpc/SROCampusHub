@@ -31,7 +31,7 @@ export default function LandingNav({ dark, onToggleDark }: { dark: boolean; onTo
           <span className="hidden sm:inline">CampusHub</span>
         </Link>
 
-        <nav className="hidden items-center gap-7 text-[13.5px] font-semibold text-[var(--landing-slate)] md:flex">
+        <nav className="hidden items-center gap-4 text-[13.5px] font-semibold text-[var(--landing-slate)] md:flex lg:gap-7">
           {NAV_LINKS.map((link) => (
             <a key={link.label} href={link.href} className="transition-colors hover:text-[var(--landing-ink)]">
               {link.label}
@@ -50,9 +50,9 @@ export default function LandingNav({ dark, onToggleDark }: { dark: boolean; onTo
           </button>
           <Link
             href="/login"
-            className="bg-[#ed1b26] px-4 py-2.5 font-archivo text-[13px] font-extrabold text-white transition-colors hover:bg-[#c4141e] hover:text-white"
+            className="whitespace-nowrap bg-[#ed1b26] px-4 py-2.5 font-archivo text-[13px] font-extrabold text-white transition-colors hover:bg-[#c4141e] hover:text-white"
           >
-            Log Masuk Warga MPC
+            Log Masuk<span className="hidden lg:inline"> Warga MPC</span>
           </Link>
         </div>
 

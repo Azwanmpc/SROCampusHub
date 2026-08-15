@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-const PILLARS = ["Reformasi Peraturan", "Teknologi & AI", "Pembangunan Bakat", "Perkhidmatan"];
+const PILLARS = ["Reformasi Peraturan", "Teknologi & AI", "Pembangunan Bakat", "Perkhidmatan Fasiliti"];
 
 export default function Hero() {
   return (
@@ -8,7 +8,7 @@ export default function Hero() {
       <img
         src="/images/landing/hero-kampus.webp"
         alt="Bangunan utama MPC Wilayah Selatan dikelilingi pokok palma"
-        className="absolute inset-0 h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full object-cover object-[76%_50%]"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-[rgba(15,15,17,0.94)] via-[rgba(15,15,17,0.6)] to-[rgba(15,15,17,0.3)]" />
 
@@ -23,8 +23,8 @@ export default function Hero() {
           Hab Produktiviti, Perkhidmatan dan Transformasi Wilayah Selatan
         </p>
         <p className="mt-3 max-w-[560px] text-[15px] leading-[1.6] text-[rgba(255,255,255,0.8)] sm:text-[16.5px]">
-          Menghubungkan inisiatif produktiviti, reformasi peraturan, adaptasi teknologi, pembangunan bakat serta
-          perkhidmatan MPC dalam satu ekosistem.
+          Menghubungkan inisiatif produktiviti melalui reformasi peraturan, adaptasi teknologi, pembangunan bakat
+          serta perkhidmatan MPC dalam satu ekosistem.
         </p>
 
         <div className="mt-5 flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
