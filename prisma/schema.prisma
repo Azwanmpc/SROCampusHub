@@ -152,6 +152,24 @@ model HasilSewaan {
   updatedAt       DateTime @updatedAt
 }
 
+// jenis: PEMBAIKAN | PENYELENGGARAAN
+// tugasDilaksanakan: DALAMAN | KONTRAKTOR
+// kategori: ELEKTRIK | AIR_PLUMBING | PENGHAWA_DINGIN | BANGUNAN_STRUKTUR | PERABOT | ICT_RANGKAIAN | AUDIO_VISUAL | PERALATAN | LAIN_LAIN
+// lokasi: BANGUNAN_PENTADBIRAN_1 | BANGUNAN_PENTADBIRAN_2 | BILIK_LATIHAN_ICC | BILIK_LATIHAN_TQM | SURAU | ASRAMA | AUDITORIUM | DEWAN_PRODUKTIVITI | LAIN_LAIN
+model KosPenyelenggaraan {
+  id                String   @id @default(cuid())
+  tarikh            DateTime
+  lokasi            String
+  perincianLokasi   String?
+  jenis             String
+  butiranKerja      String
+  kos               Float    @default(0)
+  tugasDilaksanakan String
+  kategori          String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
 // status: BAIK | ROSAK
 model Aset {
   id             String   @id @default(cuid())

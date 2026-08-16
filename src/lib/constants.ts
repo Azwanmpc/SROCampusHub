@@ -99,6 +99,35 @@ export const ARRANGEMENT_LABEL: Record<string, string> = {
   TIADA: "Tiada Susunan Khas",
 };
 
+export const KOS_LOKASI_LABEL: Record<string, string> = {
+  BANGUNAN_PENTADBIRAN_1: "Bangunan Pentadbiran 1",
+  BANGUNAN_PENTADBIRAN_2: "Bangunan Pentadbiran 2",
+  BILIK_LATIHAN_ICC: "Bilik Latihan ICC",
+  BILIK_LATIHAN_TQM: "Bilik Latihan TQM",
+  SURAU: "Surau",
+  ASRAMA: "Asrama",
+  AUDITORIUM: "Auditorium",
+  DEWAN_PRODUKTIVITI: "Dewan Produktiviti",
+  LAIN_LAIN: "Lain-lain",
+};
+
+export const KOS_JENIS_LABEL: Record<string, string> = {
+  PEMBAIKAN: "Pembaikan",
+  PENYELENGGARAAN: "Penyelenggaraan",
+};
+
+export const KOS_KATEGORI_LABEL: Record<string, string> = {
+  ELEKTRIK: "Elektrik",
+  AIR_PLUMBING: "Air / Plumbing",
+  PENGHAWA_DINGIN: "Penghawa Dingin",
+  BANGUNAN_STRUKTUR: "Bangunan / Struktur",
+  PERABOT: "Perabot",
+  ICT_RANGKAIAN: "ICT / Rangkaian",
+  AUDIO_VISUAL: "Audio Visual",
+  PERALATAN: "Peralatan",
+  LAIN_LAIN: "Lain-lain",
+};
+
 export const FACILITY_TYPES = [
   "Dewan",
   "Asrama",

@@ -161,6 +161,11 @@ export default function RegisterPage() {
               Tiada perlu daftar
             </Link>
           </div>
+          <div className="text-[13px] text-[rgba(32,30,29,0.7)]">
+            <Link href="/" className="font-bold text-[#6d28d9] hover:underline">
+              Kembali ke Laman Utama
+            </Link>
+          </div>
         </form>
       </div>
     </div>

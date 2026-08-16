@@ -55,12 +55,14 @@ export default async function DashboardPage() {
   const isStaff = session.role === "SUPERADMIN" || session.role === "ADMIN" || session.role === "STAFF_MPC";
 
   if (isStaff) {
-    const [pendingBookings, activeComplaints, maintenanceFacilities, allBookings, recentBookings, recentComplaints] =
+    const [pendingBookings, activeComplaints, maintenanceFacilities, hasilSewaanRecords, recentBookings, recentComplaints] =
       await Promise.all([
         prisma.booking.count({ where: { status: "MENUNGGU" } }),
         prisma.complaint.count({ where: { status: { not: "SELESAI" } } }),
         prisma.facility.count({ where: { status: "PENYELENGGARAAN" } }),
-        prisma.booking.findMany({ where: { status: "DISAHKAN" } }),
+        // Hasil Sewaan (RM) is always sourced from the HasilSewaan ledger (Dashboard Hasil's own
+        // data) so every dashboard that surfaces this figure stays in sync with a single source of truth.
+        prisma.hasilSewaan.findMany(),
         prisma.booking.findMany({
           where: { status: "MENUNGGU" },
           include: { facility: true, user: true },
@@ -74,7 +76,7 @@ export default async function DashboardPage() {
         }),
       ]);
 
-    const hasil = allBookings.reduce((sum, b) => sum + b.revenue, 0);
+    const hasil = hasilSewaanRecords.reduce((sum, h) => sum + h.hasilTerimaan, 0);
 
     return (
       <div>

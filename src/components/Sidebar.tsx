@@ -11,6 +11,7 @@ import {
   ChartBar,
   ChartLine,
   ClipboardText,
+  Coins,
   CurrencyCircleDollar,
   Package,
   Wrench,
@@ -61,8 +62,8 @@ const NAV_GROUPS: NavGroup[] = [
     items: [
       { href: "/laporan", label: "Laporan & Analitik", roles: ["SUPERADMIN", "ADMIN", "STAFF_MPC"], icon: ChartLine },
       { href: "/hasil-sewaan", label: "Dashboard Hasil", roles: ["SUPERADMIN", "ADMIN", "STAFF_MPC"], icon: CurrencyCircleDollar },
+      { href: "/kos-penyelenggaraan", label: "Dashboard Kos Penyelenggaraan", roles: ["SUPERADMIN", "ADMIN", "TEKNIKAL", "STAFF_MPC"], icon: Coins },
       { href: "/aset", label: "Dashboard Aset", roles: ["SUPERADMIN", "ADMIN", "STAFF_MPC"], icon: Wrench },
-      { href: "/rkb", label: "Dashboard RKB", roles: ["SUPERADMIN", "ADMIN", "STAFF_MPC"], icon: ChartBar },
       { href: "/tetapan", label: "Tetapan & Pengguna", roles: ["SUPERADMIN"], icon: Gear },
     ],
   },

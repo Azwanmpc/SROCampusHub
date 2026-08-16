@@ -28,7 +28,9 @@ export default function LandingFooter() {
                 <a href="#perkhidmatan" className="hover:text-[#ed1b26]">Perkhidmatan</a>
               </li>
               <li>
-                <Link href="/rkb" className="hover:text-[#ed1b26]">Inisiatif &amp; Program (RKB)</Link>
+                <a href="https://www.rkbwilayahselatan.com/" target="_blank" rel="noopener noreferrer" className="hover:text-[#ed1b26]">
+                  Inisiatif &amp; Program (RKB)
+                </a>
               </li>
               <li>
                 <Link href="/login" className="hover:text-[#ed1b26]">Log Masuk Warga MPC</Link>

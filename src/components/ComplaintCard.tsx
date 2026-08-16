@@ -44,7 +44,6 @@ export default function ComplaintCard({
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [staffNote, setStaffNote] = useState(complaint.staffNote ?? "");
-  const [estimatedCost, setEstimatedCost] = useState(String(complaint.estimatedCost || ""));
   const [category, setCategory] = useState(complaint.category ?? "");
 
   const canApprove = role === "SUPERADMIN" || role === "ADMIN";
@@ -72,7 +71,7 @@ export default function ComplaintCard({
       await fetch(`/api/complaints/${complaint.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ staffNote, estimatedCost: Number(estimatedCost) || 0 }),
+        body: JSON.stringify({ staffNote }),
       });
       router.refresh();
     } finally {
@@ -127,15 +126,6 @@ export default function ComplaintCard({
             rows={2}
             placeholder="Tambah catatan kerja penyelenggaraan…"
             className="w-full border border-[rgba(32,30,29,0.3)] bg-[#f3f2f2] px-2.5 py-2 text-xs outline-none"
-          />
-          <label className="mb-1 mt-2 block text-[11px] font-bold text-[rgba(32,30,29,0.6)]">Anggaran Kos (RM)</label>
-          <input
-            type="number"
-            value={estimatedCost}
-            onChange={(e) => setEstimatedCost(e.target.value)}
-            onBlur={saveStaffFields}
-            placeholder="0"
-            className="w-full border border-[rgba(32,30,29,0.3)] bg-[#f3f2f2] px-2.5 py-1.5 text-xs outline-none"
           />
           {role === "TEKNIKAL" && (
             <button

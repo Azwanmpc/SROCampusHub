@@ -9,7 +9,7 @@ const NAV_LINKS = [
   { label: "Kemudahan", href: "#kemudahan" },
   { label: "Perkhidmatan", href: "#perkhidmatan" },
   { label: "Mengenai SRO", href: "#mengenai-sro" },
-  { label: "RKB", href: "/rkb" },
+  { label: "RKB", href: "https://www.rkbwilayahselatan.com/", external: true },
 ];
 
 export default function LandingNav({ dark, onToggleDark }: { dark: boolean; onToggleDark: () => void }) {
@@ -33,7 +33,13 @@ export default function LandingNav({ dark, onToggleDark }: { dark: boolean; onTo
 
         <nav className="hidden items-center gap-4 text-[13.5px] font-semibold text-[var(--landing-slate)] md:flex lg:gap-7">
           {NAV_LINKS.map((link) => (
-            <a key={link.label} href={link.href} className="transition-colors hover:text-[var(--landing-ink)]">
+            <a
+              key={link.label}
+              href={link.href}
+              target={link.external ? "_blank" : undefined}
+              rel={link.external ? "noopener noreferrer" : undefined}
+              className="transition-colors hover:text-[var(--landing-ink)]"
+            >
               {link.label}
             </a>
           ))}
@@ -74,6 +80,8 @@ export default function LandingNav({ dark, onToggleDark }: { dark: boolean; onTo
               <a
                 key={link.label}
                 href={link.href}
+                target={link.external ? "_blank" : undefined}
+                rel={link.external ? "noopener noreferrer" : undefined}
                 onClick={() => setMenuOpen(false)}
                 className="border-b border-[var(--landing-border)] py-3 text-[14px] font-semibold text-[var(--landing-ink)] last:border-b-0"
               >

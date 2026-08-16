@@ -28,15 +28,17 @@ export async function GET() {
     });
   }
 
-  const [bookings, complaints, facilities] = await Promise.all([
-    prisma.booking.findMany({ where: { status: "DISAHKAN" }, include: { user: true } }),
+  const [complaints, facilities, hasilSewaan] = await Promise.all([
     prisma.complaint.findMany(),
     prisma.facility.findMany(),
+    // Hasil Sewaan (RM) is always sourced from the HasilSewaan ledger (Dashboard Hasil's own
+    // data) so every dashboard that surfaces this figure stays in sync with a single source of truth.
+    prisma.hasilSewaan.findMany(),
   ]);
 
   const monthly = months.map(({ key, label, year, month }) => {
-    const monthBookings = bookings.filter((b) => {
-      const d = new Date(b.startDateTime);
+    const monthHasil = hasilSewaan.filter((h) => {
+      const d = new Date(h.tarikh);
       return d.getFullYear() === year && d.getMonth() === month;
     });
     const monthComplaints = complaints.filter((c) => {
@@ -44,7 +46,7 @@ export async function GET() {
       return d.getFullYear() === year && d.getMonth() === month;
     });
     const resolved = monthComplaints.filter((c) => c.status === "SELESAI").length;
-    const revenue = monthBookings.reduce((sum, b) => sum + b.revenue, 0);
+    const revenue = monthHasil.reduce((sum, h) => sum + h.hasilTerimaan, 0);
     const maintenanceCost = monthComplaints.reduce(
       (sum, c) => sum + (c.repairType ? REPAIR_COST[c.repairType] ?? 150 : 0),
       0
@@ -64,11 +66,12 @@ export async function GET() {
     .filter((f) => f.status === "PENYELENGGARAAN")
     .map((f) => ({ id: f.id, name: f.name, type: f.type }));
 
-  const revenueByFacility = facilities
-    .map((f) => ({
-      name: f.name,
-      revenue: bookings.filter((b) => b.facilityId === f.id).reduce((sum, b) => sum + b.revenue, 0),
-    }))
+  const lokasiRevenueMap = new Map<string, number>();
+  for (const h of hasilSewaan) {
+    lokasiRevenueMap.set(h.lokasi, (lokasiRevenueMap.get(h.lokasi) ?? 0) + h.hasilTerimaan);
+  }
+  const revenueByFacility = [...lokasiRevenueMap.entries()]
+    .map(([name, revenue]) => ({ name, revenue }))
     .filter((f) => f.revenue > 0)
     .sort((a, b) => b.revenue - a.revenue)
     .slice(0, 6);
@@ -127,15 +130,16 @@ export async function GET() {
     .map((r) => ({ ...r, kosLabel: `RM ${r.kos.toLocaleString("ms-MY")}` }));
 
   const ORG_COLORS = ["#4a72a8", "#4a8a63", "#8a6d1f", "#7c1405", "#6d28d9", "#5b3a8a", "#605d5d"];
-  const orgCountMap = new Map<string, number>();
-  for (const b of bookings) {
-    const org = b.organisasi || b.user.name;
-    if (org) orgCountMap.set(org, (orgCountMap.get(org) ?? 0) + 1);
+  // Top Organisasi Penyewa Fasiliti is sourced from the same HasilSewaan ledger as Dashboard
+  // Hasil, ranked by hasil (RM) rather than booking count, so it stays in sync with that dashboard.
+  const orgRevenueMap = new Map<string, number>();
+  for (const h of hasilSewaan) {
+    if (h.organisasi) orgRevenueMap.set(h.organisasi, (orgRevenueMap.get(h.organisasi) ?? 0) + h.hasilTerimaan);
   }
-  const orgTotalBookings = [...orgCountMap.values()].reduce((a, n) => a + n, 0) || 1;
+  const orgTotalRevenue = [...orgRevenueMap.values()].reduce((a, n) => a + n, 0) || 1;
   let orgAcc = 0;
-  const topOrganisasi = [...orgCountMap.entries()]
-    .map(([label, bil]) => ({ label, bil, pct: Math.round((bil / orgTotalBookings) * 100) }))
+  const topOrganisasi = [...orgRevenueMap.entries()]
+    .map(([label, revenue]) => ({ label, bil: revenue, pct: Math.round((revenue / orgTotalRevenue) * 100) }))
     .sort((a, b) => b.bil - a.bil)
     .slice(0, 5)
     .map((o, i) => {

@@ -81,7 +81,6 @@ export async function middleware(req: NextRequest) {
     (pathname.startsWith("/prestasi") ||
       pathname.startsWith("/laporan") ||
       pathname.startsWith("/aset") ||
-      pathname.startsWith("/rkb") ||
       pathname.startsWith("/hasil-sewaan")) &&
     session.role !== "SUPERADMIN" &&
     session.role !== "ADMIN" &&
@@ -90,6 +89,22 @@ export async function middleware(req: NextRequest) {
     const url = req.nextUrl.clone();
     url.pathname = "/dashboard";
     return NextResponse.redirect(url);
+  }
+
+  // Dashboard Kos Penyelenggaraan: SUPERADMIN/ADMIN/TEKNIKAL get full view+edit access.
+  // STAFF_MPC may view the dashboard but not the Kemaskini (edit) page.
+  if (session && pathname.startsWith("/kos-penyelenggaraan/kemaskini")) {
+    if (!["SUPERADMIN", "ADMIN", "TEKNIKAL"].includes(session.role)) {
+      const url = req.nextUrl.clone();
+      url.pathname = "/kos-penyelenggaraan";
+      return NextResponse.redirect(url);
+    }
+  } else if (session && pathname.startsWith("/kos-penyelenggaraan")) {
+    if (!["SUPERADMIN", "ADMIN", "TEKNIKAL", "STAFF_MPC"].includes(session.role)) {
+      const url = req.nextUrl.clone();
+      url.pathname = "/dashboard";
+      return NextResponse.redirect(url);
+    }
   }
 
   // Pinjaman Aset (kelulusan/tolak/sahkan pemulangan) stays exclusive to SUPERADMIN/ADMIN/PEMINJAM —
