@@ -55,6 +55,7 @@ export default async function DashboardPage() {
   const isStaff = session.role === "SUPERADMIN" || session.role === "ADMIN" || session.role === "STAFF_MPC";
 
   if (isStaff) {
+    const currentYear = new Date().getFullYear();
     const [pendingBookings, activeComplaints, maintenanceFacilities, hasilSewaanRecords, recentBookings, recentComplaints] =
       await Promise.all([
         prisma.booking.count({ where: { status: "MENUNGGU" } }),
@@ -62,7 +63,10 @@ export default async function DashboardPage() {
         prisma.facility.count({ where: { status: "PENYELENGGARAAN" } }),
         // Hasil Sewaan (RM) is always sourced from the HasilSewaan ledger (Dashboard Hasil's own
         // data) so every dashboard that surfaces this figure stays in sync with a single source of truth.
-        prisma.hasilSewaan.findMany(),
+        // Scoped to the current year only — not a cumulative all-time total.
+        prisma.hasilSewaan.findMany({
+          where: { tarikh: { gte: new Date(currentYear, 0, 1), lt: new Date(currentYear + 1, 0, 1) } },
+        }),
         prisma.booking.findMany({
           where: { status: "MENUNGGU" },
           include: { facility: true, user: true },
@@ -90,7 +94,7 @@ export default async function DashboardPage() {
           <StatCard label="Tempahan Menunggu" value={pendingBookings} icon={CalendarCheck} iconColor="#4a72a8" />
           <StatCard label="Aduan Aktif" value={activeComplaints} icon={WarningCircle} iconColor="#7c1405" />
           <StatCard label="Fasiliti Penyelenggaraan" value={maintenanceFacilities} icon={Wrench} iconColor="#8a6d1f" />
-          <StatCard label="Jumlah Hasil Sewaan" value={`RM ${hasil.toLocaleString("ms-MY")}`} icon={MoneyWavy} iconColor="#4a8a63" />
+          <StatCard label={`Hasil Sewaan Tahun Semasa (${currentYear})`} value={`RM ${hasil.toLocaleString("ms-MY")}`} icon={MoneyWavy} iconColor="#4a8a63" />
         </CardsGrid>
 
         <div className="grid grid-cols-1 gap-px border border-[rgba(32,30,29,0.4)] bg-[rgba(32,30,29,0.4)] lg:grid-cols-2">
