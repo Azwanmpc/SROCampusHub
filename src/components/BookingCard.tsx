@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Buildings, SealCheck, Prohibit, Clock, FileText, Trash, ArrowCounterClockwise } from "@phosphor-icons/react";
+import { Buildings, SealCheck, Prohibit, Clock, FileText, Trash, ArrowCounterClockwise, WarningCircle } from "@phosphor-icons/react";
 import StatusBadge from "./StatusBadge";
 import QuotationModal from "./QuotationModal";
 import { BOOKING_STATUS_LABEL, BOOKING_STATUS_COLOR, ARRANGEMENT_LABEL } from "@/lib/constants";
@@ -215,6 +215,22 @@ export default function BookingCard({
           <button onClick={handleDelete} className="flex items-center gap-1.5 border border-[#6d28d9] px-3 py-1.5 text-xs font-bold text-[#6d28d9]">
             <Trash weight="duotone" /> Padam
           </button>
+        </div>
+      )}
+
+      {!canApprove && booking.status === "DISAHKAN" && (
+        <div className="mt-3.5 border-t border-[rgba(32,30,29,0.2)] pt-3.5">
+          <div className="flex items-start gap-2 border border-[#f5c76b] bg-[#fff8e6] px-3 py-2.5 text-xs leading-[1.5] text-[#8a6d1f]">
+            <WarningCircle weight="fill" size={16} className="mt-0.5 flex-none" />
+            <div>
+              <span className="font-bold">Perhatian:</span> Tempahan ini telah disahkan dan sebut harga telah
+              dikeluarkan.
+              <br />
+              <span className="font-bold">PERINGATAN!</span> Pemohon tidak boleh membuat permohonan untuk perubahan
+              tarikh bagi tempahan yang telah disahkan. Sila hubungi pentadbir{" "}
+              <span className="font-bold">0187734506</span>.
+            </div>
+          </div>
         </div>
       )}
 
