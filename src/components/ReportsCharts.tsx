@@ -13,6 +13,7 @@ type MonthlyRow = {
 };
 
 type ReportData = {
+  currentYear: number;
   monthly: MonthlyRow[];
   facilitiesDown: { id: string; name: string; type: string }[];
   repairTypeBreakdown: { type: string; total: number; selesai: number; belumSelesai: number; purataHariSiap: number }[];
@@ -119,7 +120,7 @@ export default function ReportsCharts() {
         <div className="mb-2 text-[11px] font-extrabold uppercase tracking-[0.06em] text-[rgba(32,30,29,0.5)]">Fasiliti &amp; Organisasi</div>
         <div className="grid grid-cols-1 gap-px border border-[rgba(32,30,29,0.4)] bg-[rgba(32,30,29,0.4)] lg:grid-cols-2">
           <div className="bg-white p-[18px]">
-            <div className="mb-3.5 font-archivo text-sm font-extrabold">Hasil Mengikut Fasiliti</div>
+            <div className="mb-3.5 font-archivo text-sm font-extrabold">Hasil Mengikut Fasiliti ({data.currentYear})</div>
             {data.hasilByFacility.length === 0 && <p className="text-xs text-[rgba(32,30,29,0.5)]">Tiada data.</p>}
             <div className="flex flex-col gap-2.5">
               {data.hasilByFacility.map((f) => (
@@ -136,7 +137,7 @@ export default function ReportsCharts() {
             </div>
           </div>
           <div className="bg-white p-[18px]">
-            <div className="mb-3.5 font-archivo text-sm font-extrabold">Punca Aduan Mengikut Lokasi</div>
+            <div className="mb-3.5 font-archivo text-sm font-extrabold">Punca Aduan Mengikut Lokasi ({data.currentYear})</div>
             {data.locationBreakdown.length === 0 && <p className="text-xs text-[rgba(32,30,29,0.5)]">Tiada data.</p>}
             <div className="flex flex-col gap-2.5">
               {data.locationBreakdown.map((l) => (
@@ -159,7 +160,7 @@ export default function ReportsCharts() {
 
       <div className="grid grid-cols-1 gap-px border border-[rgba(32,30,29,0.4)] bg-[rgba(32,30,29,0.4)] lg:grid-cols-2">
         <div className="overflow-x-auto bg-white p-[18px]">
-          <div className="mb-3.5 font-archivo text-sm font-extrabold">Top 5 Aduan Berulang (Jenis Kerosakan)</div>
+          <div className="mb-3.5 font-archivo text-sm font-extrabold">Top 5 Aduan Berulang — Jenis Kerosakan ({data.currentYear})</div>
           {data.recurringComplaints.length === 0 && <p className="text-xs text-[rgba(32,30,29,0.5)]">Tiada data.</p>}
           <table className="w-full min-w-[260px] border-collapse text-xs">
             <thead>
@@ -190,7 +191,7 @@ export default function ReportsCharts() {
           </table>
         </div>
         <div className="bg-white p-[18px]">
-          <div className="mb-3.5 font-archivo text-sm font-extrabold">Top 5 Organisasi Penyewa Fasiliti</div>
+          <div className="mb-3.5 font-archivo text-sm font-extrabold">Top 5 Organisasi Penyewa Fasiliti ({data.currentYear})</div>
           {data.topOrganisasi.length === 0 ? (
             <p className="text-xs text-[rgba(32,30,29,0.5)]">Tiada data.</p>
           ) : (
@@ -213,7 +214,9 @@ export default function ReportsCharts() {
       <div className="grid grid-cols-1 gap-px border border-[rgba(32,30,29,0.4)] bg-[rgba(32,30,29,0.4)] lg:grid-cols-2">
         {data.repairTypeBreakdown.map((r) => (
           <div key={r.type} className="bg-white p-[18px]">
-            <div className="mb-3.5 font-archivo text-sm font-extrabold">{REPAIR_TYPE_LABEL[r.type]}</div>
+            <div className="mb-3.5 font-archivo text-sm font-extrabold">
+              {REPAIR_TYPE_LABEL[r.type]} ({data.currentYear})
+            </div>
             <div className="text-xs text-[rgba(32,30,29,0.6)]">
               Jumlah: <strong className="text-[#201e1d]">{r.total}</strong> · Selesai:{" "}
               <strong className="text-[#4a8a63]">{r.selesai}</strong> · Pending:{" "}

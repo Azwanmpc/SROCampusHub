@@ -36,6 +36,14 @@ export async function GET() {
     prisma.hasilSewaan.findMany(),
   ]);
 
+  // The breakdown/ranking sections below (revenue by facility, complaint causes, recurring
+  // complaints, top organisations, internal/contractor stats) are scoped to the current year only
+  // — not a cumulative all-time total. The rolling 6-month "monthly" trend further below
+  // deliberately keeps using the full, unfiltered arrays since it does its own per-month filtering.
+  const currentYear = now.getFullYear();
+  const hasilSewaanThisYear = hasilSewaan.filter((h) => new Date(h.tarikh).getFullYear() === currentYear);
+  const complaintsThisYear = complaints.filter((c) => new Date(c.createdAt).getFullYear() === currentYear);
+
   const monthly = months.map(({ key, label, year, month }) => {
     const monthHasil = hasilSewaan.filter((h) => {
       const d = new Date(h.tarikh);
@@ -67,7 +75,7 @@ export async function GET() {
     .map((f) => ({ id: f.id, name: f.name, type: f.type }));
 
   const lokasiRevenueMap = new Map<string, number>();
-  for (const h of hasilSewaan) {
+  for (const h of hasilSewaanThisYear) {
     lokasiRevenueMap.set(h.lokasi, (lokasiRevenueMap.get(h.lokasi) ?? 0) + h.hasilTerimaan);
   }
   const revenueByFacility = [...lokasiRevenueMap.entries()]
@@ -83,17 +91,17 @@ export async function GET() {
   }));
 
   const locationCounts = new Map<string, number>();
-  for (const c of complaints) {
+  for (const c of complaintsThisYear) {
     locationCounts.set(c.location, (locationCounts.get(c.location) ?? 0) + 1);
   }
-  const totalComplaintsCount = complaints.length || 1;
+  const totalComplaintsCount = complaintsThisYear.length || 1;
   const locationBreakdown = [...locationCounts.entries()]
     .sort((a, b) => b[1] - a[1])
     .slice(0, 6)
     .map(([lokasi, count]) => ({ lokasi, count, pct: Math.round((count / totalComplaintsCount) * 100) }));
 
   const repairTypeBreakdown = ["DALAMAN", "KONTRAKTOR"].map((type) => {
-    const items = complaints.filter((c) => c.repairType === type);
+    const items = complaintsThisYear.filter((c) => c.repairType === type);
     const resolvedItems = items.filter((c) => c.status === "SELESAI" && c.resolvedAt);
     const avgDays =
       resolvedItems.length > 0
@@ -117,7 +125,7 @@ export async function GET() {
   const kosByMonth = monthly.map((m) => ({ label: m.label, kosLabel: `RM ${m.kosPenyelenggaraan.toLocaleString("ms-MY")}`, kosPct: Math.round((m.kosPenyelenggaraan / maxMonthlyCost) * 100) }));
 
   const recurringMap = new Map<string, { lokasi: string; isu: string; bil: number; kos: number }>();
-  for (const c of complaints) {
+  for (const c of complaintsThisYear) {
     const key = `${c.location}|${c.description}`;
     const entry = recurringMap.get(key) ?? { lokasi: c.location, isu: c.description, bil: 0, kos: 0 };
     entry.bil += 1;
@@ -133,7 +141,7 @@ export async function GET() {
   // Top Organisasi Penyewa Fasiliti is sourced from the same HasilSewaan ledger as Dashboard
   // Hasil, ranked by hasil (RM) rather than booking count, so it stays in sync with that dashboard.
   const orgRevenueMap = new Map<string, number>();
-  for (const h of hasilSewaan) {
+  for (const h of hasilSewaanThisYear) {
     if (h.organisasi) orgRevenueMap.set(h.organisasi, (orgRevenueMap.get(h.organisasi) ?? 0) + h.hasilTerimaan);
   }
   const orgTotalRevenue = [...orgRevenueMap.values()].reduce((a, n) => a + n, 0) || 1;
@@ -153,6 +161,7 @@ export async function GET() {
       : "#e2e1e0";
 
   return NextResponse.json({
+    currentYear,
     monthly,
     facilitiesDown,
     repairTypeBreakdown,
