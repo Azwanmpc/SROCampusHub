@@ -20,7 +20,6 @@ const JENIS_COLORS: Record<string, string> = {
 };
 const COLOR_PREV = "#1e3a5f";
 const COLOR_CURR = "#E4212B";
-const FIRST_SELECTABLE_YEAR = 2026;
 
 function fmtRM(n: number) {
   return "RM " + Math.round(n).toLocaleString("en-US");
@@ -33,7 +32,7 @@ export default function HasilSewaanDashboard() {
   const [records, setRecords] = useState<RawRec[] | null>(null);
   const [monthSel, setMonthSel] = useState("ALL");
   const [jenisSel, setJenisSel] = useState("ALL");
-  const [yearSel, setYearSel] = useState(FIRST_SELECTABLE_YEAR);
+  const [yearSel, setYearSel] = useState(new Date().getFullYear());
 
   const barRef = useRef<HTMLCanvasElement>(null);
   const donutRef = useRef<HTMLCanvasElement>(null);
@@ -65,12 +64,9 @@ export default function HasilSewaanDashboard() {
   }, [records]);
 
   const yearOptions = useMemo(() => {
-    const now = new Date();
-    const set = new Set<number>([FIRST_SELECTABLE_YEAR, FIRST_SELECTABLE_YEAR + 1, now.getFullYear(), now.getFullYear() + 1]);
+    const set = new Set<number>([new Date().getFullYear()]);
     for (const y of Object.keys(years)) set.add(Number(y));
-    return Array.from(set)
-      .filter((y) => y >= FIRST_SELECTABLE_YEAR)
-      .sort((a, b) => a - b);
+    return Array.from(set).sort((a, b) => a - b);
   }, [years]);
 
   const currYear = String(yearSel);
