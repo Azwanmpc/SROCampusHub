@@ -57,6 +57,10 @@ export default function PinjamanAsetPrintModal({ record, onClose }: { record: Pi
   const pengeluarNamaFixed = isApproved ? PENGELUAR_NAMA_TETAP : "";
   const pengeluarJawatanFixed = isApproved ? PENGELUAR_JAWATAN_TETAP : "";
 
+  const isDiterima = !!record.tarikhDiterima;
+  const penerimaNamaFixed = isDiterima ? PENGELUAR_NAMA_TETAP : "";
+  const penerimaJawatanFixed = isDiterima ? PENGELUAR_JAWATAN_TETAP : "";
+
   const dateVals = [
     fmtTarikh(record.tarikhLulus),
     fmtTarikh(record.tarikhDipinjam),
@@ -114,8 +118,8 @@ export default function PinjamanAsetPrintModal({ record, onClose }: { record: Pi
               <span className="w-28 flex-none">Nama Pengeluar :</span>
               <span className="flex-1 border-b border-[#1a1a1a]">{pengeluarNamaFixed}</span>
             </div>
-            <div className="flex gap-2">
-              <span className="w-28 flex-none">Jawatan Pengeluar :</span>
+            <div className="flex gap-2 sm:col-start-2">
+              <span className="w-28 flex-none">Jawatan :</span>
               <span className="flex-1 border-b border-[#1a1a1a]">{pengeluarJawatanFixed}</span>
             </div>
           </div>
@@ -178,7 +182,7 @@ export default function PinjamanAsetPrintModal({ record, onClose }: { record: Pi
               tarikh={fmtTarikh(record.tarikhLulus)}
             />
             <SigBlock title="(Tandatangan Pemulang)" nama={record.pemulangNama ?? ""} jawatan={record.pemulangJawatan ?? ""} tarikh={fmtTarikh(record.tarikhDipulangkan)} />
-            <SigBlock title="(Tandatangan Penerima)" nama={record.penerimaNama ?? ""} jawatan={record.penerimaJawatan ?? ""} tarikh={fmtTarikh(record.tarikhDiterima)} />
+            <SigBlock title="(Tandatangan Penerima)" nama={penerimaNamaFixed} jawatan={penerimaJawatanFixed} tarikh={fmtTarikh(record.tarikhDiterima)} />
           </div>
         </div>
 

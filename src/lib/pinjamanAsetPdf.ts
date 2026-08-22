@@ -25,6 +25,10 @@ export function generateKewPa9(record: PinjamanAset) {
   const pengeluarNamaFixed = isApproved ? PENGELUAR_NAMA_TETAP : "";
   const pengeluarJawatanFixed = isApproved ? PENGELUAR_JAWATAN_TETAP : "";
 
+  const isDiterima = !!record.tarikhDiterima;
+  const penerimaNamaFixed = isDiterima ? PENGELUAR_NAMA_TETAP : "";
+  const penerimaJawatanFixed = isDiterima ? PENGELUAR_JAWATAN_TETAP : "";
+
   const doc = new jsPDF();
   let y = 14;
 
@@ -62,7 +66,7 @@ export function generateKewPa9(record: PinjamanAset) {
   field("Tempat Digunakan", record.tempatDigunakan, 1, 1);
   field("Bahagian", record.bahagian, 0, 2);
   field("Nama Pengeluar", pengeluarNamaFixed, 1, 2);
-  field("Jawatan Pengeluar", pengeluarJawatanFixed, 0, 3);
+  field("Jawatan", pengeluarJawatanFixed, 1, 3);
   y += 4 * 9 + 8;
 
   const cols = [
@@ -130,7 +134,7 @@ export function generateKewPa9(record: PinjamanAset) {
     { title: "(Tandatangan Peminjam)", nama: record.pemohon.name, jawatan: record.jawatan, jawatanLabel: "Jawatan", tarikh: fmtTarikh(record.createdAt) },
     { title: "(Tandatangan Pelulus)", nama: pelulusNamaFixed, jawatan: pelulusJawatanFixed, jawatanLabel: "Pelulus (Pegawai Aset)", tarikh: fmtTarikh(record.tarikhLulus) },
     { title: "(Tandatangan Pemulang)", nama: record.pemulangNama ?? "", jawatan: record.pemulangJawatan ?? "", jawatanLabel: "Jawatan", tarikh: fmtTarikh(record.tarikhDipulangkan) },
-    { title: "(Tandatangan Penerima)", nama: record.penerimaNama ?? "", jawatan: record.penerimaJawatan ?? "", jawatanLabel: "Jawatan", tarikh: fmtTarikh(record.tarikhDiterima) },
+    { title: "(Tandatangan Penerima)", nama: penerimaNamaFixed, jawatan: penerimaJawatanFixed, jawatanLabel: "Jawatan", tarikh: fmtTarikh(record.tarikhDiterima) },
   ];
 
   sigs.forEach((s, i) => {
