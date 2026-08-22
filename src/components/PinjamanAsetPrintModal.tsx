@@ -9,19 +9,54 @@ function fmtTarikh(iso: string | null) {
   return new Date(iso).toLocaleDateString("ms-MY");
 }
 
-function SigBlock({ title, nama, jawatan, tarikh }: { title: string; nama: string; jawatan: string; tarikh: string }) {
+function SigBlock({
+  title,
+  nama,
+  jawatan,
+  tarikh,
+  jawatanLabel = "Jawatan",
+}: {
+  title: string;
+  nama: string;
+  jawatan: string;
+  tarikh: string;
+  jawatanLabel?: string;
+}) {
   return (
     <div>
       <div className="mb-1 border-b border-dotted border-[#1a1a1a] pb-6" />
       <div className="mb-3 text-[11px] sm:text-[12px]">{title}</div>
-      <div className="mb-1.5">Nama&nbsp;&nbsp;&nbsp;: {nama || "____________________"}</div>
-      <div className="mb-1.5">Jawatan : {jawatan || "____________________"}</div>
-      <div>Tarikh&nbsp;&nbsp;&nbsp;: {tarikh}</div>
+      <div className="mb-1.5 flex gap-1">
+        <span className="w-[150px] flex-none">Nama</span>
+        <span>: {nama || "____________________"}</span>
+      </div>
+      <div className="mb-1.5 flex gap-1">
+        <span className="w-[150px] flex-none">{jawatanLabel}</span>
+        <span>: {jawatan || "____________________"}</span>
+      </div>
+      <div className="flex gap-1">
+        <span className="w-[150px] flex-none">Tarikh</span>
+        <span>: {tarikh}</span>
+      </div>
     </div>
   );
 }
 
+// Pelulus (Pegawai Aset) and Pengeluar on the printed KEW.PA-9 always reflect the designated
+// officers for this process, not whichever staff account actually clicked "Luluskan" in the
+// system — that real approver identity still stays on the record for internal audit purposes.
+const PELULUS_NAMA_TETAP = "Azimah Bt Adnan";
+const PELULUS_JAWATAN_TETAP = "Pengurus Kanan";
+const PENGELUAR_NAMA_TETAP = "Mohd Hykal B Mohd Halim";
+const PENGELUAR_JAWATAN_TETAP = "Penolong Pegawai";
+
 export default function PinjamanAsetPrintModal({ record, onClose }: { record: PinjamanAset; onClose: () => void }) {
+  const isApproved = !!record.tarikhLulus;
+  const pelulusNamaFixed = isApproved ? PELULUS_NAMA_TETAP : "";
+  const pelulusJawatanFixed = isApproved ? PELULUS_JAWATAN_TETAP : "";
+  const pengeluarNamaFixed = isApproved ? PENGELUAR_NAMA_TETAP : "";
+  const pengeluarJawatanFixed = isApproved ? PENGELUAR_JAWATAN_TETAP : "";
+
   const dateVals = [
     fmtTarikh(record.tarikhLulus),
     fmtTarikh(record.tarikhDipinjam),
@@ -77,7 +112,11 @@ export default function PinjamanAsetPrintModal({ record, onClose }: { record: Pi
             </div>
             <div className="flex gap-2">
               <span className="w-28 flex-none">Nama Pengeluar :</span>
-              <span className="flex-1 border-b border-[#1a1a1a]">{record.pelulusNama || ""}</span>
+              <span className="flex-1 border-b border-[#1a1a1a]">{pengeluarNamaFixed}</span>
+            </div>
+            <div className="flex gap-2">
+              <span className="w-28 flex-none">Jawatan Pengeluar :</span>
+              <span className="flex-1 border-b border-[#1a1a1a]">{pengeluarJawatanFixed}</span>
             </div>
           </div>
 
@@ -131,7 +170,13 @@ export default function PinjamanAsetPrintModal({ record, onClose }: { record: Pi
 
           <div className="mt-10 grid grid-cols-1 gap-x-8 gap-y-10 text-[11.5px] sm:grid-cols-2 sm:text-[13px]">
             <SigBlock title="(Tandatangan Peminjam)" nama={record.pemohon.name} jawatan={record.jawatan} tarikh={fmtTarikh(record.createdAt)} />
-            <SigBlock title="(Tandatangan Pelulus)" nama={record.pelulusNama ?? ""} jawatan={record.pelulusJawatan ?? ""} tarikh={fmtTarikh(record.tarikhLulus)} />
+            <SigBlock
+              title="(Tandatangan Pelulus)"
+              nama={pelulusNamaFixed}
+              jawatan={pelulusJawatanFixed}
+              jawatanLabel="Pelulus (Pegawai Aset)"
+              tarikh={fmtTarikh(record.tarikhLulus)}
+            />
             <SigBlock title="(Tandatangan Pemulang)" nama={record.pemulangNama ?? ""} jawatan={record.pemulangJawatan ?? ""} tarikh={fmtTarikh(record.tarikhDipulangkan)} />
             <SigBlock title="(Tandatangan Penerima)" nama={record.penerimaNama ?? ""} jawatan={record.penerimaJawatan ?? ""} tarikh={fmtTarikh(record.tarikhDiterima)} />
           </div>

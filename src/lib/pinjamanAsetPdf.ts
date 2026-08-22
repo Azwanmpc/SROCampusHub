@@ -10,7 +10,21 @@ function fmtTarikh(iso: string | null) {
   return new Date(iso).toLocaleDateString("ms-MY");
 }
 
+// Pelulus (Pegawai Aset) and Pengeluar on the printed KEW.PA-9 always reflect the designated
+// officers for this process, not whichever staff account actually clicked "Luluskan" in the
+// system — that real approver identity still stays on the record for internal audit purposes.
+const PELULUS_NAMA_TETAP = "Azimah Bt Adnan";
+const PELULUS_JAWATAN_TETAP = "Pengurus Kanan";
+const PENGELUAR_NAMA_TETAP = "Mohd Hykal B Mohd Halim";
+const PENGELUAR_JAWATAN_TETAP = "Penolong Pegawai";
+
 export function generateKewPa9(record: PinjamanAset) {
+  const isApproved = !!record.tarikhLulus;
+  const pelulusNamaFixed = isApproved ? PELULUS_NAMA_TETAP : "";
+  const pelulusJawatanFixed = isApproved ? PELULUS_JAWATAN_TETAP : "";
+  const pengeluarNamaFixed = isApproved ? PENGELUAR_NAMA_TETAP : "";
+  const pengeluarJawatanFixed = isApproved ? PENGELUAR_JAWATAN_TETAP : "";
+
   const doc = new jsPDF();
   let y = 14;
 
@@ -47,8 +61,9 @@ export function generateKewPa9(record: PinjamanAset) {
   field("Jawatan", record.jawatan, 0, 1);
   field("Tempat Digunakan", record.tempatDigunakan, 1, 1);
   field("Bahagian", record.bahagian, 0, 2);
-  field("Nama Pengeluar", record.pelulusNama ?? "", 1, 2);
-  y += 3 * 9 + 8;
+  field("Nama Pengeluar", pengeluarNamaFixed, 1, 2);
+  field("Jawatan Pengeluar", pengeluarJawatanFixed, 0, 3);
+  y += 4 * 9 + 8;
 
   const cols = [
     { label: "BIL", w: 8 },
@@ -112,10 +127,10 @@ export function generateKewPa9(record: PinjamanAset) {
   y += 16;
   const sigW = (MARGIN_R - MARGIN_L - 12) / 2;
   const sigs = [
-    { title: "(Tandatangan Peminjam)", nama: record.pemohon.name, jawatan: record.jawatan, tarikh: fmtTarikh(record.createdAt) },
-    { title: "(Tandatangan Pelulus)", nama: record.pelulusNama ?? "", jawatan: record.pelulusJawatan ?? "", tarikh: fmtTarikh(record.tarikhLulus) },
-    { title: "(Tandatangan Pemulang)", nama: record.pemulangNama ?? "", jawatan: record.pemulangJawatan ?? "", tarikh: fmtTarikh(record.tarikhDipulangkan) },
-    { title: "(Tandatangan Penerima)", nama: record.penerimaNama ?? "", jawatan: record.penerimaJawatan ?? "", tarikh: fmtTarikh(record.tarikhDiterima) },
+    { title: "(Tandatangan Peminjam)", nama: record.pemohon.name, jawatan: record.jawatan, jawatanLabel: "Jawatan", tarikh: fmtTarikh(record.createdAt) },
+    { title: "(Tandatangan Pelulus)", nama: pelulusNamaFixed, jawatan: pelulusJawatanFixed, jawatanLabel: "Pelulus (Pegawai Aset)", tarikh: fmtTarikh(record.tarikhLulus) },
+    { title: "(Tandatangan Pemulang)", nama: record.pemulangNama ?? "", jawatan: record.pemulangJawatan ?? "", jawatanLabel: "Jawatan", tarikh: fmtTarikh(record.tarikhDipulangkan) },
+    { title: "(Tandatangan Penerima)", nama: record.penerimaNama ?? "", jawatan: record.penerimaJawatan ?? "", jawatanLabel: "Jawatan", tarikh: fmtTarikh(record.tarikhDiterima) },
   ];
 
   sigs.forEach((s, i) => {
@@ -126,9 +141,9 @@ export function generateKewPa9(record: PinjamanAset) {
     doc.setFontSize(9.5);
     doc.text("……………………………………………", x, sy);
     doc.text(s.title, x, sy + 5);
-    doc.text(`Nama    : ${s.nama}`, x, sy + 12);
-    doc.text(`Jawatan : ${s.jawatan}`, x, sy + 17);
-    doc.text(`Tarikh   : ${s.tarikh}`, x, sy + 22);
+    doc.text(`Nama : ${s.nama}`, x, sy + 12);
+    doc.text(`${s.jawatanLabel} : ${s.jawatan}`, x, sy + 17);
+    doc.text(`Tarikh : ${s.tarikh}`, x, sy + 22);
   });
 
   doc.save(`KEW-PA-9-Pinjaman-Aset-${record.id.slice(-8)}.pdf`);

@@ -32,7 +32,7 @@ function fmtRM(n: number) {
 
 export default function QuotationModal({ booking, onClose }: { booking: Booking; onClose: () => void }) {
   const router = useRouter();
-  const noSebutharga = booking.quotationNumber || `dlm.MPC(WS)307.2 Kt.${booking.id.slice(-4)}`;
+  const noSebutharga = "MPC (WS)307.2Kt.25";
   const tarikhSebutharga = new Date().toLocaleDateString("ms-MY", { day: "numeric", month: "long", year: "numeric" });
   const [overrideValue, setOverrideValue] = useState(String(booking.finalPrice ?? booking.revenue));
   const [saving, setSaving] = useState(false);
@@ -133,7 +133,7 @@ export default function QuotationModal({ booking, onClose }: { booking: Booking;
         <div className="mb-[22px] h-0.5 bg-[#201e1d]" />
 
         <div className="mb-4 text-[12.5px]">
-          Bil({noSebutharga}) &nbsp;&nbsp;&nbsp; {tarikhSebutharga}
+          Bil (&nbsp;&nbsp;){noSebutharga} &nbsp;&nbsp;&nbsp; {tarikhSebutharga}
         </div>
         <div className="mb-4 text-[12.5px]">
           {booking.organisasi || booking.sebutNama || booking.user.name}
@@ -313,7 +313,8 @@ export default function QuotationModal({ booking, onClose }: { booking: Booking;
         </div>
         <div className="mb-3.5 text-[12.5px]">
           Saya / kami …………………………………………….. No. K/P, bagi pihak Syarikat / Jabatan telah meneliti dan bersetuju dengan kadar
-          sewa, syarat-syarat pengesahan tempahan serta ketetapan melalui surat tuan Bil({noSebutharga}) bertarikh {tarikhSebutharga}.
+          sewa, syarat-syarat pengesahan tempahan serta ketetapan melalui surat tuan Bil (&nbsp;&nbsp;){noSebutharga} bertarikh{" "}
+          {tarikhSebutharga}.
         </div>
         <div className="mb-6 text-[12.5px]">
           2. Bersama-sama ini disertakan *Pesanan Kerajaan (LPO) / Cek No : ………………….. berjumlah RM …………………… untuk pendahuluan /

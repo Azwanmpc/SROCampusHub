@@ -10,6 +10,7 @@ export default async function TetapanPage() {
       email: true,
       username: true,
       phone: true,
+      jawatan: true,
       role: true,
       active: true,
     },

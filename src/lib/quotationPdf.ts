@@ -46,7 +46,7 @@ export async function generateQuotationPdf(b: QuotationBooking) {
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(10.5);
-  doc.text("Bil(" + b.noSebutharga + ")        " + b.tarikhSebutharga, marginL, y);
+  doc.text("Bil (  )" + b.noSebutharga + "        " + b.tarikhSebutharga, marginL, y);
   y += 10;
   doc.text(b.sebutOrganisasi || b.pemohon || "—", marginL, y);
   y += 6;
@@ -226,9 +226,9 @@ export async function generateQuotationPdf(b: QuotationBooking) {
   doc.text("Tarikh: " + (b.tarikh || "—") + "   Jumlah: " + (b.peserta || "—") + " Pax", marginL, y);
   y += 12;
   const setujuParas = [
-    "Saya / kami …………………………………………….. No. K/P, bagi pihak Syarikat / Jabatan telah meneliti dan bersetuju dengan kadar sewa, syarat-syarat pengesahan tempahan serta ketetapan melalui surat tuan Bil(" +
+    "Saya / kami …………………………………………….. No. K/P, bagi pihak Syarikat / Jabatan telah meneliti dan bersetuju dengan kadar sewa, syarat-syarat pengesahan tempahan serta ketetapan melalui surat tuan Bil (  )" +
       b.noSebutharga +
-      ") bertarikh " +
+      " bertarikh " +
       b.tarikhSebutharga +
       ".",
     "2. Bersama-sama ini disertakan *Pesanan Kerajaan (LPO) / Cek No : ………………….. berjumlah RM …………………… untuk pendahuluan / bayaran tersebut.",

@@ -21,6 +21,7 @@ model User {
   email        String   @unique
   username     String   @unique
   phone        String?
+  jawatan      String?
   passwordHash String
   role         String   @default("PEMOHON")
   active       Boolean  @default(true)
