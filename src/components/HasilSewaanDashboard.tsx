@@ -28,7 +28,7 @@ function fmtNum(n: number) {
   return Math.round(n).toLocaleString("en-US");
 }
 
-export default function HasilSewaanDashboard() {
+export default function HasilSewaanDashboard({ canEdit }: { canEdit: boolean }) {
   const [records, setRecords] = useState<RawRec[] | null>(null);
   const [monthSel, setMonthSel] = useState("ALL");
   const [jenisSel, setJenisSel] = useState("ALL");
@@ -189,14 +189,16 @@ export default function HasilSewaanDashboard() {
 
   return (
     <div>
-      <div className="mb-4 flex justify-end">
-        <Link
-          href="/hasil-sewaan/kemaskini"
-          className="bg-[#6d28d9] px-4 py-2 font-archivo text-[13px] font-extrabold text-white hover:bg-[#4c1d95]"
-        >
-          Kemaskini Data
-        </Link>
-      </div>
+      {canEdit && (
+        <div className="mb-4 flex justify-end">
+          <Link
+            href="/hasil-sewaan/kemaskini"
+            className="bg-[#6d28d9] px-4 py-2 font-archivo text-[13px] font-extrabold text-white hover:bg-[#4c1d95]"
+          >
+            Kemaskini Data
+          </Link>
+        </div>
+      )}
 
       <div className="mb-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="border-l-4 border-[#E4212B] bg-white p-4 shadow-sm">

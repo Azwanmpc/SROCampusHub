@@ -17,7 +17,7 @@ function fmtNum(n: number) {
   return Math.round(n).toLocaleString("en-US");
 }
 
-export default function AsetDashboard() {
+export default function AsetDashboard({ canEdit }: { canEdit: boolean }) {
   const [records, setRecords] = useState<Aset[] | null>(null);
   const [lokasiSel, setLokasiSel] = useState("ALL");
   const [statusSel, setStatusSel] = useState("ALL");
@@ -116,14 +116,16 @@ export default function AsetDashboard() {
 
   return (
     <div>
-      <div className="mb-4 flex justify-end">
-        <Link
-          href="/aset/kemaskini"
-          className="bg-[#6d28d9] px-4 py-2 font-archivo text-[13px] font-extrabold text-white hover:bg-[#4c1d95]"
-        >
-          Kemaskini Data
-        </Link>
-      </div>
+      {canEdit && (
+        <div className="mb-4 flex justify-end">
+          <Link
+            href="/aset/kemaskini"
+            className="bg-[#6d28d9] px-4 py-2 font-archivo text-[13px] font-extrabold text-white hover:bg-[#4c1d95]"
+          >
+            Kemaskini Data
+          </Link>
+        </div>
+      )}
 
       <div className="mb-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="border-l-4 border-[#4a72a8] bg-white p-4 shadow-sm">

@@ -6,6 +6,10 @@ function isStaff(role: string) {
   return role === "SUPERADMIN" || role === "ADMIN" || role === "STAFF_MPC";
 }
 
+function canEdit(role: string) {
+  return role === "SUPERADMIN" || role === "ADMIN";
+}
+
 export async function GET() {
   const session = await getSession();
   if (!session || !isStaff(session.role)) {
@@ -17,7 +21,7 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   const session = await getSession();
-  if (!session || !isStaff(session.role)) {
+  if (!session || !canEdit(session.role)) {
     return NextResponse.json({ error: "Tiada kebenaran" }, { status: 403 });
   }
 

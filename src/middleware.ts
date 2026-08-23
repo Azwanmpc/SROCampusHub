@@ -78,10 +78,7 @@ export async function middleware(req: NextRequest) {
 
   if (
     session &&
-    (pathname.startsWith("/prestasi") ||
-      pathname.startsWith("/laporan") ||
-      pathname.startsWith("/aset") ||
-      pathname.startsWith("/hasil-sewaan")) &&
+    (pathname.startsWith("/prestasi") || pathname.startsWith("/laporan")) &&
     session.role !== "SUPERADMIN" &&
     session.role !== "ADMIN" &&
     session.role !== "STAFF_MPC"
@@ -89,6 +86,36 @@ export async function middleware(req: NextRequest) {
     const url = req.nextUrl.clone();
     url.pathname = "/dashboard";
     return NextResponse.redirect(url);
+  }
+
+  // Dashboard Aset: SUPERADMIN/ADMIN/STAFF_MPC may view; only SUPERADMIN/ADMIN may access Kemaskini (edit).
+  if (session && pathname.startsWith("/aset/kemaskini")) {
+    if (session.role !== "SUPERADMIN" && session.role !== "ADMIN") {
+      const url = req.nextUrl.clone();
+      url.pathname = "/aset";
+      return NextResponse.redirect(url);
+    }
+  } else if (session && pathname.startsWith("/aset")) {
+    if (session.role !== "SUPERADMIN" && session.role !== "ADMIN" && session.role !== "STAFF_MPC") {
+      const url = req.nextUrl.clone();
+      url.pathname = "/dashboard";
+      return NextResponse.redirect(url);
+    }
+  }
+
+  // Dashboard Hasil Sewaan: SUPERADMIN/ADMIN/STAFF_MPC may view; only SUPERADMIN/ADMIN may access Kemaskini (edit).
+  if (session && pathname.startsWith("/hasil-sewaan/kemaskini")) {
+    if (session.role !== "SUPERADMIN" && session.role !== "ADMIN") {
+      const url = req.nextUrl.clone();
+      url.pathname = "/hasil-sewaan";
+      return NextResponse.redirect(url);
+    }
+  } else if (session && pathname.startsWith("/hasil-sewaan")) {
+    if (session.role !== "SUPERADMIN" && session.role !== "ADMIN" && session.role !== "STAFF_MPC") {
+      const url = req.nextUrl.clone();
+      url.pathname = "/dashboard";
+      return NextResponse.redirect(url);
+    }
   }
 
   // Dashboard Kos Penyelenggaraan: SUPERADMIN/ADMIN/TEKNIKAL get full view+edit access.

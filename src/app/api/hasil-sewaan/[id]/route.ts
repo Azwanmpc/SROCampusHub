@@ -2,13 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
 
-function isStaff(role: string) {
-  return role === "SUPERADMIN" || role === "ADMIN" || role === "STAFF_MPC";
+function canEdit(role: string) {
+  return role === "SUPERADMIN" || role === "ADMIN";
 }
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const session = await getSession();
-  if (!session || !isStaff(session.role)) {
+  if (!session || !canEdit(session.role)) {
     return NextResponse.json({ error: "Tiada kebenaran" }, { status: 403 });
   }
   const { id } = await params;
@@ -31,7 +31,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
 
 export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const session = await getSession();
-  if (!session || !isStaff(session.role)) {
+  if (!session || !canEdit(session.role)) {
     return NextResponse.json({ error: "Tiada kebenaran" }, { status: 403 });
   }
   const { id } = await params;
