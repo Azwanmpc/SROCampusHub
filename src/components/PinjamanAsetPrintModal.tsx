@@ -9,6 +9,13 @@ function fmtTarikh(iso: string | null) {
   return new Date(iso).toLocaleDateString("ms-MY");
 }
 
+function fmtTarikhKelulusan(record: PinjamanAset) {
+  if (record.status === "DITOLAK") {
+    return record.tarikhDitolak ? `${fmtTarikh(record.tarikhDitolak)} (Tidak Lulus)` : "____________________";
+  }
+  return record.tarikhLulus ? `${fmtTarikh(record.tarikhLulus)} (Lulus)` : "____________________";
+}
+
 function SigBlock({
   title,
   nama,
@@ -62,7 +69,7 @@ export default function PinjamanAsetPrintModal({ record, onClose }: { record: Pi
   const penerimaJawatanFixed = isDiterima ? PENGELUAR_JAWATAN_TETAP : "";
 
   const dateVals = [
-    fmtTarikh(record.tarikhLulus),
+    fmtTarikhKelulusan(record),
     fmtTarikh(record.tarikhDipinjam),
     fmtTarikh(record.tarikhDijangkaPulang),
     fmtTarikh(record.tarikhDipulangkan),

@@ -15,6 +15,7 @@ export type PinjamanAset = {
   status: string;
   tarikhDijangkaPulang: string;
   tarikhLulus: string | null;
+  tarikhDitolak: string | null;
   tarikhDipinjam: string | null;
   tarikhDipulangkan: string | null;
   tarikhDiterima: string | null;

@@ -10,6 +10,13 @@ function fmtTarikh(iso: string | null) {
   return new Date(iso).toLocaleDateString("ms-MY");
 }
 
+function fmtTarikhKelulusan(record: PinjamanAset) {
+  if (record.status === "DITOLAK") {
+    return record.tarikhDitolak ? `${fmtTarikh(record.tarikhDitolak)} (Tidak Lulus)` : "";
+  }
+  return record.tarikhLulus ? `${fmtTarikh(record.tarikhLulus)} (Lulus)` : "";
+}
+
 // Pelulus (Pegawai Aset) and Pengeluar on the printed KEW.PA-9 always reflect the designated
 // officers for this process, not whichever staff account actually clicked "Luluskan" in the
 // system — that real approver identity still stays on the record for internal audit purposes.
@@ -73,12 +80,12 @@ export function generateKewPa9(record: PinjamanAset) {
     { label: "BIL", w: 8 },
     { label: "NO. SIRI PENDAFTARAN", w: 30 },
     { label: "KETERANGAN ASET", w: 32 },
-    { label: "TARIKH (LULUS/ TIDAK LULUS)", w: 18 },
+    { label: "TARIKH (LULUS/ TIDAK LULUS)", w: 26 },
     { label: "DIPINJAM", w: 16 },
     { label: "DIJANGKA PULANG", w: 16 },
     { label: "DIPULANGKAN", w: 16 },
     { label: "DITERIMA", w: 16 },
-    { label: "CATATAN", w: 26 },
+    { label: "CATATAN", w: 18 },
   ];
   const colX: number[] = [];
   let acc = MARGIN_L;
@@ -102,8 +109,8 @@ export function generateKewPa9(record: PinjamanAset) {
   y += headH;
 
   const rowH = 9;
+  const kelulusanText = fmtTarikhKelulusan(record);
   const dateVals = [
-    fmtTarikh(record.tarikhLulus),
     fmtTarikh(record.tarikhDipinjam),
     fmtTarikh(record.tarikhDijangkaPulang),
     fmtTarikh(record.tarikhDipulangkan),
@@ -122,8 +129,14 @@ export function generateKewPa9(record: PinjamanAset) {
     doc.text(String(i + 1), colX[0] + cols[0].w / 2, y + rowH / 2 + 1.3, { align: "center" });
     doc.text(it.aset.noPendaftaran || "-", colX[1] + 1.5, y + rowH / 2 + 1.3);
     doc.text(nama, colX[2] + 1.5, y + rowH / 2 + 1.3);
+    if (kelulusanText) {
+      const lines = doc.splitTextToSize(kelulusanText, cols[3].w - 2);
+      doc.setFontSize(6.5);
+      doc.text(lines, colX[3] + cols[3].w / 2, y + rowH / 2 + 1.3 - (lines.length - 1) * 1.6, { align: "center" });
+      doc.setFontSize(7.5);
+    }
     dateVals.forEach((v, di) => {
-      doc.text(v, colX[3 + di] + cols[3 + di].w / 2, y + rowH / 2 + 1.3, { align: "center" });
+      doc.text(v, colX[4 + di] + cols[4 + di].w / 2, y + rowH / 2 + 1.3, { align: "center" });
     });
     y += rowH;
   });

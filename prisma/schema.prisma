@@ -199,6 +199,7 @@ model PinjamanAset {
   status               String    @default("MENUNGGU_KELULUSAN")
   tarikhDijangkaPulang DateTime
   tarikhLulus          DateTime?
+  tarikhDitolak        DateTime?
   tarikhDipinjam       DateTime?
   tarikhDipulangkan    DateTime?
   tarikhDiterima       DateTime?

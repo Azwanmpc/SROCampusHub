@@ -27,7 +27,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     if (action === "TOLAK") {
       const updated = await prisma.pinjamanAset.update({
         where: { id },
-        data: { status: "DITOLAK", rejectionReason: body.rejectionReason ?? null },
+        data: { status: "DITOLAK", rejectionReason: body.rejectionReason ?? null, tarikhDitolak: new Date() },
         include: { pemohon: { select: { id: true, name: true } }, items: { include: { aset: true } } },
       });
       return NextResponse.json(updated);
