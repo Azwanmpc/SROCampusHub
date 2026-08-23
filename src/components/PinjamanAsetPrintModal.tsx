@@ -1,5 +1,6 @@
 "use client";
 
+import { createPortal } from "react-dom";
 import { XCircle, Printer, DownloadSimple } from "@phosphor-icons/react";
 import { generateKewPa9 } from "@/lib/pinjamanAsetPdf";
 import type { PinjamanAset } from "@/components/PinjamanAsetCard";
@@ -76,8 +77,8 @@ export default function PinjamanAsetPrintModal({ record, onClose }: { record: Pi
     fmtTarikh(record.tarikhDiterima),
   ];
 
-  return (
-    <div className="fixed inset-0 z-[120] flex items-center justify-center bg-[rgba(32,30,29,0.5)] p-2 sm:p-4">
+  return createPortal(
+    <div className="print-modal-backdrop fixed inset-0 z-[120] flex items-center justify-center bg-[rgba(32,30,29,0.5)] p-2 sm:p-4">
       <div className="print-area relative max-h-[94vh] w-full max-w-[760px] overflow-y-auto bg-[#e7e5e5] shadow-[0_12px_32px_rgba(45,43,43,0.22)]">
         <button
           onClick={onClose}
@@ -208,6 +209,7 @@ export default function PinjamanAsetPrintModal({ record, onClose }: { record: Pi
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

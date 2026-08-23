@@ -1,5 +1,6 @@
 "use client";
 
+import { createPortal } from "react-dom";
 import { XCircle, Printer, DownloadSimple } from "@phosphor-icons/react";
 import { generateKewPa14 } from "@/lib/asetPdf";
 
@@ -8,8 +9,8 @@ type Aset = { id: string; namaAset: string; noPendaftaran: string; tahun: string
 const BAHAGIAN = "Perbadanan Produktiviti Malaysia (MPC) Wilayah Selatan";
 
 export default function KewPa14Modal({ items, scopeLabel, onClose }: { items: Aset[]; scopeLabel: string; onClose: () => void }) {
-  return (
-    <div className="fixed inset-0 z-[120] flex items-center justify-center bg-[rgba(32,30,29,0.5)] p-2 sm:p-4">
+  return createPortal(
+    <div className="print-modal-backdrop fixed inset-0 z-[120] flex items-center justify-center bg-[rgba(32,30,29,0.5)] p-2 sm:p-4">
       <div className="print-area relative max-h-[94vh] w-full max-w-[720px] overflow-y-auto bg-[#e7e5e5] shadow-[0_12px_32px_rgba(45,43,43,0.22)]">
         <button
           onClick={onClose}
@@ -101,6 +102,7 @@ export default function KewPa14Modal({ items, scopeLabel, onClose }: { items: As
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

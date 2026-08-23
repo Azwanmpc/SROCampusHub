@@ -1,5 +1,6 @@
 "use client";
 
+import { createPortal } from "react-dom";
 import { XCircle, Printer, DownloadSimple } from "@phosphor-icons/react";
 import { generateKewPa7 } from "@/lib/asetPdf";
 
@@ -75,8 +76,8 @@ function LokasiForm({ lokasi, items }: { lokasi: string; items: Aset[] }) {
 export default function KewPa7Modal({ lokasiList, records, onClose }: { lokasiList: string[]; records: Aset[]; onClose: () => void }) {
   const groups = lokasiList.map((lokasi) => ({ lokasi, items: records.filter((r) => r.lokasi === lokasi) })).filter((g) => g.items.length > 0);
 
-  return (
-    <div className="fixed inset-0 z-[120] flex items-center justify-center bg-[rgba(32,30,29,0.5)] p-2 sm:p-4">
+  return createPortal(
+    <div className="print-modal-backdrop fixed inset-0 z-[120] flex items-center justify-center bg-[rgba(32,30,29,0.5)] p-2 sm:p-4">
       <div className="print-area relative max-h-[94vh] w-full max-w-[720px] overflow-y-auto bg-[#e7e5e5] shadow-[0_12px_32px_rgba(45,43,43,0.22)]">
         <button
           onClick={onClose}
@@ -108,6 +109,7 @@ export default function KewPa7Modal({ lokasiList, records, onClose }: { lokasiLi
           </div>
         )}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { XCircle, Printer, DownloadSimple, EnvelopeSimple } from "@phosphor-icons/react";
 import { generateQuotationPdf } from "@/lib/quotationPdf";
@@ -115,8 +116,8 @@ export default function QuotationModal({ booking, onClose }: { booking: Booking;
     window.location.href = `mailto:${to}?cc=${cc}&subject=${encodeURIComponent(subject)}&body=${body}`;
   }
 
-  return (
-    <div className="fixed inset-0 z-[120] flex items-center justify-center bg-[rgba(32,30,29,0.5)] p-4">
+  return createPortal(
+    <div className="print-modal-backdrop fixed inset-0 z-[120] flex items-center justify-center bg-[rgba(32,30,29,0.5)] p-4">
       <div
         id="quotation-print-area"
         className="relative max-h-[92vh] w-full max-w-[620px] overflow-y-auto bg-white p-5 font-archivo text-[#201e1d] shadow-[0_12px_32px_rgba(45,43,43,0.22)] sm:p-9"
@@ -179,7 +180,9 @@ export default function QuotationModal({ booking, onClose }: { booking: Booking;
 
         <div className="mb-6.5 text-[12.5px]">S.k. Fail Timbul</div>
 
-        <div className="mb-1.5 text-center text-xs font-bold">Lampiran 1</div>
+        <div className="mb-1.5 text-center text-xs font-bold" style={{ breakBefore: "page" }}>
+          Lampiran 1
+        </div>
         <div className="mb-4 text-center font-archivo text-sm font-extrabold">KADAR HARGA</div>
         <div className="print-avoid-break mb-3.5 text-xs">
           <div>
@@ -358,6 +361,7 @@ export default function QuotationModal({ booking, onClose }: { booking: Booking;
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

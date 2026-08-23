@@ -125,11 +125,17 @@ input[type="checkbox"] {
   .print-area * {
     visibility: visible;
   }
+  /* The modal backdrop is position:fixed, which per the CSS Paged Media spec
+     repeats on every printed page — that's what made pages 2/3 overlap. Force
+     it (and the print target) into normal flow so multi-page content paginates
+     properly instead of being pinned/repeated. */
+  .print-modal-backdrop {
+    position: static !important;
+    background: none !important;
+  }
   #quotation-print-area,
   .print-area {
-    position: absolute;
-    left: 0;
-    top: 0;
+    position: static;
     width: 100% !important;
     max-width: none !important;
     max-height: none !important;
