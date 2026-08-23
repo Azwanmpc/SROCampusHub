@@ -116,6 +116,14 @@ input[type="checkbox"] {
 }
 
 @media print {
+  /* The print modals portal into document.body, landing as a sibling of the
+     app shell (navbar/sidebar/page content). visibility:hidden alone hides
+     that shell but keeps its full height in flow, pushing the real print
+     content down past page 1 (blank leading page, letter split mid-flow).
+     display:none removes it from flow entirely. */
+  .app-shell-root {
+    display: none !important;
+  }
   body * {
     visibility: hidden;
   }

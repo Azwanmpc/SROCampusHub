@@ -16,7 +16,7 @@ export default function AppShell({
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen w-full flex-col">
+    <div className="app-shell-root flex min-h-screen w-full flex-col">
       <Navbar name={name} role={role} onMenuClick={() => setSidebarOpen(true)} />
       <div className="flex min-h-0 flex-1">
         <Sidebar name={name} role={role} open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
