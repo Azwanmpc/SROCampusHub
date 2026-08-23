@@ -112,7 +112,7 @@ export default function AsetDashboard({ canEdit }: { canEdit: boolean }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [records]);
 
-  if (!records) return <p className="text-sm text-[rgba(32,30,29,0.5)]">Memuatkan dashboard...</p>;
+  if (!records) return <p className="text-sm text-[rgba(var(--ink-rgb),0.5)]">Memuatkan dashboard...</p>;
 
   return (
     <div>
@@ -128,35 +128,35 @@ export default function AsetDashboard({ canEdit }: { canEdit: boolean }) {
       )}
 
       <div className="mb-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="border-l-4 border-[#4a72a8] bg-white p-4 shadow-sm">
-          <div className="text-[11.5px] font-bold uppercase tracking-[0.04em] text-[rgba(32,30,29,0.5)]">Jumlah Aset</div>
+        <div className="border-l-4 border-[#4a72a8] bg-[var(--white)] p-4 shadow-sm">
+          <div className="text-[11.5px] font-bold uppercase tracking-[0.04em] text-[rgba(var(--ink-rgb),0.5)]">Jumlah Aset</div>
           <div className="mt-1.5 text-[24px] font-extrabold text-[#1a1a1a]">{fmtNum(jumlahAset)}</div>
         </div>
-        <div className="border-l-4 border-[#16a34a] bg-white p-4 shadow-sm">
-          <div className="text-[11.5px] font-bold uppercase tracking-[0.04em] text-[rgba(32,30,29,0.5)]">Aset Baik</div>
+        <div className="border-l-4 border-[#16a34a] bg-[var(--white)] p-4 shadow-sm">
+          <div className="text-[11.5px] font-bold uppercase tracking-[0.04em] text-[rgba(var(--ink-rgb),0.5)]">Aset Baik</div>
           <div className="mt-1.5 text-[24px] font-extrabold text-[#1a1a1a]">{fmtNum(jumlahBaik)}</div>
         </div>
-        <div className="border-l-4 border-[#E4212B] bg-white p-4 shadow-sm">
-          <div className="text-[11.5px] font-bold uppercase tracking-[0.04em] text-[rgba(32,30,29,0.5)]">Perlu Penyelenggaraan</div>
+        <div className="border-l-4 border-[#E4212B] bg-[var(--white)] p-4 shadow-sm">
+          <div className="text-[11.5px] font-bold uppercase tracking-[0.04em] text-[rgba(var(--ink-rgb),0.5)]">Perlu Penyelenggaraan</div>
           <div className="mt-1.5 text-[24px] font-extrabold text-[#1a1a1a]">{fmtNum(jumlahRosak)}</div>
         </div>
-        <div className="border-l-4 border-[#f59e0b] bg-white p-4 shadow-sm">
-          <div className="text-[11.5px] font-bold uppercase tracking-[0.04em] text-[rgba(32,30,29,0.5)]">Jumlah Lokasi</div>
+        <div className="border-l-4 border-[#f59e0b] bg-[var(--white)] p-4 shadow-sm">
+          <div className="text-[11.5px] font-bold uppercase tracking-[0.04em] text-[rgba(var(--ink-rgb),0.5)]">Jumlah Lokasi</div>
           <div className="mt-1.5 text-[24px] font-extrabold text-[#1a1a1a]">{fmtNum(jumlahLokasi)}</div>
         </div>
       </div>
 
       <div className="mb-5 grid grid-cols-1 gap-4 lg:grid-cols-3">
-        <div className="border border-[rgba(32,30,29,0.2)] bg-white p-[18px] lg:col-span-2">
+        <div className="border border-[rgba(var(--ink-rgb),0.2)] bg-[var(--white)] p-[18px] lg:col-span-2">
           <div className="mb-0.5 font-archivo text-[15px] font-extrabold">Aset Mengikut Lokasi (Top 10)</div>
-          <div className="mb-3 text-xs text-[rgba(32,30,29,0.55)]">Bilangan aset baik &amp; rosak setiap lokasi</div>
+          <div className="mb-3 text-xs text-[rgba(var(--ink-rgb),0.55)]">Bilangan aset baik &amp; rosak setiap lokasi</div>
           <div className="relative h-[320px]">
             <canvas ref={barRef} />
           </div>
         </div>
-        <div className="border border-[rgba(32,30,29,0.2)] bg-white p-[18px]">
+        <div className="border border-[rgba(var(--ink-rgb),0.2)] bg-[var(--white)] p-[18px]">
           <div className="mb-0.5 font-archivo text-[15px] font-extrabold">Status Aset</div>
-          <div className="mb-3 text-xs text-[rgba(32,30,29,0.55)]">Keseluruhan baik vs rosak</div>
+          <div className="mb-3 text-xs text-[rgba(var(--ink-rgb),0.55)]">Keseluruhan baik vs rosak</div>
           <div className="relative h-[280px]">
             <canvas ref={donutRef} />
           </div>
@@ -164,19 +164,19 @@ export default function AsetDashboard({ canEdit }: { canEdit: boolean }) {
       </div>
 
       {jumlahRosak > 0 && (
-        <div className="mb-5 flex items-start gap-2.5 border border-[#fecaca] bg-[#fff2ef] p-4">
-          <WarningCircle weight="duotone" size={20} className="mt-0.5 flex-none text-[#7c1405]" />
-          <div className="text-[12.5px] text-[#7c1405]">
+        <div className="mb-5 flex items-start gap-2.5 border border-[#fecaca] bg-[var(--danger-bg)] p-4">
+          <WarningCircle weight="duotone" size={20} className="mt-0.5 flex-none text-[var(--danger)]" />
+          <div className="text-[12.5px] text-[var(--danger)]">
             <span className="font-bold">{jumlahRosak} aset</span> berstatus rosak dan memerlukan penyelenggaraan. Jana senarai penuh melalui{" "}
             <span className="font-bold">Cetak Perlu Penyelenggaraan</span> di bawah.
           </div>
         </div>
       )}
 
-      <div className="mb-5 flex flex-wrap items-center gap-5 border border-[rgba(32,30,29,0.2)] bg-white p-4">
+      <div className="mb-5 flex flex-wrap items-center gap-5 border border-[rgba(var(--ink-rgb),0.2)] bg-[var(--white)] p-4">
         <div>
-          <label className="mr-2 text-[13px] font-bold text-[rgba(32,30,29,0.6)]">Lokasi:</label>
-          <select value={lokasiSel} onChange={(e) => setLokasiSel(e.target.value)} className="border border-[rgba(32,30,29,0.3)] px-3 py-1.5 text-sm font-semibold">
+          <label className="mr-2 text-[13px] font-bold text-[rgba(var(--ink-rgb),0.6)]">Lokasi:</label>
+          <select value={lokasiSel} onChange={(e) => setLokasiSel(e.target.value)} className="border border-[rgba(var(--ink-rgb),0.3)] px-3 py-1.5 text-sm font-semibold">
             <option value="ALL">Semua Lokasi</option>
             {lokasiList.map((l) => (
               <option key={l} value={l}>
@@ -186,8 +186,8 @@ export default function AsetDashboard({ canEdit }: { canEdit: boolean }) {
           </select>
         </div>
         <div>
-          <label className="mr-2 text-[13px] font-bold text-[rgba(32,30,29,0.6)]">Status:</label>
-          <select value={statusSel} onChange={(e) => setStatusSel(e.target.value)} className="border border-[rgba(32,30,29,0.3)] px-3 py-1.5 text-sm font-semibold">
+          <label className="mr-2 text-[13px] font-bold text-[rgba(var(--ink-rgb),0.6)]">Status:</label>
+          <select value={statusSel} onChange={(e) => setStatusSel(e.target.value)} className="border border-[rgba(var(--ink-rgb),0.3)] px-3 py-1.5 text-sm font-semibold">
             <option value="ALL">Semua Status</option>
             <option value="BAIK">Baik</option>
             <option value="ROSAK">Rosak</option>
@@ -195,22 +195,22 @@ export default function AsetDashboard({ canEdit }: { canEdit: boolean }) {
         </div>
         <button
           onClick={() => setShowKewPa7(true)}
-          className="border border-[rgba(32,30,29,0.4)] bg-white px-4 py-2 font-archivo text-[13px] font-extrabold text-[#201e1d] hover:bg-[#f7f6f6]"
+          className="border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] px-4 py-2 font-archivo text-[13px] font-extrabold text-[var(--ink)] hover:bg-[#f7f6f6]"
         >
           Cetak KEW.PA 7
         </button>
         <button
           onClick={() => setShowKewPa14(true)}
-          className="border border-[rgba(32,30,29,0.4)] bg-white px-4 py-2 font-archivo text-[13px] font-extrabold text-[#201e1d] hover:bg-[#f7f6f6]"
+          className="border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] px-4 py-2 font-archivo text-[13px] font-extrabold text-[var(--ink)] hover:bg-[#f7f6f6]"
         >
           Cetak Perlu Penyelenggaraan
         </button>
-        <div className="ml-auto text-[12.5px] text-[rgba(32,30,29,0.55)]">{filtered.length} rekod dipaparkan</div>
+        <div className="ml-auto text-[12.5px] text-[rgba(var(--ink-rgb),0.55)]">{filtered.length} rekod dipaparkan</div>
       </div>
 
-      <div className="border border-[rgba(32,30,29,0.2)] bg-white p-[18px]">
+      <div className="border border-[rgba(var(--ink-rgb),0.2)] bg-[var(--white)] p-[18px]">
         <div className="mb-0.5 font-archivo text-[15px] font-extrabold">Senarai Aset</div>
-        <div className="mb-3 text-xs text-[rgba(32,30,29,0.55)]">Gunakan penapis di atas untuk tumpuan data</div>
+        <div className="mb-3 text-xs text-[rgba(var(--ink-rgb),0.55)]">Gunakan penapis di atas untuk tumpuan data</div>
         <div className="max-h-[420px] overflow-auto border border-[#eef0f4]">
           <table className="w-full min-w-[680px] border-collapse text-[13px]">
             <thead>
@@ -224,10 +224,10 @@ export default function AsetDashboard({ canEdit }: { canEdit: boolean }) {
             </thead>
             <tbody>
               {filtered.slice(0, 300).map((r) => (
-                <tr key={r.id} className="odd:bg-white even:bg-[#fafbfd]">
+                <tr key={r.id} className="odd:bg-[var(--white)] even:bg-[#fafbfd]">
                   <td className="border-b border-[#eef0f4] px-3 py-2">{r.namaAset}</td>
-                  <td className="border-b border-[#eef0f4] px-3 py-2 text-[rgba(32,30,29,0.6)]">{r.noPendaftaran || "—"}</td>
-                  <td className="border-b border-[#eef0f4] px-3 py-2 text-[rgba(32,30,29,0.6)]">{r.tahun || "—"}</td>
+                  <td className="border-b border-[#eef0f4] px-3 py-2 text-[rgba(var(--ink-rgb),0.6)]">{r.noPendaftaran || "—"}</td>
+                  <td className="border-b border-[#eef0f4] px-3 py-2 text-[rgba(var(--ink-rgb),0.6)]">{r.tahun || "—"}</td>
                   <td className="border-b border-[#eef0f4] px-3 py-2">{r.lokasi}</td>
                   <td className="border-b border-[#eef0f4] px-3 py-2">
                     <span
@@ -241,7 +241,7 @@ export default function AsetDashboard({ canEdit }: { canEdit: boolean }) {
               ))}
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="px-3 py-6 text-center text-sm text-[rgba(32,30,29,0.5)]">
+                  <td colSpan={5} className="px-3 py-6 text-center text-sm text-[rgba(var(--ink-rgb),0.5)]">
                     Tiada rekod
                   </td>
                 </tr>
@@ -249,7 +249,7 @@ export default function AsetDashboard({ canEdit }: { canEdit: boolean }) {
             </tbody>
           </table>
           {filtered.length > 300 && (
-            <div className="border-t border-[#eef0f4] px-3 py-2 text-center text-[11.5px] text-[rgba(32,30,29,0.5)]">
+            <div className="border-t border-[#eef0f4] px-3 py-2 text-center text-[11.5px] text-[rgba(var(--ink-rgb),0.5)]">
               Memaparkan 300 daripada {filtered.length} rekod &mdash; gunakan penapis untuk tumpuan
             </div>
           )}

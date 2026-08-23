@@ -2,6 +2,7 @@
 
 :root {
   --ink: #201e1d;
+  --ink-rgb: 32, 30, 29;
   --surface: #f3f2f2;
   --white: #ffffff;
   --accent: #6d28d9;
@@ -37,10 +38,18 @@
 
 [data-theme="dark"] {
   --ink: #f3f2f2;
+  --ink-rgb: 243, 242, 242;
   --surface: #2b2928;
   --white: #201e1d;
   --background: #171514;
   --foreground: #f3f2f2;
+  --success: #6cbf8b;
+  --success-bg: #1c3326;
+  --danger: #ff8a75;
+  --danger-bg: #3a1712;
+  --warning: #e0b84d;
+  --warning-bg: #3a2f14;
+  --info: #7ca3d6;
 
   --landing-bg: #0f0f10;
   --landing-surface: #1c1c1f;

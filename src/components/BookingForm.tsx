@@ -220,8 +220,8 @@ export default function BookingForm({
     }
   }
 
-  const fieldClass = "min-h-9 w-full border border-[rgba(32,30,29,0.4)] bg-[#f3f2f2] px-2.5 py-1.5 text-sm outline-none";
-  const labelClass = "mb-[5px] block text-xs text-[rgba(32,30,29,0.7)]";
+  const fieldClass = "min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--surface)] px-2.5 py-1.5 text-sm outline-none";
+  const labelClass = "mb-[5px] block text-xs text-[rgba(var(--ink-rgb),0.7)]";
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3.5">
@@ -264,14 +264,14 @@ export default function BookingForm({
           <button
             type="button"
             onClick={() => setRateType("HALF")}
-            className={`flex-1 border py-2 text-xs font-bold ${rateType === "HALF" ? "border-[#6d28d9] bg-[#6d28d9] text-white" : "border-[rgba(32,30,29,0.3)] bg-white"}`}
+            className={`flex-1 border py-2 text-xs font-bold ${rateType === "HALF" ? "border-[#6d28d9] bg-[#6d28d9] text-white" : "border-[rgba(var(--ink-rgb),0.3)] bg-[var(--white)]"}`}
           >
             Separuh Hari ({fmtRM(selectedFacility.halfDayRate)})
           </button>
           <button
             type="button"
             onClick={() => setRateType("FULL")}
-            className={`flex-1 border py-2 text-xs font-bold ${rateType === "FULL" ? "border-[#6d28d9] bg-[#6d28d9] text-white" : "border-[rgba(32,30,29,0.3)] bg-white"}`}
+            className={`flex-1 border py-2 text-xs font-bold ${rateType === "FULL" ? "border-[#6d28d9] bg-[#6d28d9] text-white" : "border-[rgba(var(--ink-rgb),0.3)] bg-[var(--white)]"}`}
           >
             Satu Hari ({fmtRM(selectedFacility.fullDayRate ?? selectedFacility.costPerUse)})
           </button>
@@ -279,20 +279,20 @@ export default function BookingForm({
       )}
 
       {isAsrama && (
-        <div className="flex flex-col gap-2 border border-[rgba(32,30,29,0.3)] bg-[#f3f2f2] p-3">
-          <div className="mb-1 text-xs font-bold text-[rgba(32,30,29,0.7)]">Bilangan Bilik</div>
+        <div className="flex flex-col gap-2 border border-[rgba(var(--ink-rgb),0.3)] bg-[var(--surface)] p-3">
+          <div className="mb-1 text-xs font-bold text-[rgba(var(--ink-rgb),0.7)]">Bilangan Bilik</div>
           {(!startDate || !endDate) && (
-            <div className="text-[11px] italic text-[rgba(32,30,29,0.55)]">
+            <div className="text-[11px] italic text-[rgba(var(--ink-rgb),0.55)]">
               Pilih tarikh mula &amp; tamat untuk lihat bilangan bilik yang masih tersedia.
             </div>
           )}
           {ASRAMA_ROOM_TYPES.map((rt) => {
             const available = asramaAvailability ? (asramaAvailability[rt.key] ?? 0) : rt.bilikTersedia;
             return (
-              <div key={rt.key} className="flex items-center gap-2.5 bg-white px-2.5 py-1.5">
+              <div key={rt.key} className="flex items-center gap-2.5 bg-[var(--white)] px-2.5 py-1.5">
                 <div className="flex-1">
                   <div className="text-[11.5px] font-bold">{rt.label}</div>
-                  <div className="text-[10.5px] text-[rgba(32,30,29,0.6)]">
+                  <div className="text-[10.5px] text-[rgba(var(--ink-rgb),0.6)]">
                     RM {rt.rate}/malam · {available} bilik tersedia
                   </div>
                 </div>
@@ -304,7 +304,7 @@ export default function BookingForm({
                   onChange={(e) =>
                     setRoomQtys((prev) => ({ ...prev, [rt.key]: Math.min(Number(e.target.value), available) }))
                   }
-                  className="w-16 border border-[rgba(32,30,29,0.4)] px-2 py-1 text-sm"
+                  className="w-16 border border-[rgba(var(--ink-rgb),0.4)] px-2 py-1 text-sm"
                 />
               </div>
             );
@@ -350,16 +350,16 @@ export default function BookingForm({
             ))}
           </select>
           {!arrangementEligible && (
-            <div className="mt-1 text-[10.5px] italic text-[rgba(32,30,29,0.5)]">
+            <div className="mt-1 text-[10.5px] italic text-[rgba(var(--ink-rgb),0.5)]">
               Susunan hanya berkaitan untuk Bilik ICC, Bilik TQM &amp; Dewan Produktiviti.
             </div>
           )}
         </div>
       </div>
 
-      <div className="text-xs text-[rgba(32,30,29,0.7)]">Add-on Peralatan</div>
+      <div className="text-xs text-[rgba(var(--ink-rgb),0.7)]">Add-on Peralatan</div>
       {availableAddons.length > 0 ? (
-        <div className="flex flex-col gap-2.5 border border-[rgba(32,30,29,0.3)] bg-[#f3f2f2] p-3">
+        <div className="flex flex-col gap-2.5 border border-[rgba(var(--ink-rgb),0.3)] bg-[var(--surface)] p-3">
           {availableAddons.map((a) => {
             const st = addons[a.key] ?? { checked: false, qty: 1, rateType: "FULL" as const };
             return (
@@ -370,14 +370,14 @@ export default function BookingForm({
                   <button
                     type="button"
                     onClick={() => setAddons((p) => ({ ...p, [a.key]: { ...st, checked: true, rateType: "HALF" } }))}
-                    className="flex-none border border-[rgba(32,30,29,0.3)] bg-white px-2 py-1 text-[10.5px] font-bold"
+                    className="flex-none border border-[rgba(var(--ink-rgb),0.3)] bg-[var(--white)] px-2 py-1 text-[10.5px] font-bold"
                   >
                     Separuh ({fmtRM(a.half)})
                   </button>
                   <button
                     type="button"
                     onClick={() => setAddons((p) => ({ ...p, [a.key]: { ...st, checked: true, rateType: "FULL" } }))}
-                    className="flex-none border border-[rgba(32,30,29,0.3)] bg-white px-2 py-1 text-[10.5px] font-bold"
+                    className="flex-none border border-[rgba(var(--ink-rgb),0.3)] bg-[var(--white)] px-2 py-1 text-[10.5px] font-bold"
                   >
                     1 Hari ({fmtRM(a.full)})
                   </button>
@@ -386,11 +386,11 @@ export default function BookingForm({
                     min={1}
                     value={st.qty}
                     onChange={(e) => setAddons((p) => ({ ...p, [a.key]: { ...st, qty: Number(e.target.value) } }))}
-                    className="w-[50px] flex-none border border-[rgba(32,30,29,0.4)] px-2 py-1.5"
+                    className="w-[50px] flex-none border border-[rgba(var(--ink-rgb),0.4)] px-2 py-1.5"
                   />
                 </div>
                 {st.checked && (
-                  <div className="ml-[27px] mt-1 text-[11px] text-[rgba(32,30,29,0.6)]">
+                  <div className="ml-[27px] mt-1 text-[11px] text-[rgba(var(--ink-rgb),0.6)]">
                     {fmtRM(st.rateType === "HALF" ? a.half : a.full)} × {st.qty} = {fmtRM((st.rateType === "HALF" ? a.half : a.full) * st.qty)}
                   </div>
                 )}
@@ -399,13 +399,13 @@ export default function BookingForm({
           })}
         </div>
       ) : (
-        <div className="text-[11.5px] italic text-[rgba(32,30,29,0.5)]">
+        <div className="text-[11.5px] italic text-[rgba(var(--ink-rgb),0.5)]">
           Add-on tersedia untuk Dewan Produktiviti, Bilik ICC atau Bilik TQM sahaja.
         </div>
       )}
 
       {supportsEarlyAccess && (
-        <div className="flex flex-col gap-2.5 border border-[rgba(32,30,29,0.3)] bg-[#f5eedd] p-3">
+        <div className="flex flex-col gap-2.5 border border-[rgba(var(--ink-rgb),0.3)] bg-[var(--warning-bg)] p-3">
           <div className="flex items-center gap-2.5">
             <input type="checkbox" checked={earlyAccess} onChange={(e) => setEarlyAccess(e.target.checked)} className="h-[17px] w-[17px]" />
             <div className="flex flex-1 items-center gap-1.5 text-[13px] font-semibold">
@@ -420,7 +420,7 @@ export default function BookingForm({
               value={earlyAccessMinutes}
               onChange={(e) => setEarlyAccessMinutes(Number(e.target.value))}
               placeholder="Minit lebih awal"
-              className="w-40 border border-[rgba(32,30,29,0.4)] bg-white px-2.5 py-1.5 text-sm"
+              className="w-40 border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] px-2.5 py-1.5 text-sm"
             />
           )}
         </div>
@@ -437,7 +437,7 @@ export default function BookingForm({
         />
       </div>
 
-      <div className="mt-1 text-xs font-bold text-[rgba(32,30,29,0.7)]">Maklumat Sebutharga</div>
+      <div className="mt-1 text-xs font-bold text-[rgba(var(--ink-rgb),0.7)]">Maklumat Sebutharga</div>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <div>
           <label className={labelClass}>Nama</label>
@@ -468,15 +468,15 @@ export default function BookingForm({
       </div>
 
       {(facilityPrice > 0 || addonsBreakdown.length > 0) && (
-        <div className="flex justify-between border-t border-[rgba(32,30,29,0.3)] pt-2.5 font-archivo text-sm font-extrabold">
+        <div className="flex justify-between border-t border-[rgba(var(--ink-rgb),0.3)] pt-2.5 font-archivo text-sm font-extrabold">
           <span>Anggaran Jumlah Harga</span>
           <span>{fmtRM(totalPrice)}</span>
         </div>
       )}
 
-      {error && <div className="bg-[#fff2ef] px-3 py-2 text-sm text-[#7c1405]">{error}</div>}
+      {error && <div className="bg-[var(--danger-bg)] px-3 py-2 text-sm text-[var(--danger)]">{error}</div>}
       {success && (
-        <div className="bg-[#e6f0e9] px-3 py-2 text-sm text-[#4a8a63]">
+        <div className="bg-[var(--success-bg)] px-3 py-2 text-sm text-[var(--success)]">
           Tempahan berjaya dihantar dan menunggu pengesahan admin.
         </div>
       )}
@@ -488,7 +488,7 @@ export default function BookingForm({
       >
         {loading ? "Menghantar..." : "Hantar Permohonan Tempahan"}
       </button>
-      <div className="text-center text-xs text-[rgba(32,30,29,0.6)]">
+      <div className="text-center text-xs text-[rgba(var(--ink-rgb),0.6)]">
         Sebutharga dan pengesahan tempahan akan dihantar dalam tempoh 3 hari
       </div>
     </form>

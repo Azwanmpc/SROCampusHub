@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ms" className={`${archivo.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-white text-[#201e1d]">{children}</body>
+      <body className="min-h-full flex flex-col bg-[var(--white)] text-[var(--ink)]">{children}</body>
     </html>
   );
 }

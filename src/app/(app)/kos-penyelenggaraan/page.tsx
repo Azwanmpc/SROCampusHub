@@ -8,8 +8,8 @@ export default async function KosPenyelenggaraanPage() {
   return (
     <div>
       <div className="mb-0.5 font-archivo text-[26px] font-extrabold">Dashboard Kos Penyelenggaraan</div>
-      <div className="mb-3.5 text-[13.5px] text-[rgba(32,30,29,0.6)]">Kos penyelenggaraan dan pembaikan fasiliti MPC Wilayah Selatan</div>
-      <div className="mb-4 h-0.5 bg-[rgba(32,30,29,0.4)]" />
+      <div className="mb-3.5 text-[13.5px] text-[rgba(var(--ink-rgb),0.6)]">Kos penyelenggaraan dan pembaikan fasiliti MPC Wilayah Selatan</div>
+      <div className="mb-4 h-0.5 bg-[rgba(var(--ink-rgb),0.4)]" />
       <KosPenyelenggaraanDashboard canEdit={canEdit} />
     </div>
   );

@@ -185,7 +185,7 @@ export default function HasilSewaanDashboard({ canEdit }: { canEdit: boolean }) 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [records, monthSel, jenisSel, yearSel]);
 
-  if (!records) return <p className="text-sm text-[rgba(32,30,29,0.5)]">Memuatkan dashboard...</p>;
+  if (!records) return <p className="text-sm text-[rgba(var(--ink-rgb),0.5)]">Memuatkan dashboard...</p>;
 
   return (
     <div>
@@ -201,41 +201,41 @@ export default function HasilSewaanDashboard({ canEdit }: { canEdit: boolean }) 
       )}
 
       <div className="mb-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="border-l-4 border-[#E4212B] bg-white p-4 shadow-sm">
-          <div className="text-[11.5px] font-bold uppercase tracking-[0.04em] text-[rgba(32,30,29,0.5)]">
+        <div className="border-l-4 border-[#E4212B] bg-[var(--white)] p-4 shadow-sm">
+          <div className="text-[11.5px] font-bold uppercase tracking-[0.04em] text-[rgba(var(--ink-rgb),0.5)]">
             Prestasi Keseluruhan Hasil Sewaan Fasiliti {prevYear}
           </div>
           <div className="mt-1.5 text-[24px] font-extrabold text-[#1a1a1a]">{fmtRM(totalHasilPrevFullYear)}</div>
         </div>
-        <div className="border-l-4 border-[#1e3a5f] bg-white p-4 shadow-sm">
-          <div className="text-[11.5px] font-bold uppercase tracking-[0.04em] text-[rgba(32,30,29,0.5)]">
+        <div className="border-l-4 border-[#1e3a5f] bg-[var(--white)] p-4 shadow-sm">
+          <div className="text-[11.5px] font-bold uppercase tracking-[0.04em] text-[rgba(var(--ink-rgb),0.5)]">
             Hasil Sewaan Fasiliti Terkini {currYear}
           </div>
           <div className="mt-1.5 text-[24px] font-extrabold text-[#1a1a1a]">{fmtRM(totalHasilCurrFullYear)}</div>
-          <div className="mt-1.5 inline-block rounded-full bg-[#dcfce7] px-2.5 py-0.5 text-[12px] font-bold text-[#15803d]">
+          <div className="mt-1.5 inline-block rounded-full bg-[var(--success-bg)] px-2.5 py-0.5 text-[12px] font-bold text-[var(--success)]">
             ✓ Telah mencapai {pctHasilVsKeseluruhanPrev.toFixed(1)}% vs keseluruhan {prevYear}
           </div>
         </div>
-        <div className="border-l-4 border-[#0d9488] bg-white p-4 shadow-sm">
-          <div className="text-[11.5px] font-bold uppercase tracking-[0.04em] text-[rgba(32,30,29,0.5)]">Jumlah Peserta {currYear}</div>
+        <div className="border-l-4 border-[#0d9488] bg-[var(--white)] p-4 shadow-sm">
+          <div className="text-[11.5px] font-bold uppercase tracking-[0.04em] text-[rgba(var(--ink-rgb),0.5)]">Jumlah Peserta {currYear}</div>
           <div className="mt-1.5 text-[24px] font-extrabold text-[#1a1a1a]">{fmtNum(totalPesertaCurr)}</div>
-          <div className={`mt-1.5 inline-block rounded-full px-2.5 py-0.5 text-[12px] font-bold ${deltaPeserta >= 0 ? "bg-[#dcfce7] text-[#15803d]" : "bg-[#fee2e2] text-[#b91c1c]"}`}>
+          <div className={`mt-1.5 inline-block rounded-full px-2.5 py-0.5 text-[12px] font-bold ${deltaPeserta >= 0 ? "bg-[var(--success-bg)] text-[var(--success)]" : "bg-[var(--danger-bg)] text-[var(--danger)]"}`}>
             {deltaPeserta >= 0 ? "▲" : "▼"} {Math.abs(deltaPeserta).toFixed(1)}% vs {prevYear}
           </div>
         </div>
-        <div className="border-l-4 border-[#f59e0b] bg-white p-4 shadow-sm">
-          <div className="text-[11.5px] font-bold uppercase tracking-[0.04em] text-[rgba(32,30,29,0.5)]">Bilangan Tempahan {currYear}</div>
+        <div className="border-l-4 border-[#f59e0b] bg-[var(--white)] p-4 shadow-sm">
+          <div className="text-[11.5px] font-bold uppercase tracking-[0.04em] text-[rgba(var(--ink-rgb),0.5)]">Bilangan Tempahan {currYear}</div>
           <div className="mt-1.5 text-[24px] font-extrabold text-[#1a1a1a]">{fmtNum(totalBilCurr)}</div>
-          <div className={`mt-1.5 inline-block rounded-full px-2.5 py-0.5 text-[12px] font-bold ${deltaBil >= 0 ? "bg-[#dcfce7] text-[#15803d]" : "bg-[#fee2e2] text-[#b91c1c]"}`}>
+          <div className={`mt-1.5 inline-block rounded-full px-2.5 py-0.5 text-[12px] font-bold ${deltaBil >= 0 ? "bg-[var(--success-bg)] text-[var(--success)]" : "bg-[var(--danger-bg)] text-[var(--danger)]"}`}>
             {deltaBil >= 0 ? "▲" : "▼"} {Math.abs(deltaBil).toFixed(1)}% vs {prevYear}
           </div>
         </div>
       </div>
 
-      <div className="mb-5 flex flex-wrap items-center gap-5 border border-[rgba(32,30,29,0.2)] bg-white p-4">
+      <div className="mb-5 flex flex-wrap items-center gap-5 border border-[rgba(var(--ink-rgb),0.2)] bg-[var(--white)] p-4">
         <div>
-          <label className="mr-2 text-[13px] font-bold text-[rgba(32,30,29,0.6)]">Tahun:</label>
-          <select value={yearSel} onChange={(e) => setYearSel(Number(e.target.value))} className="border border-[rgba(32,30,29,0.3)] px-3 py-1.5 text-sm font-semibold">
+          <label className="mr-2 text-[13px] font-bold text-[rgba(var(--ink-rgb),0.6)]">Tahun:</label>
+          <select value={yearSel} onChange={(e) => setYearSel(Number(e.target.value))} className="border border-[rgba(var(--ink-rgb),0.3)] px-3 py-1.5 text-sm font-semibold">
             {yearOptions.map((y) => (
               <option key={y} value={y}>
                 {y}
@@ -244,8 +244,8 @@ export default function HasilSewaanDashboard({ canEdit }: { canEdit: boolean }) 
           </select>
         </div>
         <div>
-          <label className="mr-2 text-[13px] font-bold text-[rgba(32,30,29,0.6)]">Bulan:</label>
-          <select value={monthSel} onChange={(e) => setMonthSel(e.target.value)} className="border border-[rgba(32,30,29,0.3)] px-3 py-1.5 text-sm font-semibold">
+          <label className="mr-2 text-[13px] font-bold text-[rgba(var(--ink-rgb),0.6)]">Bulan:</label>
+          <select value={monthSel} onChange={(e) => setMonthSel(e.target.value)} className="border border-[rgba(var(--ink-rgb),0.3)] px-3 py-1.5 text-sm font-semibold">
             <option value="ALL">Semua Bulan</option>
             {allMonths.map((m) => (
               <option key={m} value={m}>
@@ -255,8 +255,8 @@ export default function HasilSewaanDashboard({ canEdit }: { canEdit: boolean }) 
           </select>
         </div>
         <div>
-          <label className="mr-2 text-[13px] font-bold text-[rgba(32,30,29,0.6)]">Jenis Sewaan / Kemudahan:</label>
-          <select value={jenisSel} onChange={(e) => setJenisSel(e.target.value)} className="border border-[rgba(32,30,29,0.3)] px-3 py-1.5 text-sm font-semibold">
+          <label className="mr-2 text-[13px] font-bold text-[rgba(var(--ink-rgb),0.6)]">Jenis Sewaan / Kemudahan:</label>
+          <select value={jenisSel} onChange={(e) => setJenisSel(e.target.value)} className="border border-[rgba(var(--ink-rgb),0.3)] px-3 py-1.5 text-sm font-semibold">
             <option value="ALL">Semua Jenis Sewaan</option>
             {jenisList.map((j) => (
               <option key={j} value={j}>
@@ -267,9 +267,9 @@ export default function HasilSewaanDashboard({ canEdit }: { canEdit: boolean }) 
         </div>
       </div>
 
-      <div className="mb-5 border border-[rgba(32,30,29,0.2)] bg-white p-[18px]">
+      <div className="mb-5 border border-[rgba(var(--ink-rgb),0.2)] bg-[var(--white)] p-[18px]">
         <div className="mb-0.5 font-archivo text-[15px] font-extrabold">Perbandingan Hasil Sewaan Bulanan (RM)</div>
-        <div className="mb-3 text-xs text-[rgba(32,30,29,0.55)]">
+        <div className="mb-3 text-xs text-[rgba(var(--ink-rgb),0.55)]">
           Jumlah hasil sewaan kemudahan mengikut bulan, {prevYear} vs {currYear}
         </div>
         <div className="relative h-[340px]">
@@ -278,16 +278,16 @@ export default function HasilSewaanDashboard({ canEdit }: { canEdit: boolean }) 
       </div>
 
       <div className="mb-5 grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <div className="border border-[rgba(32,30,29,0.2)] bg-white p-[18px]">
+        <div className="border border-[rgba(var(--ink-rgb),0.2)] bg-[var(--white)] p-[18px]">
           <div className="mb-0.5 font-archivo text-[15px] font-extrabold">Hasil Mengikut Jenis Sewaan ({currYear})</div>
-          <div className="mb-3 text-xs text-[rgba(32,30,29,0.55)]">Agregat tempoh dipilih &mdash; tahun {currYear} sahaja</div>
+          <div className="mb-3 text-xs text-[rgba(var(--ink-rgb),0.55)]">Agregat tempoh dipilih &mdash; tahun {currYear} sahaja</div>
           <div className="relative h-[300px]">
             <canvas ref={donutRef} />
           </div>
         </div>
-        <div className="border border-[rgba(32,30,29,0.2)] bg-white p-[18px]">
+        <div className="border border-[rgba(var(--ink-rgb),0.2)] bg-[var(--white)] p-[18px]">
           <div className="mb-0.5 font-archivo text-[15px] font-extrabold">Kekerapan Tempahan Mengikut Jenis</div>
-          <div className="mb-3 text-xs text-[rgba(32,30,29,0.55)]">
+          <div className="mb-3 text-xs text-[rgba(var(--ink-rgb),0.55)]">
             Bilangan kekerapan tempahan bagi tahun {prevYear} &amp; {currYear}
           </div>
           <div className="max-h-[300px] overflow-y-auto">
@@ -306,7 +306,7 @@ export default function HasilSewaanDashboard({ canEdit }: { canEdit: boolean }) 
                   const kCurr = sumOverMonths(currYear, monthsForCompare, j, "bilangan");
                   const diff = kCurr - kPrev;
                   return (
-                    <tr key={j} className="odd:bg-white even:bg-[#fafbfd]">
+                    <tr key={j} className="odd:bg-[var(--white)] even:bg-[#fafbfd]">
                       <td className="border-b border-[#eef0f4] px-3 py-2">
                         <span className="rounded-full px-2.5 py-0.5 text-[11px] font-bold text-white" style={{ background: JENIS_COLORS[j] || "#94a3b8" }}>
                           {j}
@@ -315,7 +315,7 @@ export default function HasilSewaanDashboard({ canEdit }: { canEdit: boolean }) 
                       <td className="border-b border-[#eef0f4] px-3 py-2">{fmtNum(kPrev)}</td>
                       <td className="border-b border-[#eef0f4] px-3 py-2">{fmtNum(kCurr)}</td>
                       <td className="border-b border-[#eef0f4] px-3 py-2">
-                        <span className={`rounded-full px-2 py-0.5 text-[12px] font-bold ${diff >= 0 ? "bg-[#dcfce7] text-[#15803d]" : "bg-[#fee2e2] text-[#b91c1c]"}`}>
+                        <span className={`rounded-full px-2 py-0.5 text-[12px] font-bold ${diff >= 0 ? "bg-[var(--success-bg)] text-[var(--success)]" : "bg-[var(--danger-bg)] text-[var(--danger)]"}`}>
                           {diff >= 0 ? "+" : ""}
                           {fmtNum(diff)}
                         </span>
@@ -329,9 +329,9 @@ export default function HasilSewaanDashboard({ canEdit }: { canEdit: boolean }) 
         </div>
       </div>
 
-      <div className="border border-[rgba(32,30,29,0.2)] bg-white p-[18px]">
+      <div className="border border-[rgba(var(--ink-rgb),0.2)] bg-[var(--white)] p-[18px]">
         <div className="mb-0.5 font-archivo text-[15px] font-extrabold">Butiran Terperinci Mengikut Bulan &amp; Jenis Sewaan</div>
-        <div className="mb-3 text-xs text-[rgba(32,30,29,0.55)]">Gunakan penapis di atas untuk tumpuan data</div>
+        <div className="mb-3 text-xs text-[rgba(var(--ink-rgb),0.55)]">Gunakan penapis di atas untuk tumpuan data</div>
         <div className="max-h-[380px] overflow-auto border border-[#eef0f4]">
           <table className="w-full min-w-[720px] border-collapse text-[13px]">
             <thead>
@@ -348,7 +348,7 @@ export default function HasilSewaanDashboard({ canEdit }: { canEdit: boolean }) 
             </thead>
             <tbody>
               {rows.map((r, i) => (
-                <tr key={i} className="odd:bg-white even:bg-[#fafbfd]">
+                <tr key={i} className="odd:bg-[var(--white)] even:bg-[#fafbfd]">
                   <td className="border-b border-[#eef0f4] px-3 py-2">{r.m}</td>
                   <td className="border-b border-[#eef0f4] px-3 py-2">
                     <span className="rounded-full px-2.5 py-0.5 text-[11px] font-bold text-white" style={{ background: JENIS_COLORS[r.j] || "#94a3b8" }}>
@@ -365,7 +365,7 @@ export default function HasilSewaanDashboard({ canEdit }: { canEdit: boolean }) 
               ))}
               {rows.length === 0 && (
                 <tr>
-                  <td colSpan={8} className="px-3 py-6 text-center text-sm text-[rgba(32,30,29,0.5)]">
+                  <td colSpan={8} className="px-3 py-6 text-center text-sm text-[rgba(var(--ink-rgb),0.5)]">
                     Tiada data untuk tahun {currYear} lagi &mdash; gunakan &quot;Kemaskini Data&quot; untuk tambah rekod
                   </td>
                 </tr>

@@ -20,7 +20,7 @@ export default function AppShell({
       <Navbar name={name} role={role} onMenuClick={() => setSidebarOpen(true)} />
       <div className="flex min-h-0 flex-1">
         <Sidebar name={name} role={role} open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-        <main className="min-w-0 flex-1 overflow-y-auto bg-white p-4 text-[#201e1d] sm:p-7">{children}</main>
+        <main className="min-w-0 flex-1 overflow-y-auto bg-[var(--white)] p-4 text-[var(--ink)] sm:p-7">{children}</main>
       </div>
     </div>
   );

@@ -35,7 +35,7 @@ export default function FacilityStatusSelect({
       value={value}
       disabled={saving}
       onChange={(e) => handleChange(e.target.value)}
-      className="border border-[rgba(32,30,29,0.4)] bg-white px-2 py-1 text-xs font-bold text-[#201e1d] focus:outline-none"
+      className="border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] px-2 py-1 text-xs font-bold text-[var(--ink)] focus:outline-none"
     >
       {Object.entries(FACILITY_STATUS_LABEL).map(([key, label]) => (
         <option key={key} value={key}>

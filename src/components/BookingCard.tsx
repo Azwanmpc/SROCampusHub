@@ -76,17 +76,17 @@ export default function BookingCard({
   const isAsrama = booking.facility.type === "Asrama";
 
   return (
-    <div className="bg-white p-4">
+    <div className="bg-[var(--white)] p-4">
       <div className="flex flex-wrap items-start gap-3.5">
         <Buildings weight="duotone" size={22} className="flex-none text-[#4a72a8]" />
         <div className="min-w-[220px] flex-1">
           <div className="text-[14.5px] font-bold">
             {booking.facility.name} — {booking.purpose}
           </div>
-          <div className="mt-0.5 text-[12.5px] text-[rgba(32,30,29,0.6)]">
+          <div className="mt-0.5 text-[12.5px] text-[rgba(var(--ink-rgb),0.6)]">
             {booking.user.name} · {booking.participantCount} peserta · {ARRANGEMENT_LABEL[booking.arrangement]}
           </div>
-          <div className="text-[12.5px] text-[rgba(32,30,29,0.6)]">
+          <div className="text-[12.5px] text-[rgba(var(--ink-rgb),0.6)]">
             {new Date(booking.startDateTime).toLocaleString("ms-MY")} – {new Date(booking.endDateTime).toLocaleString("ms-MY")}
             {" · "}Anggaran hasil RM {booking.revenue.toLocaleString("ms-MY")}
           </div>
@@ -97,7 +97,7 @@ export default function BookingCard({
             </div>
           )}
           {booking.earlyAccess && (
-            <div className="mt-1 flex items-center gap-1.5 text-xs font-bold text-[#8a6d1f]">
+            <div className="mt-1 flex items-center gap-1.5 text-xs font-bold text-[var(--warning)]">
               <Clock weight="duotone" /> Minta masuk awal: {booking.earlyAccessMinutes} minit
             </div>
           )}
@@ -106,7 +106,7 @@ export default function BookingCard({
       </div>
 
       {canApprove && booking.status === "MENUNGGU" && !showReject && (
-        <div className="mt-3.5 flex gap-px border-t border-[rgba(32,30,29,0.2)] pt-3.5">
+        <div className="mt-3.5 flex gap-px border-t border-[rgba(var(--ink-rgb),0.2)] pt-3.5">
           <button
             onClick={() => callAction("APPROVE")}
             disabled={loading}
@@ -117,7 +117,7 @@ export default function BookingCard({
           <button
             onClick={() => setShowReject(true)}
             disabled={loading}
-            className="ml-2 flex flex-1 items-center justify-center gap-1.5 border border-[#ff8a75] bg-[#fff2ef] py-2 font-archivo text-[13px] font-extrabold text-[#7c1405] disabled:opacity-60"
+            className="ml-2 flex flex-1 items-center justify-center gap-1.5 border border-[#ff8a75] bg-[var(--danger-bg)] py-2 font-archivo text-[13px] font-extrabold text-[var(--danger)] disabled:opacity-60"
           >
             <Prohibit weight="duotone" /> Tolak
           </button>
@@ -125,14 +125,14 @@ export default function BookingCard({
       )}
 
       {canApprove && showReject && (
-        <div className="mt-3.5 border-t border-[rgba(32,30,29,0.2)] pt-3.5">
-          <label className="mb-1.5 block text-xs text-[rgba(32,30,29,0.6)]">Nota Penolakan</label>
+        <div className="mt-3.5 border-t border-[rgba(var(--ink-rgb),0.2)] pt-3.5">
+          <label className="mb-1.5 block text-xs text-[rgba(var(--ink-rgb),0.6)]">Nota Penolakan</label>
           <textarea
             value={reason}
             onChange={(e) => setReason(e.target.value)}
             rows={2}
             placeholder="Sebab penolakan…"
-            className="mb-2.5 w-full border border-[rgba(32,30,29,0.4)] bg-[#f3f2f2] px-2.5 py-2 text-xs outline-none"
+            className="mb-2.5 w-full border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--surface)] px-2.5 py-2 text-xs outline-none"
           />
           <div className="flex gap-2">
             <button
@@ -144,7 +144,7 @@ export default function BookingCard({
             </button>
             <button
               onClick={() => setShowReject(false)}
-              className="flex-1 border border-[rgba(32,30,29,0.4)] bg-[#f3f2f2] py-2 text-[13px] font-bold"
+              className="flex-1 border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--surface)] py-2 text-[13px] font-bold"
             >
               Batal
             </button>
@@ -153,11 +153,11 @@ export default function BookingCard({
       )}
 
       {showCancel && booking.status === "MENUNGGU" && (
-        <div className="mt-3.5 border-t border-[rgba(32,30,29,0.2)] pt-3.5">
+        <div className="mt-3.5 border-t border-[rgba(var(--ink-rgb),0.2)] pt-3.5">
           <button
             onClick={handleDelete}
             disabled={loading}
-            className="border border-[#7c1405] px-3.5 py-2 text-xs font-bold text-[#7c1405] disabled:opacity-60"
+            className="border border-[#7c1405] px-3.5 py-2 text-xs font-bold text-[var(--danger)] disabled:opacity-60"
           >
             Batalkan Tempahan
           </button>
@@ -165,15 +165,15 @@ export default function BookingCard({
       )}
 
       {booking.status === "DITOLAK" && (
-        <div className="mt-3.5 border-t border-[rgba(32,30,29,0.2)] pt-3.5">
+        <div className="mt-3.5 border-t border-[rgba(var(--ink-rgb),0.2)] pt-3.5">
           {booking.rejectionReason && (
-            <div className="mb-2.5 text-xs text-[rgba(32,30,29,0.6)]">Sebab: {booking.rejectionReason}</div>
+            <div className="mb-2.5 text-xs text-[rgba(var(--ink-rgb),0.6)]">Sebab: {booking.rejectionReason}</div>
           )}
           {canApprove && (
             <button
               onClick={() => callAction("APPROVE")}
               disabled={loading}
-              className="flex w-full items-center justify-center gap-1.5 border border-[#4a72a8] bg-[#f3f2f2] py-2 font-archivo text-[13px] font-extrabold text-[#4a72a8] disabled:opacity-60"
+              className="flex w-full items-center justify-center gap-1.5 border border-[#4a72a8] bg-[var(--surface)] py-2 font-archivo text-[13px] font-extrabold text-[#4a72a8] disabled:opacity-60"
             >
               <ArrowCounterClockwise weight="duotone" /> Pulihkan ke Menunggu
             </button>
@@ -182,11 +182,11 @@ export default function BookingCard({
       )}
 
       {canApprove && booking.status === "DISAHKAN" && (
-        <div className="mt-3.5 flex flex-wrap items-center justify-between gap-2 border-t border-[rgba(32,30,29,0.2)] pt-3.5">
+        <div className="mt-3.5 flex flex-wrap items-center justify-between gap-2 border-t border-[rgba(var(--ink-rgb),0.2)] pt-3.5">
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => setShowQuotation(true)}
-              className="flex items-center gap-1.5 border border-[rgba(32,30,29,0.4)] bg-[#f3f2f2] px-3.5 py-2 text-[13px] font-bold"
+              className="flex items-center gap-1.5 border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--surface)] px-3.5 py-2 text-[13px] font-bold"
             >
               <FileText weight="duotone" /> Jana Sebutharga
             </button>
@@ -209,7 +209,7 @@ export default function BookingCard({
               </button>
             )}
             {isAsrama && booking.checkInAt && booking.checkOutAt && (
-              <span className="self-center text-xs text-[rgba(32,30,29,0.5)]">Selesai Check-Out</span>
+              <span className="self-center text-xs text-[rgba(var(--ink-rgb),0.5)]">Selesai Check-Out</span>
             )}
           </div>
           <button onClick={handleDelete} className="flex items-center gap-1.5 border border-[#6d28d9] px-3 py-1.5 text-xs font-bold text-[#6d28d9]">
@@ -219,8 +219,8 @@ export default function BookingCard({
       )}
 
       {!canApprove && booking.status === "DISAHKAN" && (
-        <div className="mt-3.5 border-t border-[rgba(32,30,29,0.2)] pt-3.5">
-          <div className="flex items-start gap-2 border border-[#f5c76b] bg-[#fff8e6] px-3 py-2.5 text-xs leading-[1.5] text-[#8a6d1f]">
+        <div className="mt-3.5 border-t border-[rgba(var(--ink-rgb),0.2)] pt-3.5">
+          <div className="flex items-start gap-2 border border-[#f5c76b] bg-[#fff8e6] px-3 py-2.5 text-xs leading-[1.5] text-[var(--warning)]">
             <WarningCircle weight="fill" size={16} className="mt-0.5 flex-none" />
             <div>
               <span className="font-bold">Perhatian:</span> Tempahan ini telah disahkan dan sebut harga telah

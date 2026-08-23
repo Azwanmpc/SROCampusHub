@@ -80,9 +80,9 @@ export default function ComplaintCard({
   }
 
   return (
-    <div className="bg-white p-4">
+    <div className="bg-[var(--white)] p-4">
       <div className="flex flex-wrap items-start gap-3.5">
-        <WarningCircle weight="duotone" size={22} className="flex-none text-[#7c1405]" />
+        <WarningCircle weight="duotone" size={22} className="flex-none text-[var(--danger)]" />
         <div className="min-w-[220px] flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <div className="text-[14.5px] font-bold">{complaint.location}</div>
@@ -95,12 +95,12 @@ export default function ComplaintCard({
               </span>
             )}
           </div>
-          <div className="mt-0.5 text-[12.5px] text-[rgba(32,30,29,0.6)]">{complaint.description}</div>
-          <div className="mt-1 text-xs text-[rgba(32,30,29,0.6)]">
+          <div className="mt-0.5 text-[12.5px] text-[rgba(var(--ink-rgb),0.6)]">{complaint.description}</div>
+          <div className="mt-1 text-xs text-[rgba(var(--ink-rgb),0.6)]">
             Pengadu: {complaint.user?.name ?? complaint.guestName ?? "Awam"}
             {complaint.repairType && ` · ${REPAIR_TYPE_LABEL[complaint.repairType]}`}
           </div>
-          <div className="mt-0.5 text-xs text-[rgba(32,30,29,0.6)]">
+          <div className="mt-0.5 text-xs text-[rgba(var(--ink-rgb),0.6)]">
             Tarikh Aduan: {new Date(complaint.createdAt).toLocaleDateString("ms-MY")}
           </div>
           {complaint.photoUrl && (
@@ -117,15 +117,15 @@ export default function ComplaintCard({
       </div>
 
       {isStaffWorker && complaint.status === "DALAM_TINDAKAN" && (
-        <div className="mt-3 border-t border-[rgba(32,30,29,0.2)] pt-3">
-          <label className="mb-1 block text-[11px] font-bold text-[rgba(32,30,29,0.6)]">Catatan Staf</label>
+        <div className="mt-3 border-t border-[rgba(var(--ink-rgb),0.2)] pt-3">
+          <label className="mb-1 block text-[11px] font-bold text-[rgba(var(--ink-rgb),0.6)]">Catatan Staf</label>
           <textarea
             value={staffNote}
             onChange={(e) => setStaffNote(e.target.value)}
             onBlur={saveStaffFields}
             rows={2}
             placeholder="Tambah catatan kerja penyelenggaraan…"
-            className="w-full border border-[rgba(32,30,29,0.3)] bg-[#f3f2f2] px-2.5 py-2 text-xs outline-none"
+            className="w-full border border-[rgba(var(--ink-rgb),0.3)] bg-[var(--surface)] px-2.5 py-2 text-xs outline-none"
           />
           {role === "TEKNIKAL" && (
             <button
@@ -140,11 +140,11 @@ export default function ComplaintCard({
       )}
 
       {canApprove && complaint.status === "BARU" && (
-        <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-[rgba(32,30,29,0.2)] pt-3">
+        <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-[rgba(var(--ink-rgb),0.2)] pt-3">
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="border border-[rgba(32,30,29,0.4)] bg-white px-2.5 py-2 text-[12.5px] font-bold"
+            className="border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] px-2.5 py-2 text-[12.5px] font-bold"
           >
             <option value="">Jenis Kerosakan…</option>
             {Object.entries(COMPLAINT_CATEGORY_LABEL).map(([key, label]) => (
@@ -156,14 +156,14 @@ export default function ComplaintCard({
           <button
             onClick={() => callAction("AMBIL_DALAMAN", { category: category || undefined })}
             disabled={loading}
-            className="border border-[rgba(32,30,29,0.4)] bg-[#f3f2f2] px-3.5 py-2 text-[12.5px] font-bold disabled:opacity-60"
+            className="border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--surface)] px-3.5 py-2 text-[12.5px] font-bold disabled:opacity-60"
           >
             Tindakan (Dalaman)
           </button>
           <button
             onClick={() => callAction("AMBIL_KONTRAKTOR", { category: category || undefined })}
             disabled={loading}
-            className="border border-[rgba(32,30,29,0.4)] bg-[#f3f2f2] px-3.5 py-2 text-[12.5px] font-bold disabled:opacity-60"
+            className="border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--surface)] px-3.5 py-2 text-[12.5px] font-bold disabled:opacity-60"
           >
             Tindakan (Kontraktor)
           </button>
@@ -171,8 +171,8 @@ export default function ComplaintCard({
       )}
 
       {canApprove && complaint.status === "MENUNGGU_PENGESAHAN" && (
-        <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-[rgba(32,30,29,0.2)] pt-3">
-          <div className="mb-0.5 w-full text-[11.5px] text-[rgba(32,30,29,0.6)]">
+        <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-[rgba(var(--ink-rgb),0.2)] pt-3">
+          <div className="mb-0.5 w-full text-[11.5px] text-[rgba(var(--ink-rgb),0.6)]">
             Staf penyelenggaraan telah tandakan siap — sila sahkan
           </div>
           <button
@@ -185,7 +185,7 @@ export default function ComplaintCard({
           <button
             onClick={() => callAction("HANTAR_BALIK")}
             disabled={loading}
-            className="border border-[rgba(32,30,29,0.4)] bg-[#f3f2f2] px-3.5 py-2 text-[12.5px] font-bold disabled:opacity-60"
+            className="border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--surface)] px-3.5 py-2 text-[12.5px] font-bold disabled:opacity-60"
           >
             Hantar Balik
           </button>

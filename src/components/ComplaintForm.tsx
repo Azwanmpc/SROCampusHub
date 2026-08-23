@@ -6,8 +6,8 @@ import { Image as ImageIcon } from "@phosphor-icons/react";
 
 type Facility = { id: string; name: string };
 
-const fieldClass = "min-h-9 w-full border border-[rgba(32,30,29,0.4)] bg-[#f3f2f2] px-2.5 py-1.5 text-sm text-[#201e1d] outline-none";
-const labelClass = "mb-[5px] block text-xs text-[rgba(32,30,29,0.7)]";
+const fieldClass = "min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--surface)] px-2.5 py-1.5 text-sm text-[var(--ink)] outline-none";
+const labelClass = "mb-[5px] block text-xs text-[rgba(var(--ink-rgb),0.7)]";
 
 export default function ComplaintForm({
   facilities,
@@ -155,11 +155,11 @@ export default function ComplaintForm({
 
       <div>
         <label className={labelClass}>Gambar Kerosakan</label>
-        <div className="flex items-center gap-3 border border-dashed border-[rgba(32,30,29,0.5)] bg-[#f3f2f2] p-3.5">
+        <div className="flex items-center gap-3 border border-dashed border-[rgba(var(--ink-rgb),0.5)] bg-[var(--surface)] p-3.5">
           <div className="flex h-14 w-14 flex-none items-center justify-center bg-[repeating-linear-gradient(135deg,#d7d3d3_0_8px,#bab6b6_8px_16px)] text-[#605d5d]">
             <ImageIcon weight="duotone" size={20} />
           </div>
-          <label className="cursor-pointer text-xs text-[rgba(32,30,29,0.6)]">
+          <label className="cursor-pointer text-xs text-[rgba(var(--ink-rgb),0.6)]">
             <div className="font-mono font-bold">{fileName || "Pilih gambar…"}</div>
             Diambil terus dari kamera telefon
             <input ref={fileRef} type="file" accept="image/*" capture="environment" onChange={handleFileChange} className="hidden" />
@@ -171,9 +171,9 @@ export default function ComplaintForm({
         )}
       </div>
 
-      {error && <div className="bg-[#fff2ef] px-3 py-2 text-sm text-[#7c1405]">{error}</div>}
+      {error && <div className="bg-[var(--danger-bg)] px-3 py-2 text-sm text-[var(--danger)]">{error}</div>}
       {success && (
-        <div className="bg-[#e6f0e9] px-3 py-2 text-sm text-[#4a8a63]">
+        <div className="bg-[var(--success-bg)] px-3 py-2 text-sm text-[var(--success)]">
           Aduan berjaya dihantar. Kami akan menyemak dalam masa terdekat.
         </div>
       )}

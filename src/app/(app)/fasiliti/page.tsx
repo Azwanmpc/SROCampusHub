@@ -12,7 +12,7 @@ export default async function FasilitiPage() {
       <div className="mb-0.5 flex flex-wrap items-start justify-between gap-4">
         <div>
           <div className="mb-0.5 font-archivo text-[26px] font-extrabold">Maklumat Fasiliti</div>
-          <div className="text-[13.5px] text-[rgba(32,30,29,0.6)]">
+          <div className="text-[13.5px] text-[rgba(var(--ink-rgb),0.6)]">
             Senarai fasiliti kampus, kadar sewaan &amp; status semasa
           </div>
         </div>
@@ -22,7 +22,7 @@ export default async function FasilitiPage() {
           0187734506
         </div>
       </div>
-      <div className="my-[18px] h-0.5 bg-[rgba(32,30,29,0.4)]" />
+      <div className="my-[18px] h-0.5 bg-[rgba(var(--ink-rgb),0.4)]" />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {facilities.map((f) => (
@@ -30,8 +30,8 @@ export default async function FasilitiPage() {
         ))}
       </div>
 
-      <div className="mt-[18px] grid grid-cols-1 gap-px border border-[rgba(32,30,29,0.4)] bg-[rgba(32,30,29,0.3)] md:grid-cols-2">
-        <div className="bg-white p-[18px]">
+      <div className="mt-[18px] grid grid-cols-1 gap-px border border-[rgba(var(--ink-rgb),0.4)] bg-[rgba(var(--ink-rgb),0.3)] md:grid-cols-2">
+        <div className="bg-[var(--white)] p-[18px]">
           <div className="mb-3 font-archivo text-sm font-extrabold">Kemudahan Lain</div>
           <div className="flex flex-col gap-2.5 text-[12.5px]">
             <div><strong>Surau Al-Firdaus</strong> — Ruang solat, kapasiti 100 jemaah</div>
@@ -39,22 +39,22 @@ export default async function FasilitiPage() {
             <div><strong>Kemudahan Riadah</strong> — Ruang aktiviti luar/gelanggang</div>
           </div>
         </div>
-        <div className="bg-white p-[18px]">
+        <div className="bg-[var(--white)] p-[18px]">
           <div className="mb-3 font-archivo text-sm font-extrabold">Pakej Makanan (Setiap Pax)</div>
           <table className="w-full border-collapse text-xs">
             <thead>
               <tr>
-                <th className="border-b border-[rgba(32,30,29,0.2)] py-1.5 text-left text-[9.5px] uppercase text-[rgba(32,30,29,0.55)]">Pakej</th>
-                <th className="border-b border-[rgba(32,30,29,0.2)] py-1.5 text-right text-[9.5px] uppercase text-[rgba(32,30,29,0.55)]">Makan Tengahari/Malam</th>
+                <th className="border-b border-[rgba(var(--ink-rgb),0.2)] py-1.5 text-left text-[9.5px] uppercase text-[rgba(var(--ink-rgb),0.55)]">Pakej</th>
+                <th className="border-b border-[rgba(var(--ink-rgb),0.2)] py-1.5 text-right text-[9.5px] uppercase text-[rgba(var(--ink-rgb),0.55)]">Makan Tengahari/Malam</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td className="border-b border-[rgba(32,30,29,0.1)] py-1.5">Pakej A</td><td className="border-b border-[rgba(32,30,29,0.1)] py-1.5 text-right font-bold">RM 26.00</td></tr>
-              <tr><td className="border-b border-[rgba(32,30,29,0.1)] py-1.5">Pakej B</td><td className="border-b border-[rgba(32,30,29,0.1)] py-1.5 text-right font-bold">RM 20.00</td></tr>
+              <tr><td className="border-b border-[rgba(var(--ink-rgb),0.1)] py-1.5">Pakej A</td><td className="border-b border-[rgba(var(--ink-rgb),0.1)] py-1.5 text-right font-bold">RM 26.00</td></tr>
+              <tr><td className="border-b border-[rgba(var(--ink-rgb),0.1)] py-1.5">Pakej B</td><td className="border-b border-[rgba(var(--ink-rgb),0.1)] py-1.5 text-right font-bold">RM 20.00</td></tr>
               <tr><td className="py-1.5">Pakej C</td><td className="py-1.5 text-right font-bold">RM 15.00</td></tr>
             </tbody>
           </table>
-          <div className="mt-2 text-[11px] text-[rgba(32,30,29,0.55)]">
+          <div className="mt-2 text-[11px] text-[rgba(var(--ink-rgb),0.55)]">
             Termasuk sarapan, minum pagi/petang/malam. Hubungi pihak MPC untuk tempahan katering.
           </div>
         </div>

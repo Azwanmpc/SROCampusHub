@@ -18,7 +18,7 @@ export const PINJAMAN_STATUS_LABEL: Record<string, string> = {
 
 export const PINJAMAN_STATUS_COLOR: Record<string, string> = {
   MENUNGGU_KELULUSAN: "bg-[#4a72a8] text-white",
-  DITOLAK: "bg-[#fff2ef] text-[#7c1405]",
+  DITOLAK: "bg-[var(--danger-bg)] text-[var(--danger)]",
   DILULUSKAN: "bg-[#fff300] text-[#4a3800]",
   DIPULANGKAN: "bg-[#fdeee0] text-[#a34e00]",
   SELESAI: "bg-[#4bff5e] text-[#003d0f]",
@@ -34,7 +34,7 @@ export const BOOKING_STATUS_LABEL: Record<string, string> = {
 export const BOOKING_STATUS_COLOR: Record<string, string> = {
   MENUNGGU: "bg-[#4a72a8] text-white",
   DISAHKAN: "bg-[#4bff5e] text-[#003d0f]",
-  DITOLAK: "bg-[#fff2ef] text-[#7c1405]",
+  DITOLAK: "bg-[var(--danger-bg)] text-[var(--danger)]",
   DIBATALKAN: "bg-[#eae7e7] text-[#605d5d]",
 };
 
@@ -45,9 +45,9 @@ export const FACILITY_STATUS_LABEL: Record<string, string> = {
 };
 
 export const FACILITY_STATUS_COLOR: Record<string, string> = {
-  TERSEDIA: "bg-[#e6f0e9] text-[#4a8a63]",
+  TERSEDIA: "bg-[var(--success-bg)] text-[var(--success)]",
   DITEMPAH: "bg-[#e8edf3] text-[#4a72a8]",
-  PENYELENGGARAAN: "bg-[#fff2ef] text-[#7c1405]",
+  PENYELENGGARAAN: "bg-[var(--danger-bg)] text-[var(--danger)]",
 };
 
 export const COMPLAINT_STATUS_LABEL: Record<string, string> = {
@@ -71,8 +71,8 @@ export const PRIORITY_LABEL: Record<string, string> = {
 };
 
 export const PRIORITY_COLOR: Record<string, string> = {
-  TINGGI: "bg-[#fff2ef] text-[#7c1405]",
-  SEDERHANA: "bg-[#f5eedd] text-[#8a6d1f]",
+  TINGGI: "bg-[var(--danger-bg)] text-[var(--danger)]",
+  SEDERHANA: "bg-[var(--warning-bg)] text-[var(--warning)]",
   RENDAH: "bg-[#eae7e7] text-[#605d5d]",
 };
 

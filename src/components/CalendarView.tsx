@@ -103,7 +103,7 @@ export default function CalendarView({ facilities, defaultFacilityId }: { facili
           <div className="flex items-center gap-2">
             <button
               onClick={() => changeMonth(-1)}
-              className="flex h-9 w-9 items-center justify-center border border-[rgba(32,30,29,0.4)] bg-[#f3f2f2]"
+              className="flex h-9 w-9 items-center justify-center border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--surface)]"
             >
               <CaretLeft weight="duotone" />
             </button>
@@ -112,7 +112,7 @@ export default function CalendarView({ facilities, defaultFacilityId }: { facili
             </div>
             <button
               onClick={() => changeMonth(1)}
-              className="flex h-9 w-9 items-center justify-center border border-[rgba(32,30,29,0.4)] bg-[#f3f2f2]"
+              className="flex h-9 w-9 items-center justify-center border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--surface)]"
             >
               <CaretRight weight="duotone" />
             </button>
@@ -122,7 +122,7 @@ export default function CalendarView({ facilities, defaultFacilityId }: { facili
             <select
               value={facilityFilter}
               onChange={(e) => setFacilityFilter(e.target.value)}
-              className="border border-[rgba(32,30,29,0.4)] bg-white px-3 py-1.5 text-sm"
+              className="border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] px-3 py-1.5 text-sm"
             >
               <option value="ALL">Semua Fasiliti</option>
               {facilities.map((f) => (
@@ -143,14 +143,14 @@ export default function CalendarView({ facilities, defaultFacilityId }: { facili
           </div>
         </div>
 
-        <div className="overflow-x-auto border border-[rgba(32,30,29,0.4)] bg-white p-3 sm:p-6">
+        <div className="overflow-x-auto border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] p-3 sm:p-6">
           <div className="min-w-[560px]">
-            <div className="mb-2 grid grid-cols-7 text-center text-[11px] font-bold text-[rgba(32,30,29,0.6)]">
+            <div className="mb-2 grid grid-cols-7 text-center text-[11px] font-bold text-[rgba(var(--ink-rgb),0.6)]">
               {WEEKDAYS.map((w) => (
                 <div key={w}>{w}</div>
               ))}
             </div>
-            <div className="grid grid-cols-7 gap-0.5 bg-[rgba(32,30,29,0.25)]">
+            <div className="grid grid-cols-7 gap-0.5 bg-[rgba(var(--ink-rgb),0.25)]">
               {gridDays.map((day, i) => {
                 if (!day) return <div key={i} className="min-h-[80px] bg-[#f8f4f4] sm:min-h-[104px]" />;
                 const key = toDateKey(day);
@@ -163,7 +163,7 @@ export default function CalendarView({ facilities, defaultFacilityId }: { facili
                       setSelectedDate(key);
                       setShowForm(true);
                     }}
-                    className={`min-h-[80px] p-1.5 text-left align-top sm:min-h-[104px] sm:p-2 ${dayBookings.length ? "bg-white" : "bg-[#f8f4f4]"} ${
+                    className={`min-h-[80px] p-1.5 text-left align-top sm:min-h-[104px] sm:p-2 ${dayBookings.length ? "bg-[var(--white)]" : "bg-[#f8f4f4]"} ${
                       isToday ? "outline outline-2 -outline-offset-2 outline-[#6d28d9]" : ""
                     }`}
                   >
@@ -181,7 +181,7 @@ export default function CalendarView({ facilities, defaultFacilityId }: { facili
                         </div>
                       ))}
                       {dayBookings.length > 3 && (
-                        <div className="text-[10px] text-[rgba(32,30,29,0.5)]">+{dayBookings.length - 3} lagi</div>
+                        <div className="text-[10px] text-[rgba(var(--ink-rgb),0.5)]">+{dayBookings.length - 3} lagi</div>
                       )}
                     </div>
                   </button>
@@ -192,34 +192,34 @@ export default function CalendarView({ facilities, defaultFacilityId }: { facili
 
           <div className="mt-4 flex gap-4 text-xs font-bold">
             <div className="flex items-center gap-1.5">
-              <span className="h-3.5 w-3.5 border border-[rgba(32,30,29,0.3)] bg-[#fff300]" /> Tempahan belum disahkan
+              <span className="h-3.5 w-3.5 border border-[rgba(var(--ink-rgb),0.3)] bg-[#fff300]" /> Tempahan belum disahkan
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="h-3.5 w-3.5 border border-[rgba(32,30,29,0.3)] bg-[#4bff5e]" /> Tempahan telah disahkan
+              <span className="h-3.5 w-3.5 border border-[rgba(var(--ink-rgb),0.3)] bg-[#4bff5e]" /> Tempahan telah disahkan
             </div>
           </div>
         </div>
       </div>
 
       <div>
-        <div className="border border-[rgba(32,30,29,0.4)] bg-white p-6">
+        <div className="border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] p-6">
           <h2 className="mb-3 font-archivo text-sm font-extrabold">Tempahan Terkini</h2>
-          {loading && <p className="text-sm text-[rgba(32,30,29,0.5)]">Memuatkan...</p>}
-          <div className="flex flex-col gap-1 divide-y divide-[rgba(32,30,29,0.15)]">
+          {loading && <p className="text-sm text-[rgba(var(--ink-rgb),0.5)]">Memuatkan...</p>}
+          <div className="flex flex-col gap-1 divide-y divide-[rgba(var(--ink-rgb),0.15)]">
             {bookings.slice(0, 8).map((b) => (
               <div key={b.id} className="py-3">
                 <div className="mb-1 flex items-center justify-between">
                   <span className="text-sm font-bold">{b.facility.name}</span>
                   <StatusBadge label={BOOKING_STATUS_LABEL[b.status]} colorClass={BOOKING_STATUS_COLOR[b.status]} />
                 </div>
-                <div className="text-xs text-[rgba(32,30,29,0.6)]">{b.purpose}</div>
-                <div className="text-xs text-[rgba(32,30,29,0.5)]">
+                <div className="text-xs text-[rgba(var(--ink-rgb),0.6)]">{b.purpose}</div>
+                <div className="text-xs text-[rgba(var(--ink-rgb),0.5)]">
                   {new Date(b.startDateTime).toLocaleString("ms-MY")} — {b.user.name}
                 </div>
               </div>
             ))}
             {!loading && bookings.length === 0 && (
-              <p className="py-2 text-sm text-[rgba(32,30,29,0.5)]">Tiada tempahan lagi.</p>
+              <p className="py-2 text-sm text-[rgba(var(--ink-rgb),0.5)]">Tiada tempahan lagi.</p>
             )}
           </div>
         </div>
@@ -227,16 +227,16 @@ export default function CalendarView({ facilities, defaultFacilityId }: { facili
 
       {showForm && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(32,30,29,0.5)] p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(0,0,0,0.5)] p-4"
           onClick={() => setShowForm(false)}
         >
           <div
-            className="max-h-[90vh] w-full max-w-lg overflow-y-auto border border-[rgba(32,30,29,0.4)] bg-white p-6"
+            className="max-h-[90vh] w-full max-w-lg overflow-y-auto border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-4 flex items-center justify-between">
               <h2 className="font-archivo text-sm font-extrabold">Borang Tempahan Fasiliti</h2>
-              <button onClick={() => setShowForm(false)} className="text-[#201e1d]" aria-label="Tutup">
+              <button onClick={() => setShowForm(false)} className="text-[var(--ink)]" aria-label="Tutup">
                 <X weight="bold" size={18} />
               </button>
             </div>

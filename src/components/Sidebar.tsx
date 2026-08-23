@@ -93,19 +93,19 @@ export default function Sidebar({
     <>
       {open && (
         <div
-          className="fixed inset-0 z-40 bg-[rgba(32,30,29,0.5)] md:hidden"
+          className="fixed inset-0 z-40 bg-[rgba(0,0,0,0.5)] md:hidden"
           onClick={onClose}
           aria-hidden="true"
         />
       )}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex h-full w-[246px] shrink-0 flex-col overflow-y-auto border-r-2 border-[rgba(32,30,29,0.4)] bg-white py-[18px] text-[#201e1d] transition-transform duration-200 md:relative md:z-0 md:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 flex h-full w-[246px] shrink-0 flex-col overflow-y-auto border-r-2 border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] py-[18px] text-[var(--ink)] transition-transform duration-200 md:relative md:z-0 md:translate-x-0 ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <div className="mb-2 flex items-center justify-between px-[18px] md:hidden">
           <div className="font-archivo text-sm font-extrabold">Menu</div>
-          <button onClick={onClose} aria-label="Tutup menu" className="text-[#201e1d]">
+          <button onClick={onClose} aria-label="Tutup menu" className="text-[var(--ink)]">
             <X weight="bold" size={18} />
           </button>
         </div>
@@ -115,7 +115,7 @@ export default function Sidebar({
             if (items.length === 0) return null;
             return (
               <div key={grp.label} className="mb-5">
-                <div className="mb-1.5 px-[18px] text-[10px] font-bold uppercase tracking-[0.08em] text-[rgba(32,30,29,0.55)]">
+                <div className="mb-1.5 px-[18px] text-[10px] font-bold uppercase tracking-[0.08em] text-[rgba(var(--ink-rgb),0.55)]">
                   {grp.label}
                 </div>
                 {items.map((item) => {
@@ -127,7 +127,7 @@ export default function Sidebar({
                       href={item.href}
                       onClick={onClose}
                       className={`flex items-center gap-2.5 px-[18px] py-2.5 text-[13.5px] font-bold ${
-                        active ? "bg-[#f3f2f2] text-[#6d28d9]" : "text-[#201e1d] hover:bg-[#f7f6f6]"
+                        active ? "bg-[var(--surface)] text-[#6d28d9]" : "text-[var(--ink)] hover:bg-[#f7f6f6]"
                       }`}
                     >
                       <Icon weight="duotone" size={18} className="flex-none" />
@@ -140,10 +140,10 @@ export default function Sidebar({
           })}
         </div>
 
-        <div className="flex-none border-t-2 border-[rgba(32,30,29,0.15)] px-[18px] pt-3">
+        <div className="flex-none border-t-2 border-[rgba(var(--ink-rgb),0.15)] px-[18px] pt-3">
           <div className="mb-2 text-xs">
-            <div className="font-bold text-[#201e1d]">{name}</div>
-            <div className="text-[rgba(32,30,29,0.55)]">{ROLE_LABEL[role] ?? role}</div>
+            <div className="font-bold text-[var(--ink)]">{name}</div>
+            <div className="text-[rgba(var(--ink-rgb),0.55)]">{ROLE_LABEL[role] ?? role}</div>
           </div>
           <button
             onClick={handleLogout}

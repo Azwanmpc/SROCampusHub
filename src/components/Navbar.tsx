@@ -47,11 +47,11 @@ export default function Navbar({
     .toUpperCase();
 
   return (
-    <div className="flex h-16 flex-none items-center justify-between border-b-2 border-[rgba(32,30,29,0.4)] bg-[#f3f2f2] px-3 text-[#201e1d] sm:px-6">
+    <div className="flex h-16 flex-none items-center justify-between border-b-2 border-[rgba(var(--ink-rgb),0.4)] bg-[var(--surface)] px-3 text-[var(--ink)] sm:px-6">
       <div className="flex items-center gap-2 sm:gap-2.5">
         <button
           onClick={onMenuClick}
-          className="flex h-[38px] w-[38px] flex-none items-center justify-center border border-[rgba(32,30,29,0.4)] bg-[#f3f2f2] text-[#201e1d] md:hidden"
+          className="flex h-[38px] w-[38px] flex-none items-center justify-center border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--surface)] text-[var(--ink)] md:hidden"
           aria-label="Buka menu"
         >
           <List weight="bold" size={18} />
@@ -65,7 +65,7 @@ export default function Navbar({
       <div className="flex items-center gap-2 sm:gap-3">
         <button
           onClick={toggleDark}
-          className="flex h-[38px] w-[38px] flex-none items-center justify-center border border-[rgba(32,30,29,0.4)] bg-[#f3f2f2] text-[17px] text-[#201e1d]"
+          className="flex h-[38px] w-[38px] flex-none items-center justify-center border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--surface)] text-[17px] text-[var(--ink)]"
           aria-label="Tukar mod gelap"
         >
           {dark ? <Sun weight="duotone" /> : <Moon weight="duotone" />}
@@ -74,7 +74,7 @@ export default function Navbar({
         <div className="relative">
           <button
             onClick={() => setUserMenuOpen((v) => !v)}
-            className="flex h-[38px] items-center gap-2 border border-[rgba(32,30,29,0.4)] bg-[#f3f2f2] py-[5px] pl-[5px] pr-2.5 sm:pr-3"
+            className="flex h-[38px] items-center gap-2 border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--surface)] py-[5px] pl-[5px] pr-2.5 sm:pr-3"
           >
             <div className="flex h-7 w-7 flex-none items-center justify-center rounded-full bg-[#201e1d] text-[10px] font-bold text-[#f3f2f2]">
               {initials}
@@ -86,8 +86,8 @@ export default function Navbar({
           </button>
 
           {userMenuOpen && (
-            <div className="absolute right-0 top-11 z-40 w-[220px] border border-[rgba(32,30,29,0.4)] bg-white">
-              <div className="border-b-2 border-[rgba(32,30,29,0.4)] px-3.5 py-2.5 text-[11px] font-extrabold uppercase tracking-wide text-[rgba(32,30,29,0.6)]">
+            <div className="absolute right-0 top-11 z-40 w-[220px] border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)]">
+              <div className="border-b-2 border-[rgba(var(--ink-rgb),0.4)] px-3.5 py-2.5 text-[11px] font-extrabold uppercase tracking-wide text-[rgba(var(--ink-rgb),0.6)]">
                 {ROLE_LABEL[role] ?? role}
               </div>
               <button

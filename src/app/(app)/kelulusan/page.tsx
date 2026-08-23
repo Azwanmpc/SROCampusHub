@@ -18,8 +18,8 @@ export default async function KelulusanPage() {
   return (
     <div>
       <div className="mb-0.5 font-archivo text-[26px] font-extrabold">Kelulusan Tempahan</div>
-      <div className="mb-3.5 text-[13.5px] text-[rgba(32,30,29,0.6)]">Sahkan atau tolak permohonan tempahan fasiliti</div>
-      <div className="mb-4 h-0.5 bg-[rgba(32,30,29,0.4)]" />
+      <div className="mb-3.5 text-[13.5px] text-[rgba(var(--ink-rgb),0.6)]">Sahkan atau tolak permohonan tempahan fasiliti</div>
+      <div className="mb-4 h-0.5 bg-[rgba(var(--ink-rgb),0.4)]" />
       <BookingApprovalList bookings={bookingsForClient} />
     </div>
   );

@@ -41,7 +41,7 @@ export default function UserManagement({ users }: { users: User[] }) {
   const [loading, setLoading] = useState(false);
   const [deleteError, setDeleteError] = useState("");
 
-  const fieldClass = "border border-[rgba(32,30,29,0.4)] bg-white px-2.5 py-1.5 text-sm outline-none";
+  const fieldClass = "border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] px-2.5 py-1.5 text-sm outline-none";
 
   async function updateUser(id: string, patch: Partial<Pick<User, "role" | "active" | "jawatan">>) {
     await fetch(`/api/users/${id}`, {
@@ -100,7 +100,7 @@ export default function UserManagement({ users }: { users: User[] }) {
       </div>
 
       {showForm && (
-        <form onSubmit={handleCreate} className="mb-5 grid grid-cols-1 gap-3 border border-[rgba(32,30,29,0.4)] bg-white p-4 sm:grid-cols-2">
+        <form onSubmit={handleCreate} className="mb-5 grid grid-cols-1 gap-3 border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] p-4 sm:grid-cols-2">
           <input required placeholder="Nama Penuh" value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} className={fieldClass} />
           <input required type="email" placeholder="Email" value={form.email} onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))} className={fieldClass} />
           <input required placeholder="Username" value={form.username} onChange={(e) => setForm((f) => ({ ...f, username: e.target.value }))} className={fieldClass} />
@@ -114,7 +114,7 @@ export default function UserManagement({ users }: { users: User[] }) {
               </option>
             ))}
           </select>
-          {error && <div className="col-span-2 bg-[#fff2ef] px-3 py-2 text-xs text-[#7c1405]">{error}</div>}
+          {error && <div className="col-span-2 bg-[var(--danger-bg)] px-3 py-2 text-xs text-[var(--danger)]">{error}</div>}
           <button
             type="submit"
             disabled={loading}
@@ -125,17 +125,17 @@ export default function UserManagement({ users }: { users: User[] }) {
         </form>
       )}
 
-      {deleteError && <div className="mb-3 bg-[#fff2ef] px-3 py-2 text-xs text-[#7c1405]">{deleteError}</div>}
+      {deleteError && <div className="mb-3 bg-[var(--danger-bg)] px-3 py-2 text-xs text-[var(--danger)]">{deleteError}</div>}
 
-      <div className="border border-[rgba(32,30,29,0.4)] bg-white">
+      <div className="border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)]">
         {users.map((u) => (
-          <div key={u.id} className="flex flex-wrap items-center gap-3.5 border-b border-[rgba(32,30,29,0.2)] p-3.5 last:border-0">
+          <div key={u.id} className="flex flex-wrap items-center gap-3.5 border-b border-[rgba(var(--ink-rgb),0.2)] p-3.5 last:border-0">
             <div className="flex h-[38px] w-[38px] flex-none items-center justify-center bg-[#201e1d] text-xs font-bold text-[#f3f2f2]">
               {initials(u.name)}
             </div>
             <div className="min-w-[150px] flex-1">
               <div className="text-[13.5px] font-bold">{u.name}</div>
-              <div className="text-xs text-[rgba(32,30,29,0.6)]">{u.email}</div>
+              <div className="text-xs text-[rgba(var(--ink-rgb),0.6)]">{u.email}</div>
             </div>
             <input
               key={u.jawatan ?? ""}
@@ -144,12 +144,12 @@ export default function UserManagement({ users }: { users: User[] }) {
               onBlur={(e) => {
                 if (e.target.value !== (u.jawatan ?? "")) updateUser(u.id, { jawatan: e.target.value });
               }}
-              className="w-[140px] border border-[rgba(32,30,29,0.3)] bg-white px-2 py-1 text-xs outline-none"
+              className="w-[140px] border border-[rgba(var(--ink-rgb),0.3)] bg-[var(--white)] px-2 py-1 text-xs outline-none"
             />
             <select
               value={u.role}
               onChange={(e) => updateUser(u.id, { role: e.target.value })}
-              className="border border-[rgba(32,30,29,0.4)] bg-white px-2 py-1 text-xs font-bold"
+              className="border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] px-2 py-1 text-xs font-bold"
             >
               {Object.entries(ROLE_LABEL).map(([key, label]) => (
                 <option key={key} value={key}>
@@ -160,7 +160,7 @@ export default function UserManagement({ users }: { users: User[] }) {
             <button
               onClick={() => updateUser(u.id, { active: !u.active })}
               className={`px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.03em] ${
-                u.active ? "bg-[#e6f0e9] text-[#4a8a63]" : "bg-[#eae7e7] text-[#605d5d]"
+                u.active ? "bg-[var(--success-bg)] text-[var(--success)]" : "bg-[#eae7e7] text-[#605d5d]"
               }`}
             >
               {u.active ? "Aktif" : "Tidak Aktif"}
@@ -168,7 +168,7 @@ export default function UserManagement({ users }: { users: User[] }) {
             <button
               onClick={() => handleDelete(u)}
               title="Padam akaun"
-              className="flex items-center gap-1 border border-[#7c1405] px-2.5 py-1 text-[11px] font-bold text-[#7c1405] hover:bg-[#fff2ef]"
+              className="flex items-center gap-1 border border-[#7c1405] px-2.5 py-1 text-[11px] font-bold text-[var(--danger)] hover:bg-[var(--danger-bg)]"
             >
               <Trash weight="duotone" size={13} /> Padam
             </button>

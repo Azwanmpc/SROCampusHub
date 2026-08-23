@@ -20,13 +20,13 @@ export default function BookingApprovalList({ bookings }: { bookings: React.Comp
 
   return (
     <div>
-      <div className="mb-4 flex w-fit flex-wrap border border-[rgba(32,30,29,0.4)]">
+      <div className="mb-4 flex w-fit flex-wrap border border-[rgba(var(--ink-rgb),0.4)]">
         {FILTERS.map((f) => (
           <button
             key={f.key}
             onClick={() => setFilter(f.key)}
-            className={`border-r border-[rgba(32,30,29,0.4)] px-4 py-2 text-[12.5px] font-bold last:border-r-0 ${
-              filter === f.key ? "bg-[#6d28d9] text-[#f3f2f2]" : "bg-[#f3f2f2] text-[#201e1d]"
+            className={`border-r border-[rgba(var(--ink-rgb),0.4)] px-4 py-2 text-[12.5px] font-bold last:border-r-0 ${
+              filter === f.key ? "bg-[#6d28d9] text-[#f3f2f2]" : "bg-[var(--surface)] text-[var(--ink)]"
             }`}
           >
             {f.label}
@@ -34,8 +34,8 @@ export default function BookingApprovalList({ bookings }: { bookings: React.Comp
         ))}
       </div>
 
-      <div className="flex flex-col gap-px border border-[rgba(32,30,29,0.4)] bg-[rgba(32,30,29,0.3)]">
-        {filtered.length === 0 && <div className="bg-white p-4 text-sm text-[rgba(32,30,29,0.5)]">Tiada tempahan.</div>}
+      <div className="flex flex-col gap-px border border-[rgba(var(--ink-rgb),0.4)] bg-[rgba(var(--ink-rgb),0.3)]">
+        {filtered.length === 0 && <div className="bg-[var(--white)] p-4 text-sm text-[rgba(var(--ink-rgb),0.5)]">Tiada tempahan.</div>}
         {filtered.map((b) => (
           <BookingCard key={b.id} booking={b} canApprove />
         ))}

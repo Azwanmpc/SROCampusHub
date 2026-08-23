@@ -10,16 +10,16 @@ const BAHAGIAN = "Perbadanan Produktiviti Malaysia (MPC) Wilayah Selatan";
 
 export default function KewPa14Modal({ items, scopeLabel, onClose }: { items: Aset[]; scopeLabel: string; onClose: () => void }) {
   return createPortal(
-    <div className="print-modal-backdrop fixed inset-0 z-[120] flex items-center justify-center bg-[rgba(32,30,29,0.5)] p-2 sm:p-4">
+    <div className="print-modal-backdrop fixed inset-0 z-[120] flex items-center justify-center bg-[rgba(0,0,0,0.5)] p-2 sm:p-4">
       <div className="print-area relative max-h-[94vh] w-full max-w-[720px] overflow-y-auto bg-[#e7e5e5] shadow-[0_12px_32px_rgba(45,43,43,0.22)]">
         <button
           onClick={onClose}
-          className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center border border-[rgba(32,30,29,0.4)] bg-white print:hidden sm:right-5 sm:top-5"
+          className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] print:hidden sm:right-5 sm:top-5"
         >
           <XCircle weight="duotone" />
         </button>
 
-        <div className="print-page-break bg-white p-4 font-archivo text-[#1a1a1a] sm:p-8">
+        <div className="print-page-break bg-[var(--white)] p-4 font-archivo text-[#1a1a1a] sm:p-8">
           <div className="mb-4 text-right text-[12px] font-extrabold sm:mb-6 sm:text-[13px]">KEW.PA-14</div>
           <div className="mb-5 text-center text-[14px] font-extrabold leading-snug sm:mb-8 sm:text-[16px]">
             SENARAI ASET ALIH YANG MEMERLUKAN PENYELENGGARAAN
@@ -48,7 +48,7 @@ export default function KewPa14Modal({ items, scopeLabel, onClose }: { items: As
               <tbody>
                 {items.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="border border-[#1a1a1a] px-2 py-3 text-center italic text-[rgba(32,30,29,0.6)]">
+                    <td colSpan={5} className="border border-[#1a1a1a] px-2 py-3 text-center italic text-[rgba(var(--ink-rgb),0.6)]">
                       Tiada aset berstatus rosak untuk skop ini.
                     </td>
                   </tr>
@@ -90,7 +90,7 @@ export default function KewPa14Modal({ items, scopeLabel, onClose }: { items: As
         <div className="flex flex-col gap-2 bg-[#e7e5e5] p-3 print:hidden sm:flex-row sm:p-4">
           <button
             onClick={() => window.print()}
-            className="flex flex-1 items-center justify-center gap-2 border border-[rgba(32,30,29,0.4)] bg-[#f3f2f2] py-3 font-archivo text-[13.5px] font-extrabold"
+            className="flex flex-1 items-center justify-center gap-2 border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--surface)] py-3 font-archivo text-[13.5px] font-extrabold"
           >
             <Printer weight="duotone" /> Cetak
           </button>

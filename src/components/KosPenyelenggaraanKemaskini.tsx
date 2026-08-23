@@ -139,18 +139,18 @@ export default function KosPenyelenggaraanKemaskini() {
     load();
   }
 
-  const fieldClass = "min-h-9 w-full border border-[rgba(32,30,29,0.4)] px-2.5 py-1.5 text-sm";
-  const labelClass = "mb-1 block text-xs text-[rgba(32,30,29,0.65)]";
+  const fieldClass = "min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] px-2.5 py-1.5 text-sm";
+  const labelClass = "mb-1 block text-xs text-[rgba(var(--ink-rgb),0.65)]";
 
   return (
     <div>
       <div className="mb-4 flex justify-end">
-        <Link href="/kos-penyelenggaraan" className="border border-[rgba(32,30,29,0.4)] px-4 py-2 font-archivo text-[13px] font-extrabold text-[#201e1d] hover:bg-[#f7f6f6]">
+        <Link href="/kos-penyelenggaraan" className="border border-[rgba(var(--ink-rgb),0.4)] px-4 py-2 font-archivo text-[13px] font-extrabold text-[var(--ink)] hover:bg-[#f7f6f6]">
           Kembali ke Dashboard
         </Link>
       </div>
 
-      <form onSubmit={handleSubmit} className="mb-6 border border-[rgba(32,30,29,0.4)] bg-white p-5">
+      <form onSubmit={handleSubmit} className="mb-6 border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] p-5">
         <div className="mb-3 font-archivo text-sm font-extrabold">{editingId ? "Kemaskini Rekod Kos Penyelenggaraan" : "Tambah Rekod Kos Penyelenggaraan"}</div>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <div>
@@ -239,14 +239,14 @@ export default function KosPenyelenggaraanKemaskini() {
           </div>
         </div>
 
-        {error && <div className="mt-3 bg-[#fff2ef] px-3 py-2 text-sm text-[#7c1405]">{error}</div>}
+        {error && <div className="mt-3 bg-[var(--danger-bg)] px-3 py-2 text-sm text-[var(--danger)]">{error}</div>}
 
         <div className="mt-4 flex gap-2.5">
           <button type="submit" disabled={saving} className="bg-[#6d28d9] px-5 py-2.5 font-archivo text-[13px] font-extrabold text-white hover:bg-[#4c1d95] disabled:opacity-60">
             {saving ? "Menyimpan..." : editingId ? "Kemaskini" : "Simpan Rekod"}
           </button>
           {editingId && (
-            <button type="button" onClick={cancelEdit} className="border border-[rgba(32,30,29,0.4)] px-5 py-2.5 font-archivo text-[13px] font-extrabold text-[#201e1d]">
+            <button type="button" onClick={cancelEdit} className="border border-[rgba(var(--ink-rgb),0.4)] px-5 py-2.5 font-archivo text-[13px] font-extrabold text-[var(--ink)]">
               Batal
             </button>
           )}
@@ -254,11 +254,11 @@ export default function KosPenyelenggaraanKemaskini() {
       </form>
 
       <div className="mb-3 flex items-center gap-2">
-        <label className="text-[13px] font-bold text-[rgba(32,30,29,0.6)]">Tapis Tahun:</label>
+        <label className="text-[13px] font-bold text-[rgba(var(--ink-rgb),0.6)]">Tapis Tahun:</label>
         <select
           value={yearFilter}
           onChange={(e) => setYearFilter(e.target.value === "ALL" ? "ALL" : Number(e.target.value))}
-          className="border border-[rgba(32,30,29,0.3)] px-3 py-1.5 text-sm font-semibold"
+          className="border border-[rgba(var(--ink-rgb),0.3)] px-3 py-1.5 text-sm font-semibold"
         >
           <option value="ALL">Semua Tahun</option>
           {years.map((y) => (
@@ -270,9 +270,9 @@ export default function KosPenyelenggaraanKemaskini() {
       </div>
 
       {loading ? (
-        <p className="text-sm text-[rgba(32,30,29,0.5)]">Memuatkan rekod...</p>
+        <p className="text-sm text-[rgba(var(--ink-rgb),0.5)]">Memuatkan rekod...</p>
       ) : (
-        <div className="max-h-[520px] overflow-auto border border-[rgba(32,30,29,0.3)]">
+        <div className="max-h-[520px] overflow-auto border border-[rgba(var(--ink-rgb),0.3)]">
           <table className="w-full min-w-[900px] border-collapse text-[13px]">
             <thead>
               <tr className="sticky top-0 bg-[#1a1a1a] text-white">
@@ -287,11 +287,11 @@ export default function KosPenyelenggaraanKemaskini() {
             </thead>
             <tbody>
               {filtered.map((r) => (
-                <tr key={r.id} className="odd:bg-white even:bg-[#fafbfd]">
+                <tr key={r.id} className="odd:bg-[var(--white)] even:bg-[#fafbfd]">
                   <td className="border-b border-[#eef0f4] px-3 py-2">{new Date(r.tarikh).toLocaleDateString("ms-MY")}</td>
                   <td className="border-b border-[#eef0f4] px-3 py-2 font-bold">
                     {KOS_LOKASI_LABEL[r.lokasi] ?? r.lokasi}
-                    {r.perincianLokasi && <div className="text-[11px] font-normal text-[rgba(32,30,29,0.55)]">{r.perincianLokasi}</div>}
+                    {r.perincianLokasi && <div className="text-[11px] font-normal text-[rgba(var(--ink-rgb),0.55)]">{r.perincianLokasi}</div>}
                   </td>
                   <td className="border-b border-[#eef0f4] px-3 py-2">{KOS_KATEGORI_LABEL[r.kategori] ?? r.kategori}</td>
                   <td className="border-b border-[#eef0f4] px-3 py-2">{KOS_JENIS_LABEL[r.jenis] ?? r.jenis}</td>
@@ -301,7 +301,7 @@ export default function KosPenyelenggaraanKemaskini() {
                     <button onClick={() => startEdit(r)} className="mr-3 font-bold text-[#6d28d9] hover:underline">
                       Edit
                     </button>
-                    <button onClick={() => handleDelete(r.id)} className="font-bold text-[#b91c1c] hover:underline">
+                    <button onClick={() => handleDelete(r.id)} className="font-bold text-[var(--danger)] hover:underline">
                       Padam
                     </button>
                   </td>
@@ -309,7 +309,7 @@ export default function KosPenyelenggaraanKemaskini() {
               ))}
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="px-3 py-6 text-center text-sm text-[rgba(32,30,29,0.5)]">
+                  <td colSpan={7} className="px-3 py-6 text-center text-sm text-[rgba(var(--ink-rgb),0.5)]">
                     Tiada rekod
                   </td>
                 </tr>

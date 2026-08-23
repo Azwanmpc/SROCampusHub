@@ -74,89 +74,89 @@ export default function PinjamanAsetForm({ onDone }: { onDone?: () => void }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="border border-[rgba(32,30,29,0.4)] bg-white p-5">
+    <form onSubmit={handleSubmit} className="border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] p-5">
       <div className="mb-4 font-archivo text-sm font-extrabold">Borang Permohonan Pinjaman Aset</div>
 
       <div className="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
         <div>
-          <label className="mb-1 block text-xs text-[rgba(32,30,29,0.65)]">Jawatan</label>
+          <label className="mb-1 block text-xs text-[rgba(var(--ink-rgb),0.65)]">Jawatan</label>
           <input
             type="text"
             required
             value={form.jawatan}
             onChange={(e) => setForm((f) => ({ ...f, jawatan: e.target.value }))}
-            className="min-h-9 w-full border border-[rgba(32,30,29,0.4)] px-2.5 py-1.5 text-sm"
+            className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] px-2.5 py-1.5 text-sm"
           />
         </div>
         <div>
-          <label className="mb-1 block text-xs text-[rgba(32,30,29,0.65)]">Bahagian</label>
+          <label className="mb-1 block text-xs text-[rgba(var(--ink-rgb),0.65)]">Bahagian</label>
           <input
             type="text"
             required
             value={form.bahagian}
             onChange={(e) => setForm((f) => ({ ...f, bahagian: e.target.value }))}
-            className="min-h-9 w-full border border-[rgba(32,30,29,0.4)] px-2.5 py-1.5 text-sm"
+            className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] px-2.5 py-1.5 text-sm"
           />
         </div>
         <div>
-          <label className="mb-1 block text-xs text-[rgba(32,30,29,0.65)]">Tempat Digunakan</label>
+          <label className="mb-1 block text-xs text-[rgba(var(--ink-rgb),0.65)]">Tempat Digunakan</label>
           <input
             type="text"
             required
             value={form.tempatDigunakan}
             onChange={(e) => setForm((f) => ({ ...f, tempatDigunakan: e.target.value }))}
-            className="min-h-9 w-full border border-[rgba(32,30,29,0.4)] px-2.5 py-1.5 text-sm"
+            className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] px-2.5 py-1.5 text-sm"
           />
         </div>
         <div>
-          <label className="mb-1 block text-xs text-[rgba(32,30,29,0.65)]">Tarikh Dijangka Pulang</label>
+          <label className="mb-1 block text-xs text-[rgba(var(--ink-rgb),0.65)]">Tarikh Dijangka Pulang</label>
           <input
             type="date"
             required
             value={form.tarikhDijangkaPulang}
             onChange={(e) => setForm((f) => ({ ...f, tarikhDijangkaPulang: e.target.value }))}
-            className="min-h-9 w-full border border-[rgba(32,30,29,0.4)] px-2.5 py-1.5 text-sm"
+            className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] px-2.5 py-1.5 text-sm"
           />
         </div>
         <div className="sm:col-span-2">
-          <label className="mb-1 block text-xs text-[rgba(32,30,29,0.65)]">Tujuan</label>
+          <label className="mb-1 block text-xs text-[rgba(var(--ink-rgb),0.65)]">Tujuan</label>
           <textarea
             required
             rows={2}
             value={form.tujuan}
             onChange={(e) => setForm((f) => ({ ...f, tujuan: e.target.value }))}
-            className="w-full border border-[rgba(32,30,29,0.4)] px-2.5 py-1.5 text-sm outline-none"
+            className="w-full border border-[rgba(var(--ink-rgb),0.4)] px-2.5 py-1.5 text-sm outline-none"
           />
         </div>
       </div>
 
-      <div className="mb-2 border-t border-[rgba(32,30,29,0.15)] pt-3">
-        <label className="mb-1.5 block text-xs font-bold text-[rgba(32,30,29,0.65)]">Cari &amp; Pilih Aset Untuk Dipinjam</label>
+      <div className="mb-2 border-t border-[rgba(var(--ink-rgb),0.15)] pt-3">
+        <label className="mb-1.5 block text-xs font-bold text-[rgba(var(--ink-rgb),0.65)]">Cari &amp; Pilih Aset Untuk Dipinjam</label>
         <div className="relative">
-          <MagnifyingGlass weight="bold" size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[rgba(32,30,29,0.4)]" />
+          <MagnifyingGlass weight="bold" size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[rgba(var(--ink-rgb),0.4)]" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Cari nama aset, no. pendaftaran atau lokasi..."
-            className="min-h-9 w-full border border-[rgba(32,30,29,0.4)] py-1.5 pl-8 pr-2.5 text-sm"
+            className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] py-1.5 pl-8 pr-2.5 text-sm"
           />
         </div>
 
-        <div className="mt-2 max-h-[220px] overflow-y-auto border border-[rgba(32,30,29,0.25)]">
+        <div className="mt-2 max-h-[220px] overflow-y-auto border border-[rgba(var(--ink-rgb),0.25)]">
           {results.length === 0 ? (
-            <div className="px-3 py-4 text-center text-xs text-[rgba(32,30,29,0.5)]">Tiada aset sepadan atau tersedia untuk dipinjam</div>
+            <div className="px-3 py-4 text-center text-xs text-[rgba(var(--ink-rgb),0.5)]">Tiada aset sepadan atau tersedia untuk dipinjam</div>
           ) : (
             results.map((a) => (
               <label
                 key={a.id}
-                className="flex cursor-pointer items-center justify-between gap-3 border-b border-[rgba(32,30,29,0.1)] px-3 py-2 text-[12.5px] last:border-b-0 hover:bg-[#f7f6f6]"
+                className="flex cursor-pointer items-center justify-between gap-3 border-b border-[rgba(var(--ink-rgb),0.1)] px-3 py-2 text-[12.5px] last:border-b-0 hover:bg-[#f7f6f6]"
               >
                 <div className="flex items-center gap-2.5">
                   <input type="checkbox" checked={selectedIds.has(a.id)} onChange={() => toggleAsset(a.id)} />
                   <div>
                     <div className="font-bold">{a.namaAset}</div>
-                    <div className="text-[rgba(32,30,29,0.55)]">
+                    <div className="text-[rgba(var(--ink-rgb),0.55)]">
                       {a.noPendaftaran || "Tiada no. pendaftaran"} &middot; {a.lokasi}
                     </div>
                   </div>
@@ -170,7 +170,7 @@ export default function PinjamanAsetForm({ onDone }: { onDone?: () => void }) {
       {selectedAssets.length > 0 && (
         <div className="mb-4 flex flex-wrap gap-1.5">
           {selectedAssets.map((a) => (
-            <span key={a.id} className="flex items-center gap-1.5 bg-[#f3f2f2] px-2.5 py-1 text-[11.5px] font-bold">
+            <span key={a.id} className="flex items-center gap-1.5 bg-[var(--surface)] px-2.5 py-1 text-[11.5px] font-bold">
               {a.namaAset}
               <button type="button" onClick={() => toggleAsset(a.id)} aria-label={`Buang ${a.namaAset}`}>
                 <X weight="bold" size={11} />
@@ -180,8 +180,8 @@ export default function PinjamanAsetForm({ onDone }: { onDone?: () => void }) {
         </div>
       )}
 
-      {error && <div className="mb-3 bg-[#fff2ef] px-3 py-2 text-sm text-[#7c1405]">{error}</div>}
-      {success && <div className="mb-3 bg-[#e6f0e9] px-3 py-2 text-sm text-[#1c5c37]">Permohonan pinjaman aset telah dihantar dan menunggu kelulusan.</div>}
+      {error && <div className="mb-3 bg-[var(--danger-bg)] px-3 py-2 text-sm text-[var(--danger)]">{error}</div>}
+      {success && <div className="mb-3 bg-[var(--success-bg)] px-3 py-2 text-sm text-[#1c5c37]">Permohonan pinjaman aset telah dihantar dan menunggu kelulusan.</div>}
 
       <button
         type="submit"

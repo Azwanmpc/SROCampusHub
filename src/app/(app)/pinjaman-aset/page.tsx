@@ -12,10 +12,10 @@ export default async function PinjamanAsetPage() {
   return (
     <div>
       <div className="mb-0.5 font-archivo text-[26px] font-extrabold">{isStaff ? "Kelulusan Pinjaman Aset" : "Pinjaman Aset"}</div>
-      <div className="mb-3.5 text-[13.5px] text-[rgba(32,30,29,0.6)]">
+      <div className="mb-3.5 text-[13.5px] text-[rgba(var(--ink-rgb),0.6)]">
         {isStaff ? "Sahkan permohonan pinjaman aset dan pengesahan pemulangan" : "Borang permohonan pinjaman aset alih dan status permohonan anda"}
       </div>
-      <div className="mb-4 h-0.5 bg-[rgba(32,30,29,0.4)]" />
+      <div className="mb-4 h-0.5 bg-[rgba(var(--ink-rgb),0.4)]" />
       <PinjamanAsetView userId={session.userId} role={session.role} />
     </div>
   );

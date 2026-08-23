@@ -63,36 +63,36 @@ export default function PinjamanAsetCard({
   }
 
   return (
-    <div className="bg-white p-4">
+    <div className="bg-[var(--white)] p-4">
       <div className="flex flex-wrap items-start gap-3.5">
         <Package weight="duotone" size={22} className="flex-none text-[#6d28d9]" />
         <div className="min-w-[220px] flex-1">
           <div className="text-[14.5px] font-bold">{record.pemohon.name}</div>
-          <div className="mt-0.5 text-[12.5px] text-[rgba(32,30,29,0.6)]">
+          <div className="mt-0.5 text-[12.5px] text-[rgba(var(--ink-rgb),0.6)]">
             {record.jawatan} &middot; {record.bahagian}
           </div>
-          <div className="mt-1 text-[12.5px] text-[rgba(32,30,29,0.6)]">{record.tujuan}</div>
-          <div className="mt-0.5 text-xs text-[rgba(32,30,29,0.55)]">
+          <div className="mt-1 text-[12.5px] text-[rgba(var(--ink-rgb),0.6)]">{record.tujuan}</div>
+          <div className="mt-0.5 text-xs text-[rgba(var(--ink-rgb),0.55)]">
             Tempat digunakan: {record.tempatDigunakan} &middot; Dijangka pulang: {new Date(record.tarikhDijangkaPulang).toLocaleDateString("ms-MY")}
           </div>
           <div className="mt-2 flex flex-wrap gap-1.5">
             {record.items.map((it) => (
-              <span key={it.id} className="bg-[#f3f2f2] px-2 py-0.5 text-[11px] font-bold">
+              <span key={it.id} className="bg-[var(--surface)] px-2 py-0.5 text-[11px] font-bold">
                 {it.aset.namaAset}
               </span>
             ))}
           </div>
           {record.status === "DITOLAK" && record.rejectionReason && (
-            <div className="mt-1.5 text-xs text-[#7c1405]">Sebab ditolak: {record.rejectionReason}</div>
+            <div className="mt-1.5 text-xs text-[var(--danger)]">Sebab ditolak: {record.rejectionReason}</div>
           )}
         </div>
         <StatusBadge label={PINJAMAN_STATUS_LABEL[record.status]} colorClass={PINJAMAN_STATUS_COLOR[record.status]} />
       </div>
 
-      <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-[rgba(32,30,29,0.2)] pt-3">
+      <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-[rgba(var(--ink-rgb),0.2)] pt-3">
         <button
           onClick={() => onPrint(record)}
-          className="border border-[rgba(32,30,29,0.4)] bg-[#f3f2f2] px-3.5 py-2 text-[12.5px] font-bold text-[#201e1d]"
+          className="border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--surface)] px-3.5 py-2 text-[12.5px] font-bold text-[var(--ink)]"
         >
           Cetak Borang KEW.PA-9
         </button>
@@ -109,7 +109,7 @@ export default function PinjamanAsetCard({
             <button
               onClick={() => setShowReject(true)}
               disabled={loading}
-              className="flex items-center gap-1.5 border border-[#ff8a75] bg-[#fff2ef] px-3.5 py-2 font-archivo text-[12.5px] font-extrabold text-[#7c1405] disabled:opacity-60"
+              className="flex items-center gap-1.5 border border-[#ff8a75] bg-[var(--danger-bg)] px-3.5 py-2 font-archivo text-[12.5px] font-extrabold text-[var(--danger)] disabled:opacity-60"
             >
               <Prohibit weight="duotone" /> Tolak
             </button>
@@ -138,14 +138,14 @@ export default function PinjamanAsetCard({
       </div>
 
       {showReject && (
-        <div className="mt-3 border-t border-[rgba(32,30,29,0.2)] pt-3">
-          <label className="mb-1.5 block text-xs text-[rgba(32,30,29,0.6)]">Sebab Penolakan</label>
+        <div className="mt-3 border-t border-[rgba(var(--ink-rgb),0.2)] pt-3">
+          <label className="mb-1.5 block text-xs text-[rgba(var(--ink-rgb),0.6)]">Sebab Penolakan</label>
           <textarea
             value={reason}
             onChange={(e) => setReason(e.target.value)}
             rows={2}
             placeholder="Sebab penolakan..."
-            className="mb-2.5 w-full border border-[rgba(32,30,29,0.4)] bg-[#f3f2f2] px-2.5 py-2 text-xs outline-none"
+            className="mb-2.5 w-full border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--surface)] px-2.5 py-2 text-xs outline-none"
           />
           <div className="flex gap-2">
             <button
@@ -157,7 +157,7 @@ export default function PinjamanAsetCard({
             </button>
             <button
               onClick={() => setShowReject(false)}
-              className="flex-1 border border-[rgba(32,30,29,0.4)] bg-[#f3f2f2] py-2 text-[13px] font-bold"
+              className="flex-1 border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--surface)] py-2 text-[13px] font-bold"
             >
               Batal
             </button>

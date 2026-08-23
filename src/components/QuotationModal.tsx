@@ -117,14 +117,14 @@ export default function QuotationModal({ booking, onClose }: { booking: Booking;
   }
 
   return createPortal(
-    <div className="print-modal-backdrop fixed inset-0 z-[120] flex items-center justify-center bg-[rgba(32,30,29,0.5)] p-4">
+    <div className="print-modal-backdrop fixed inset-0 z-[120] flex items-center justify-center bg-[rgba(0,0,0,0.5)] p-4">
       <div
         id="quotation-print-area"
-        className="relative max-h-[92vh] w-full max-w-[620px] overflow-y-auto bg-white p-5 font-archivo text-[#201e1d] shadow-[0_12px_32px_rgba(45,43,43,0.22)] sm:p-9"
+        className="relative max-h-[92vh] w-full max-w-[620px] overflow-y-auto bg-[var(--white)] p-5 font-archivo text-[var(--ink)] shadow-[0_12px_32px_rgba(45,43,43,0.22)] sm:p-9"
       >
         <button
           onClick={onClose}
-          className="absolute right-5 top-5 flex h-8 w-8 items-center justify-center border border-[rgba(32,30,29,0.4)] bg-[#f3f2f2]"
+          className="absolute right-5 top-5 flex h-8 w-8 items-center justify-center border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--surface)]"
         >
           <XCircle weight="duotone" />
         </button>
@@ -196,53 +196,53 @@ export default function QuotationModal({ booking, onClose }: { booking: Booking;
         <table className="print-avoid-break mb-3.5 w-full border-collapse text-xs">
           <thead>
             <tr>
-              <th className="border-b border-[rgba(32,30,29,0.3)] py-1.5 text-left text-[10px] uppercase text-[rgba(32,30,29,0.55)]">Fasiliti</th>
-              <th className="border-b border-[rgba(32,30,29,0.3)] py-1.5 text-left text-[10px] uppercase text-[rgba(32,30,29,0.55)]">Kadar</th>
-              <th className="border-b border-[rgba(32,30,29,0.3)] py-1.5 text-right text-[10px] uppercase text-[rgba(32,30,29,0.55)]">Harga</th>
+              <th className="border-b border-[rgba(var(--ink-rgb),0.3)] py-1.5 text-left text-[10px] uppercase text-[rgba(var(--ink-rgb),0.55)]">Fasiliti</th>
+              <th className="border-b border-[rgba(var(--ink-rgb),0.3)] py-1.5 text-left text-[10px] uppercase text-[rgba(var(--ink-rgb),0.55)]">Kadar</th>
+              <th className="border-b border-[rgba(var(--ink-rgb),0.3)] py-1.5 text-right text-[10px] uppercase text-[rgba(var(--ink-rgb),0.55)]">Harga</th>
             </tr>
           </thead>
           <tbody>
             {facilityItems.map((it, i) => (
               <tr key={i}>
-                <td className="border-b border-[rgba(32,30,29,0.15)] py-1.5 font-bold">{it.nama}</td>
-                <td className="border-b border-[rgba(32,30,29,0.15)] py-1.5 text-[rgba(32,30,29,0.6)]">{it.rateLabel}</td>
-                <td className="border-b border-[rgba(32,30,29,0.15)] py-1.5 text-right">{fmtRM(it.price)}</td>
+                <td className="border-b border-[rgba(var(--ink-rgb),0.15)] py-1.5 font-bold">{it.nama}</td>
+                <td className="border-b border-[rgba(var(--ink-rgb),0.15)] py-1.5 text-[rgba(var(--ink-rgb),0.6)]">{it.rateLabel}</td>
+                <td className="border-b border-[rgba(var(--ink-rgb),0.15)] py-1.5 text-right">{fmtRM(it.price)}</td>
               </tr>
             ))}
             {addons.map((a, i) => (
               <tr key={i}>
-                <td className="border-b border-[rgba(32,30,29,0.15)] py-1.5 font-bold">{a.label} (Add-on)</td>
-                <td className="border-b border-[rgba(32,30,29,0.15)] py-1.5 text-[rgba(32,30,29,0.6)]">
+                <td className="border-b border-[rgba(var(--ink-rgb),0.15)] py-1.5 font-bold">{a.label} (Add-on)</td>
+                <td className="border-b border-[rgba(var(--ink-rgb),0.15)] py-1.5 text-[rgba(var(--ink-rgb),0.6)]">
                   {a.rateType === "HALF" ? "Separuh Hari" : "Satu Hari"} × {a.qty}
                 </td>
-                <td className="border-b border-[rgba(32,30,29,0.15)] py-1.5 text-right">{fmtRM(a.price)}</td>
+                <td className="border-b border-[rgba(var(--ink-rgb),0.15)] py-1.5 text-right">{fmtRM(a.price)}</td>
               </tr>
             ))}
           </tbody>
         </table>
 
-        <div className="print-avoid-break flex flex-col gap-2.5 border border-[rgba(32,30,29,0.3)] bg-[#f3f2f2] p-3.5">
+        <div className="print-avoid-break flex flex-col gap-2.5 border border-[rgba(var(--ink-rgb),0.3)] bg-[var(--surface)] p-3.5">
           <div className="flex justify-between text-[13px]">
             <span>Anggaran Asal</span>
             <span className="font-bold">{fmtRM(booking.revenue)}</span>
           </div>
-          <label className="flex flex-col gap-1.5 text-xs text-[rgba(32,30,29,0.7)]">
+          <label className="flex flex-col gap-1.5 text-xs text-[rgba(var(--ink-rgb),0.7)]">
             Harga Akhir (admin boleh ubah jika ada diskaun)
             <input
               type="number"
               value={overrideValue}
               onChange={(e) => setOverrideValue(e.target.value)}
               onBlur={savePrice}
-              className="min-h-9 w-full border border-[rgba(32,30,29,0.4)] bg-white px-2.5 py-1.5 text-sm outline-none"
+              className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] px-2.5 py-1.5 text-sm outline-none"
             />
           </label>
           {discount > 0 && (
-            <div className="flex justify-between text-[12.5px] font-bold text-[#4a8a63]">
+            <div className="flex justify-between text-[12.5px] font-bold text-[var(--success)]">
               <span>Diskaun Diberikan</span>
               <span>{fmtRM(discount)}</span>
             </div>
           )}
-          <div className="flex justify-between border-t border-[rgba(32,30,29,0.3)] pt-2 font-archivo text-base font-extrabold">
+          <div className="flex justify-between border-t border-[rgba(var(--ink-rgb),0.3)] pt-2 font-archivo text-base font-extrabold">
             <span>Jumlah Akhir</span>
             <span>{fmtRM(finalPrice)}</span>
           </div>
@@ -336,12 +336,12 @@ export default function QuotationModal({ booking, onClose }: { booking: Booking;
         </div>
         <div className="mb-1 text-xs">No.Tel: 07 – 237 7422</div>
         <div className="mb-2.5 text-xs">No. Faks : 07 – 238 0798</div>
-        <div className="text-[11px] text-[rgba(32,30,29,0.6)]">*Potong yang tidak berkenaan</div>
+        <div className="text-[11px] text-[rgba(var(--ink-rgb),0.6)]">*Potong yang tidak berkenaan</div>
 
         <div className="mt-3.5 flex flex-col gap-2 print:hidden sm:flex-row">
           <button
             onClick={() => window.print()}
-            className="flex flex-1 items-center justify-center gap-2 border border-[rgba(32,30,29,0.4)] bg-[#f3f2f2] py-3 font-archivo text-[13.5px] font-extrabold"
+            className="flex flex-1 items-center justify-center gap-2 border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--surface)] py-3 font-archivo text-[13.5px] font-extrabold"
           >
             <Printer weight="duotone" /> Cetak
           </button>

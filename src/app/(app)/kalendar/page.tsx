@@ -12,10 +12,10 @@ export default async function KalendarPage({
   return (
     <div>
       <div className="mb-0.5 font-archivo text-[26px] font-extrabold">Kalendar Tempahan</div>
-      <div className="mb-3.5 text-[13.5px] text-[rgba(32,30,29,0.6)]">
+      <div className="mb-3.5 text-[13.5px] text-[rgba(var(--ink-rgb),0.6)]">
         Lihat slot fasiliti tersedia &amp; ditempah
       </div>
-      <div className="mb-[18px] h-0.5 bg-[rgba(32,30,29,0.4)]" />
+      <div className="mb-[18px] h-0.5 bg-[rgba(var(--ink-rgb),0.4)]" />
       <CalendarView facilities={facilities} defaultFacilityId={facility} />
     </div>
   );

@@ -15,9 +15,9 @@ export default async function AduanPage() {
     return (
       <div>
         <div className="mb-0.5 font-archivo text-[26px] font-extrabold">Borang Aduan Baharu</div>
-        <div className="mb-3.5 text-[13.5px] text-[rgba(32,30,29,0.6)]">Laporkan kerosakan fasiliti kampus</div>
-        <div className="mb-4 h-0.5 bg-[rgba(32,30,29,0.4)]" />
-        <div className="mx-auto max-w-[560px] border border-[rgba(32,30,29,0.4)] bg-white p-6">
+        <div className="mb-3.5 text-[13.5px] text-[rgba(var(--ink-rgb),0.6)]">Laporkan kerosakan fasiliti kampus</div>
+        <div className="mb-4 h-0.5 bg-[rgba(var(--ink-rgb),0.4)]" />
+        <div className="mx-auto max-w-[560px] border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] p-6">
           <ComplaintForm facilities={facilities} role={session.role} />
         </div>
       </div>
@@ -40,14 +40,14 @@ export default async function AduanPage() {
       <div className="mb-0.5 font-archivo text-[26px] font-extrabold">
         {isStaff ? "Senarai Aduan Kerosakan" : "Aduan Saya"}
       </div>
-      <div className="mb-3.5 text-[13.5px] text-[rgba(32,30,29,0.6)]">
+      <div className="mb-3.5 text-[13.5px] text-[rgba(var(--ink-rgb),0.6)]">
         {isStaff ? "Status aduan & jenis pembaikan" : "Buat aduan kerosakan baharu dan jejak statusnya"}
       </div>
-      <div className="mb-4 h-0.5 bg-[rgba(32,30,29,0.4)]" />
+      <div className="mb-4 h-0.5 bg-[rgba(var(--ink-rgb),0.4)]" />
 
       <div className={`grid grid-cols-1 gap-6 ${isStaff ? "" : "xl:grid-cols-3"}`}>
         {!isStaff && (
-          <div className="border border-[rgba(32,30,29,0.4)] bg-white p-6">
+          <div className="border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] p-6">
             <div className="mb-4 font-archivo text-sm font-extrabold">Borang Aduan Baharu</div>
             <ComplaintForm facilities={facilities} role={session.role} />
           </div>

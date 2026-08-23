@@ -81,24 +81,24 @@ export default function FacilityEditModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(32,30,29,0.6)] p-4" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(0,0,0,0.6)] p-4" onClick={onClose}>
       <div
-        className="max-h-[90vh] w-full max-w-md overflow-y-auto border border-[rgba(32,30,29,0.4)] bg-white"
+        className="max-h-[90vh] w-full max-w-md overflow-y-auto border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)]"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between border-b-2 border-[rgba(32,30,29,0.4)] px-5 py-4">
+        <div className="flex items-center justify-between border-b-2 border-[rgba(var(--ink-rgb),0.4)] px-5 py-4">
           <div className="font-archivo text-base font-extrabold">Ubah Fasiliti: {facility.name}</div>
-          <button onClick={onClose} className="text-[#201e1d]">
+          <button onClick={onClose} className="text-[var(--ink)]">
             <X weight="bold" size={18} />
           </button>
         </div>
 
         <div className="flex flex-col gap-4 p-5">
           <div>
-            <label className="mb-1 block text-[11px] font-extrabold uppercase tracking-[0.05em] text-[rgba(32,30,29,0.55)]">
+            <label className="mb-1 block text-[11px] font-extrabold uppercase tracking-[0.05em] text-[rgba(var(--ink-rgb),0.55)]">
               Gambar Fasiliti
             </label>
-            <div className="flex items-center gap-3 border border-dashed border-[rgba(32,30,29,0.5)] bg-[#f3f2f2] p-3">
+            <div className="flex items-center gap-3 border border-dashed border-[rgba(var(--ink-rgb),0.5)] bg-[var(--surface)] p-3">
               {imageUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={imageUrl} alt="Pratonton fasiliti" className="h-14 w-14 flex-none object-cover" />
@@ -107,7 +107,7 @@ export default function FacilityEditModal({
                   <ImageIcon weight="duotone" size={20} />
                 </div>
               )}
-              <label className="cursor-pointer text-xs text-[rgba(32,30,29,0.6)]">
+              <label className="cursor-pointer text-xs text-[rgba(var(--ink-rgb),0.6)]">
                 <div className="font-mono font-bold">{uploading ? "Memuat naik..." : "Pilih gambar…"}</div>
                 <input
                   ref={fileRef}
@@ -119,29 +119,29 @@ export default function FacilityEditModal({
                 />
               </label>
             </div>
-            {uploadError && <div className="mt-1 text-xs text-[#7c1405]">{uploadError}</div>}
+            {uploadError && <div className="mt-1 text-xs text-[var(--danger)]">{uploadError}</div>}
           </div>
 
           <div>
-            <label className="mb-1 block text-[11px] font-extrabold uppercase tracking-[0.05em] text-[rgba(32,30,29,0.55)]">
+            <label className="mb-1 block text-[11px] font-extrabold uppercase tracking-[0.05em] text-[rgba(var(--ink-rgb),0.55)]">
               Ringkasan
             </label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={3}
-              className="w-full border border-[rgba(32,30,29,0.4)] px-3 py-2 text-sm focus:outline-none"
+              className="w-full border border-[rgba(var(--ink-rgb),0.4)] px-3 py-2 text-sm focus:outline-none"
             />
           </div>
 
           <div>
-            <label className="mb-1 block text-[11px] font-extrabold uppercase tracking-[0.05em] text-[rgba(32,30,29,0.55)]">
+            <label className="mb-1 block text-[11px] font-extrabold uppercase tracking-[0.05em] text-[rgba(var(--ink-rgb),0.55)]">
               Status
             </label>
             <select
               value={status}
               onChange={(e) => setStatus(e.target.value)}
-              className="w-full border border-[rgba(32,30,29,0.4)] bg-white px-3 py-2 text-sm focus:outline-none"
+              className="w-full border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] px-3 py-2 text-sm focus:outline-none"
             >
               {Object.entries(FACILITY_STATUS_LABEL).map(([key, label]) => (
                 <option key={key} value={key}>
@@ -152,20 +152,20 @@ export default function FacilityEditModal({
           </div>
 
           <div>
-            <label className="mb-1 block text-[11px] font-extrabold uppercase tracking-[0.05em] text-[rgba(32,30,29,0.55)]">
+            <label className="mb-1 block text-[11px] font-extrabold uppercase tracking-[0.05em] text-[rgba(var(--ink-rgb),0.55)]">
               Kadar (RM)
             </label>
             <input
               type="number"
               value={costPerUse}
               onChange={(e) => setCostPerUse(e.target.value)}
-              className="w-full border border-[rgba(32,30,29,0.4)] px-3 py-2 text-sm focus:outline-none"
+              className="w-full border border-[rgba(var(--ink-rgb),0.4)] px-3 py-2 text-sm focus:outline-none"
             />
           </div>
 
           <div className="flex gap-3">
             <div className="flex-1">
-              <label className="mb-1 block text-[11px] font-extrabold uppercase tracking-[0.05em] text-[rgba(32,30,29,0.55)]">
+              <label className="mb-1 block text-[11px] font-extrabold uppercase tracking-[0.05em] text-[rgba(var(--ink-rgb),0.55)]">
                 Separuh Hari (RM)
               </label>
               <input
@@ -173,11 +173,11 @@ export default function FacilityEditModal({
                 value={halfDayRate}
                 onChange={(e) => setHalfDayRate(e.target.value)}
                 placeholder="—"
-                className="w-full border border-[rgba(32,30,29,0.4)] px-3 py-2 text-sm focus:outline-none"
+                className="w-full border border-[rgba(var(--ink-rgb),0.4)] px-3 py-2 text-sm focus:outline-none"
               />
             </div>
             <div className="flex-1">
-              <label className="mb-1 block text-[11px] font-extrabold uppercase tracking-[0.05em] text-[rgba(32,30,29,0.55)]">
+              <label className="mb-1 block text-[11px] font-extrabold uppercase tracking-[0.05em] text-[rgba(var(--ink-rgb),0.55)]">
                 Satu Hari (RM)
               </label>
               <input
@@ -185,16 +185,16 @@ export default function FacilityEditModal({
                 value={fullDayRate}
                 onChange={(e) => setFullDayRate(e.target.value)}
                 placeholder="—"
-                className="w-full border border-[rgba(32,30,29,0.4)] px-3 py-2 text-sm focus:outline-none"
+                className="w-full border border-[rgba(var(--ink-rgb),0.4)] px-3 py-2 text-sm focus:outline-none"
               />
             </div>
           </div>
         </div>
 
-        <div className="flex justify-end gap-2 border-t-2 border-[rgba(32,30,29,0.4)] px-5 py-4">
+        <div className="flex justify-end gap-2 border-t-2 border-[rgba(var(--ink-rgb),0.4)] px-5 py-4">
           <button
             onClick={onClose}
-            className="border border-[rgba(32,30,29,0.4)] px-4 py-2 text-[13px] font-bold text-[#201e1d]"
+            className="border border-[rgba(var(--ink-rgb),0.4)] px-4 py-2 text-[13px] font-bold text-[var(--ink)]"
           >
             Batal
           </button>

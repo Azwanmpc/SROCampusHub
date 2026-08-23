@@ -100,58 +100,58 @@ export default function AsetKemaskini() {
   return (
     <div>
       <div className="mb-4 flex justify-end">
-        <Link href="/aset" className="border border-[rgba(32,30,29,0.4)] px-4 py-2 font-archivo text-[13px] font-extrabold text-[#201e1d] hover:bg-[#f7f6f6]">
+        <Link href="/aset" className="border border-[rgba(var(--ink-rgb),0.4)] px-4 py-2 font-archivo text-[13px] font-extrabold text-[var(--ink)] hover:bg-[#f7f6f6]">
           Kembali ke Dashboard
         </Link>
       </div>
 
-      <form onSubmit={handleSubmit} className="mb-6 border border-[rgba(32,30,29,0.4)] bg-white p-5">
+      <form onSubmit={handleSubmit} className="mb-6 border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] p-5">
         <div className="mb-3 font-archivo text-sm font-extrabold">{editingId ? "Kemaskini Rekod Aset" : "Tambah Rekod Aset"}</div>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
           <div className="lg:col-span-2">
-            <label className="mb-1 block text-xs text-[rgba(32,30,29,0.65)]">Nama Aset</label>
+            <label className="mb-1 block text-xs text-[rgba(var(--ink-rgb),0.65)]">Nama Aset</label>
             <input
               type="text"
               required
               value={form.namaAset}
               onChange={(e) => setForm((f) => ({ ...f, namaAset: e.target.value.toUpperCase() }))}
               placeholder="cth: KERUSI MESYUARAT"
-              className="min-h-9 w-full border border-[rgba(32,30,29,0.4)] px-2.5 py-1.5 text-sm"
+              className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] px-2.5 py-1.5 text-sm"
             />
           </div>
           <div>
-            <label className="mb-1 block text-xs text-[rgba(32,30,29,0.65)]">No. Pendaftaran</label>
+            <label className="mb-1 block text-xs text-[rgba(var(--ink-rgb),0.65)]">No. Pendaftaran</label>
             <input
               type="text"
               value={form.noPendaftaran}
               onChange={(e) => setForm((f) => ({ ...f, noPendaftaran: e.target.value }))}
               placeholder="cth: NPC/WS/44/2003"
-              className="min-h-9 w-full border border-[rgba(32,30,29,0.4)] px-2.5 py-1.5 text-sm"
+              className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] px-2.5 py-1.5 text-sm"
             />
           </div>
           <div>
-            <label className="mb-1 block text-xs text-[rgba(32,30,29,0.65)]">Tahun</label>
+            <label className="mb-1 block text-xs text-[rgba(var(--ink-rgb),0.65)]">Tahun</label>
             <input
               type="text"
               value={form.tahun}
               onChange={(e) => setForm((f) => ({ ...f, tahun: e.target.value }))}
               placeholder="cth: 2024"
-              className="min-h-9 w-full border border-[rgba(32,30,29,0.4)] px-2.5 py-1.5 text-sm"
+              className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] px-2.5 py-1.5 text-sm"
             />
           </div>
           <div>
-            <label className="mb-1 block text-xs text-[rgba(32,30,29,0.65)]">Status</label>
+            <label className="mb-1 block text-xs text-[rgba(var(--ink-rgb),0.65)]">Status</label>
             <select
               value={form.status}
               onChange={(e) => setForm((f) => ({ ...f, status: e.target.value }))}
-              className="min-h-9 w-full border border-[rgba(32,30,29,0.4)] px-2.5 py-1.5 text-sm"
+              className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] px-2.5 py-1.5 text-sm"
             >
               <option value="BAIK">Baik</option>
               <option value="ROSAK">Rosak</option>
             </select>
           </div>
           <div className="lg:col-span-2">
-            <label className="mb-1 block text-xs text-[rgba(32,30,29,0.65)]">Lokasi</label>
+            <label className="mb-1 block text-xs text-[rgba(var(--ink-rgb),0.65)]">Lokasi</label>
             <input
               type="text"
               required
@@ -159,7 +159,7 @@ export default function AsetKemaskini() {
               value={form.lokasi}
               onChange={(e) => setForm((f) => ({ ...f, lokasi: e.target.value }))}
               placeholder="cth: Bilik Kaizen"
-              className="min-h-9 w-full border border-[rgba(32,30,29,0.4)] px-2.5 py-1.5 text-sm"
+              className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] px-2.5 py-1.5 text-sm"
             />
             <datalist id="lokasi-options">
               {lokasiOptions.map((l) => (
@@ -169,14 +169,14 @@ export default function AsetKemaskini() {
           </div>
         </div>
 
-        {error && <div className="mt-3 bg-[#fff2ef] px-3 py-2 text-sm text-[#7c1405]">{error}</div>}
+        {error && <div className="mt-3 bg-[var(--danger-bg)] px-3 py-2 text-sm text-[var(--danger)]">{error}</div>}
 
         <div className="mt-4 flex gap-2.5">
           <button type="submit" disabled={saving} className="bg-[#6d28d9] px-5 py-2.5 font-archivo text-[13px] font-extrabold text-white hover:bg-[#4c1d95] disabled:opacity-60">
             {saving ? "Menyimpan..." : editingId ? "Kemaskini" : "Simpan Rekod"}
           </button>
           {editingId && (
-            <button type="button" onClick={cancelEdit} className="border border-[rgba(32,30,29,0.4)] px-5 py-2.5 font-archivo text-[13px] font-extrabold text-[#201e1d]">
+            <button type="button" onClick={cancelEdit} className="border border-[rgba(var(--ink-rgb),0.4)] px-5 py-2.5 font-archivo text-[13px] font-extrabold text-[var(--ink)]">
               Batal
             </button>
           )}
@@ -185,8 +185,8 @@ export default function AsetKemaskini() {
 
       <div className="mb-3 flex flex-wrap items-center gap-3">
         <div>
-          <label className="mr-1.5 text-[13px] font-bold text-[rgba(32,30,29,0.6)]">Lokasi:</label>
-          <select value={lokasiFilter} onChange={(e) => setLokasiFilter(e.target.value)} className="border border-[rgba(32,30,29,0.3)] px-3 py-1.5 text-sm font-semibold">
+          <label className="mr-1.5 text-[13px] font-bold text-[rgba(var(--ink-rgb),0.6)]">Lokasi:</label>
+          <select value={lokasiFilter} onChange={(e) => setLokasiFilter(e.target.value)} className="border border-[rgba(var(--ink-rgb),0.3)] px-3 py-1.5 text-sm font-semibold">
             <option value="ALL">Semua Lokasi</option>
             {lokasiOptions.map((l) => (
               <option key={l} value={l}>
@@ -196,8 +196,8 @@ export default function AsetKemaskini() {
           </select>
         </div>
         <div>
-          <label className="mr-1.5 text-[13px] font-bold text-[rgba(32,30,29,0.6)]">Status:</label>
-          <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="border border-[rgba(32,30,29,0.3)] px-3 py-1.5 text-sm font-semibold">
+          <label className="mr-1.5 text-[13px] font-bold text-[rgba(var(--ink-rgb),0.6)]">Status:</label>
+          <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="border border-[rgba(var(--ink-rgb),0.3)] px-3 py-1.5 text-sm font-semibold">
             <option value="ALL">Semua Status</option>
             <option value="BAIK">Baik</option>
             <option value="ROSAK">Rosak</option>
@@ -208,15 +208,15 @@ export default function AsetKemaskini() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Cari nama aset / no. pendaftaran..."
-          className="min-h-9 flex-1 border border-[rgba(32,30,29,0.3)] px-3 py-1.5 text-sm"
+          className="min-h-9 flex-1 border border-[rgba(var(--ink-rgb),0.3)] px-3 py-1.5 text-sm"
         />
-        <div className="text-[12.5px] text-[rgba(32,30,29,0.55)]">{filtered.length} rekod</div>
+        <div className="text-[12.5px] text-[rgba(var(--ink-rgb),0.55)]">{filtered.length} rekod</div>
       </div>
 
       {loading ? (
-        <p className="text-sm text-[rgba(32,30,29,0.5)]">Memuatkan rekod...</p>
+        <p className="text-sm text-[rgba(var(--ink-rgb),0.5)]">Memuatkan rekod...</p>
       ) : (
-        <div className="max-h-[520px] overflow-auto border border-[rgba(32,30,29,0.3)]">
+        <div className="max-h-[520px] overflow-auto border border-[rgba(var(--ink-rgb),0.3)]">
           <table className="w-full min-w-[820px] border-collapse text-[13px]">
             <thead>
               <tr className="sticky top-0 bg-[#1a1a1a] text-white">
@@ -230,10 +230,10 @@ export default function AsetKemaskini() {
             </thead>
             <tbody>
               {filtered.slice(0, 400).map((r) => (
-                <tr key={r.id} className="odd:bg-white even:bg-[#fafbfd]">
+                <tr key={r.id} className="odd:bg-[var(--white)] even:bg-[#fafbfd]">
                   <td className="border-b border-[#eef0f4] px-3 py-2">{r.namaAset}</td>
-                  <td className="border-b border-[#eef0f4] px-3 py-2 text-[rgba(32,30,29,0.6)]">{r.noPendaftaran || "—"}</td>
-                  <td className="border-b border-[#eef0f4] px-3 py-2 text-[rgba(32,30,29,0.6)]">{r.tahun || "—"}</td>
+                  <td className="border-b border-[#eef0f4] px-3 py-2 text-[rgba(var(--ink-rgb),0.6)]">{r.noPendaftaran || "—"}</td>
+                  <td className="border-b border-[#eef0f4] px-3 py-2 text-[rgba(var(--ink-rgb),0.6)]">{r.tahun || "—"}</td>
                   <td className="border-b border-[#eef0f4] px-3 py-2">{r.lokasi}</td>
                   <td className="border-b border-[#eef0f4] px-3 py-2">
                     <span className={`rounded-full px-2 py-0.5 text-[11px] font-bold text-white ${r.status === "ROSAK" ? "bg-[#E4212B]" : "bg-[#16a34a]"}`}>
@@ -244,7 +244,7 @@ export default function AsetKemaskini() {
                     <button onClick={() => startEdit(r)} className="mr-3 font-bold text-[#6d28d9] hover:underline">
                       Edit
                     </button>
-                    <button onClick={() => handleDelete(r.id)} className="font-bold text-[#b91c1c] hover:underline">
+                    <button onClick={() => handleDelete(r.id)} className="font-bold text-[var(--danger)] hover:underline">
                       Padam
                     </button>
                   </td>
@@ -252,7 +252,7 @@ export default function AsetKemaskini() {
               ))}
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="px-3 py-6 text-center text-sm text-[rgba(32,30,29,0.5)]">
+                  <td colSpan={6} className="px-3 py-6 text-center text-sm text-[rgba(var(--ink-rgb),0.5)]">
                     Tiada rekod
                   </td>
                 </tr>
@@ -260,7 +260,7 @@ export default function AsetKemaskini() {
             </tbody>
           </table>
           {filtered.length > 400 && (
-            <div className="border-t border-[#eef0f4] px-3 py-2 text-center text-[11.5px] text-[rgba(32,30,29,0.5)]">
+            <div className="border-t border-[#eef0f4] px-3 py-2 text-center text-[11.5px] text-[rgba(var(--ink-rgb),0.5)]">
               Memaparkan 400 daripada {filtered.length} rekod &mdash; gunakan penapis/carian untuk tumpuan
             </div>
           )}

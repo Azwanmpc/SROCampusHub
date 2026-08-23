@@ -39,13 +39,13 @@ export default function PinjamanAsetView({ userId, role }: { userId: string; rol
   if (isStaff) {
     return (
       <div>
-        <div className="mb-4 flex w-full overflow-x-auto border border-[rgba(32,30,29,0.4)] sm:w-fit">
+        <div className="mb-4 flex w-full overflow-x-auto border border-[rgba(var(--ink-rgb),0.4)] sm:w-fit">
           {STAFF_FILTERS.map((f) => (
             <button
               key={f.key}
               onClick={() => setFilter(f.key)}
-              className={`flex-none whitespace-nowrap border-r border-[rgba(32,30,29,0.4)] px-4 py-2 text-[12.5px] font-bold last:border-r-0 ${
-                filter === f.key ? "bg-[#6d28d9] text-[#f3f2f2]" : "bg-[#f3f2f2] text-[#201e1d]"
+              className={`flex-none whitespace-nowrap border-r border-[rgba(var(--ink-rgb),0.4)] px-4 py-2 text-[12.5px] font-bold last:border-r-0 ${
+                filter === f.key ? "bg-[#6d28d9] text-[#f3f2f2]" : "bg-[var(--surface)] text-[var(--ink)]"
               }`}
             >
               {f.label}
@@ -53,9 +53,9 @@ export default function PinjamanAsetView({ userId, role }: { userId: string; rol
           ))}
         </div>
 
-        <div className="flex flex-col gap-px border border-[rgba(32,30,29,0.4)] bg-[rgba(32,30,29,0.3)]">
-          {!records && <div className="bg-white p-4 text-sm text-[rgba(32,30,29,0.5)]">Memuatkan...</div>}
-          {records && filtered.length === 0 && <div className="bg-white p-4 text-sm text-[rgba(32,30,29,0.5)]">Tiada permohonan.</div>}
+        <div className="flex flex-col gap-px border border-[rgba(var(--ink-rgb),0.4)] bg-[rgba(var(--ink-rgb),0.3)]">
+          {!records && <div className="bg-[var(--white)] p-4 text-sm text-[rgba(var(--ink-rgb),0.5)]">Memuatkan...</div>}
+          {records && filtered.length === 0 && <div className="bg-[var(--white)] p-4 text-sm text-[rgba(var(--ink-rgb),0.5)]">Tiada permohonan.</div>}
           {filtered.map((r) => (
             <PinjamanAsetCard key={r.id} record={r} isStaff isOwner={r.pemohon.id === userId} onChanged={load} onPrint={setPrintRecord} />
           ))}
@@ -83,9 +83,9 @@ export default function PinjamanAsetView({ userId, role }: { userId: string; rol
         </div>
       )}
 
-      <div className="flex flex-col gap-px border border-[rgba(32,30,29,0.4)] bg-[rgba(32,30,29,0.3)]">
-        {!records && <div className="bg-white p-4 text-sm text-[rgba(32,30,29,0.5)]">Memuatkan...</div>}
-        {records && records.length === 0 && <div className="bg-white p-4 text-sm text-[rgba(32,30,29,0.5)]">Tiada permohonan pinjaman lagi.</div>}
+      <div className="flex flex-col gap-px border border-[rgba(var(--ink-rgb),0.4)] bg-[rgba(var(--ink-rgb),0.3)]">
+        {!records && <div className="bg-[var(--white)] p-4 text-sm text-[rgba(var(--ink-rgb),0.5)]">Memuatkan...</div>}
+        {records && records.length === 0 && <div className="bg-[var(--white)] p-4 text-sm text-[rgba(var(--ink-rgb),0.5)]">Tiada permohonan pinjaman lagi.</div>}
         {records?.map((r) => (
           <PinjamanAsetCard key={r.id} record={r} isStaff={false} isOwner onChanged={load} onPrint={setPrintRecord} />
         ))}
