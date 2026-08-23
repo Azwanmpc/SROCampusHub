@@ -19,7 +19,7 @@ export default function KewPa14Modal({ items, scopeLabel, onClose }: { items: As
           <XCircle weight="duotone" />
         </button>
 
-        <div className="print-page-break bg-[var(--white)] p-4 font-archivo text-[#1a1a1a] sm:p-8">
+        <div className="print-page-break bg-white p-4 font-archivo text-[#1a1a1a] sm:p-8">
           <div className="mb-4 text-right text-[12px] font-extrabold sm:mb-6 sm:text-[13px]">KEW.PA-14</div>
           <div className="mb-5 text-center text-[14px] font-extrabold leading-snug sm:mb-8 sm:text-[16px]">
             SENARAI ASET ALIH YANG MEMERLUKAN PENYELENGGARAAN

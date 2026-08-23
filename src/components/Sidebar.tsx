@@ -127,7 +127,7 @@ export default function Sidebar({
                       href={item.href}
                       onClick={onClose}
                       className={`flex items-center gap-2.5 px-[18px] py-2.5 text-[13.5px] font-bold ${
-                        active ? "bg-[var(--surface)] text-[#6d28d9]" : "text-[var(--ink)] hover:bg-[#f7f6f6]"
+                        active ? "bg-[var(--surface)] text-[#6d28d9]" : "text-[var(--ink)] hover:bg-[var(--surface)]"
                       }`}
                     >
                       <Icon weight="duotone" size={18} className="flex-none" />

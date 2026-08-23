@@ -129,7 +129,7 @@ export default function ReportsCharts() {
                     <span>{f.nama}</span>
                     <span>{f.rmLabel}</span>
                   </div>
-                  <div className="h-2 bg-[#e2e1e0]">
+                  <div className="h-2 bg-[var(--surface)]">
                     <div className="h-full bg-[#4a72a8]" style={{ width: `${f.pct}%` }} />
                   </div>
                 </div>
@@ -148,7 +148,7 @@ export default function ReportsCharts() {
                       {l.count} ({l.pct}%)
                     </span>
                   </div>
-                  <div className="h-2 bg-[#e2e1e0]">
+                  <div className="h-2 bg-[var(--surface)]">
                     <div className="h-full bg-[#201e1d]" style={{ width: `${l.pct}%` }} />
                   </div>
                 </div>

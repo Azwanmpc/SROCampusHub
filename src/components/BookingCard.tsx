@@ -220,7 +220,7 @@ export default function BookingCard({
 
       {!canApprove && booking.status === "DISAHKAN" && (
         <div className="mt-3.5 border-t border-[rgba(var(--ink-rgb),0.2)] pt-3.5">
-          <div className="flex items-start gap-2 border border-[#f5c76b] bg-[#fff8e6] px-3 py-2.5 text-xs leading-[1.5] text-[var(--warning)]">
+          <div className="flex items-start gap-2 border border-[var(--warning)] bg-[var(--warning-bg)] px-3 py-2.5 text-xs leading-[1.5] text-[var(--warning)]">
             <WarningCircle weight="fill" size={16} className="mt-0.5 flex-none" />
             <div>
               <span className="font-bold">Perhatian:</span> Tempahan ini telah disahkan dan sebut harga telah

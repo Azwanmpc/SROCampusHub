@@ -104,7 +104,7 @@ export default function HasilSewaanKemaskini() {
   return (
     <div>
       <div className="mb-4 flex justify-end">
-        <Link href="/hasil-sewaan" className="border border-[rgba(var(--ink-rgb),0.4)] px-4 py-2 font-archivo text-[13px] font-extrabold text-[var(--ink)] hover:bg-[#f7f6f6]">
+        <Link href="/hasil-sewaan" className="border border-[rgba(var(--ink-rgb),0.4)] px-4 py-2 font-archivo text-[13px] font-extrabold text-[var(--ink)] hover:bg-[var(--surface)]">
           Kembali ke Dashboard
         </Link>
       </div>
@@ -219,13 +219,13 @@ export default function HasilSewaanKemaskini() {
             </thead>
             <tbody>
               {filtered.map((r) => (
-                <tr key={r.id} className="odd:bg-[var(--white)] even:bg-[#fafbfd]">
-                  <td className="border-b border-[#eef0f4] px-3 py-2">{new Date(r.tarikh).toLocaleDateString("ms-MY")}</td>
-                  <td className="border-b border-[#eef0f4] px-3 py-2">{r.organisasi}</td>
-                  <td className="border-b border-[#eef0f4] px-3 py-2 font-bold">{r.lokasi}</td>
-                  <td className="border-b border-[#eef0f4] px-3 py-2 text-right">{r.bilanganPeserta.toLocaleString("en-US")}</td>
-                  <td className="border-b border-[#eef0f4] px-3 py-2 text-right">{r.hasilTerimaan.toLocaleString("en-US")}</td>
-                  <td className="border-b border-[#eef0f4] px-3 py-2">
+                <tr key={r.id} className="odd:bg-[var(--white)] even:bg-[var(--surface)]">
+                  <td className="border-b border-[var(--surface)] px-3 py-2">{new Date(r.tarikh).toLocaleDateString("ms-MY")}</td>
+                  <td className="border-b border-[var(--surface)] px-3 py-2">{r.organisasi}</td>
+                  <td className="border-b border-[var(--surface)] px-3 py-2 font-bold">{r.lokasi}</td>
+                  <td className="border-b border-[var(--surface)] px-3 py-2 text-right">{r.bilanganPeserta.toLocaleString("en-US")}</td>
+                  <td className="border-b border-[var(--surface)] px-3 py-2 text-right">{r.hasilTerimaan.toLocaleString("en-US")}</td>
+                  <td className="border-b border-[var(--surface)] px-3 py-2">
                     <button onClick={() => startEdit(r)} className="mr-3 font-bold text-[#6d28d9] hover:underline">
                       Edit
                     </button>

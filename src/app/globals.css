@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 :root {
+  color-scheme: light;
   --ink: #201e1d;
   --ink-rgb: 32, 30, 29;
   --surface: #f3f2f2;
@@ -37,6 +38,7 @@
 }
 
 [data-theme="dark"] {
+  color-scheme: dark;
   --ink: #f3f2f2;
   --ink-rgb: 243, 242, 242;
   --surface: #2b2928;

@@ -100,7 +100,7 @@ export default function AsetKemaskini() {
   return (
     <div>
       <div className="mb-4 flex justify-end">
-        <Link href="/aset" className="border border-[rgba(var(--ink-rgb),0.4)] px-4 py-2 font-archivo text-[13px] font-extrabold text-[var(--ink)] hover:bg-[#f7f6f6]">
+        <Link href="/aset" className="border border-[rgba(var(--ink-rgb),0.4)] px-4 py-2 font-archivo text-[13px] font-extrabold text-[var(--ink)] hover:bg-[var(--surface)]">
           Kembali ke Dashboard
         </Link>
       </div>
@@ -230,17 +230,17 @@ export default function AsetKemaskini() {
             </thead>
             <tbody>
               {filtered.slice(0, 400).map((r) => (
-                <tr key={r.id} className="odd:bg-[var(--white)] even:bg-[#fafbfd]">
-                  <td className="border-b border-[#eef0f4] px-3 py-2">{r.namaAset}</td>
-                  <td className="border-b border-[#eef0f4] px-3 py-2 text-[rgba(var(--ink-rgb),0.6)]">{r.noPendaftaran || "—"}</td>
-                  <td className="border-b border-[#eef0f4] px-3 py-2 text-[rgba(var(--ink-rgb),0.6)]">{r.tahun || "—"}</td>
-                  <td className="border-b border-[#eef0f4] px-3 py-2">{r.lokasi}</td>
-                  <td className="border-b border-[#eef0f4] px-3 py-2">
+                <tr key={r.id} className="odd:bg-[var(--white)] even:bg-[var(--surface)]">
+                  <td className="border-b border-[var(--surface)] px-3 py-2">{r.namaAset}</td>
+                  <td className="border-b border-[var(--surface)] px-3 py-2 text-[rgba(var(--ink-rgb),0.6)]">{r.noPendaftaran || "—"}</td>
+                  <td className="border-b border-[var(--surface)] px-3 py-2 text-[rgba(var(--ink-rgb),0.6)]">{r.tahun || "—"}</td>
+                  <td className="border-b border-[var(--surface)] px-3 py-2">{r.lokasi}</td>
+                  <td className="border-b border-[var(--surface)] px-3 py-2">
                     <span className={`rounded-full px-2 py-0.5 text-[11px] font-bold text-white ${r.status === "ROSAK" ? "bg-[#E4212B]" : "bg-[#16a34a]"}`}>
                       {r.status === "ROSAK" ? "Rosak" : "Baik"}
                     </span>
                   </td>
-                  <td className="border-b border-[#eef0f4] px-3 py-2">
+                  <td className="border-b border-[var(--surface)] px-3 py-2">
                     <button onClick={() => startEdit(r)} className="mr-3 font-bold text-[#6d28d9] hover:underline">
                       Edit
                     </button>
@@ -260,7 +260,7 @@ export default function AsetKemaskini() {
             </tbody>
           </table>
           {filtered.length > 400 && (
-            <div className="border-t border-[#eef0f4] px-3 py-2 text-center text-[11.5px] text-[rgba(var(--ink-rgb),0.5)]">
+            <div className="border-t border-[var(--surface)] px-3 py-2 text-center text-[11.5px] text-[rgba(var(--ink-rgb),0.5)]">
               Memaparkan 400 daripada {filtered.length} rekod &mdash; gunakan penapis/carian untuk tumpuan
             </div>
           )}

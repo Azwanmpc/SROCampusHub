@@ -12,7 +12,7 @@ const MIN_ROWS = 11;
 function LokasiForm({ lokasi, items }: { lokasi: string; items: Aset[] }) {
   const rows = Math.max(items.length, MIN_ROWS);
   return (
-    <div className="print-page-break bg-[var(--white)] p-4 font-archivo text-[#1a1a1a] sm:p-8">
+    <div className="print-page-break bg-white p-4 font-archivo text-[#1a1a1a] sm:p-8">
       <div className="mb-4 text-right text-[12px] font-extrabold sm:mb-6 sm:text-[13px]">KEW.PA-7</div>
       <div className="mb-5 text-center text-[15px] font-extrabold sm:mb-8 sm:text-[18px]">SENARAI ASET ALIH</div>
 

@@ -145,7 +145,7 @@ export default function KosPenyelenggaraanKemaskini() {
   return (
     <div>
       <div className="mb-4 flex justify-end">
-        <Link href="/kos-penyelenggaraan" className="border border-[rgba(var(--ink-rgb),0.4)] px-4 py-2 font-archivo text-[13px] font-extrabold text-[var(--ink)] hover:bg-[#f7f6f6]">
+        <Link href="/kos-penyelenggaraan" className="border border-[rgba(var(--ink-rgb),0.4)] px-4 py-2 font-archivo text-[13px] font-extrabold text-[var(--ink)] hover:bg-[var(--surface)]">
           Kembali ke Dashboard
         </Link>
       </div>
@@ -287,17 +287,17 @@ export default function KosPenyelenggaraanKemaskini() {
             </thead>
             <tbody>
               {filtered.map((r) => (
-                <tr key={r.id} className="odd:bg-[var(--white)] even:bg-[#fafbfd]">
-                  <td className="border-b border-[#eef0f4] px-3 py-2">{new Date(r.tarikh).toLocaleDateString("ms-MY")}</td>
-                  <td className="border-b border-[#eef0f4] px-3 py-2 font-bold">
+                <tr key={r.id} className="odd:bg-[var(--white)] even:bg-[var(--surface)]">
+                  <td className="border-b border-[var(--surface)] px-3 py-2">{new Date(r.tarikh).toLocaleDateString("ms-MY")}</td>
+                  <td className="border-b border-[var(--surface)] px-3 py-2 font-bold">
                     {KOS_LOKASI_LABEL[r.lokasi] ?? r.lokasi}
                     {r.perincianLokasi && <div className="text-[11px] font-normal text-[rgba(var(--ink-rgb),0.55)]">{r.perincianLokasi}</div>}
                   </td>
-                  <td className="border-b border-[#eef0f4] px-3 py-2">{KOS_KATEGORI_LABEL[r.kategori] ?? r.kategori}</td>
-                  <td className="border-b border-[#eef0f4] px-3 py-2">{KOS_JENIS_LABEL[r.jenis] ?? r.jenis}</td>
-                  <td className="border-b border-[#eef0f4] px-3 py-2">{REPAIR_TYPE_LABEL[r.tugasDilaksanakan] ?? r.tugasDilaksanakan}</td>
-                  <td className="border-b border-[#eef0f4] px-3 py-2 text-right">{r.kos.toLocaleString("en-US")}</td>
-                  <td className="border-b border-[#eef0f4] px-3 py-2">
+                  <td className="border-b border-[var(--surface)] px-3 py-2">{KOS_KATEGORI_LABEL[r.kategori] ?? r.kategori}</td>
+                  <td className="border-b border-[var(--surface)] px-3 py-2">{KOS_JENIS_LABEL[r.jenis] ?? r.jenis}</td>
+                  <td className="border-b border-[var(--surface)] px-3 py-2">{REPAIR_TYPE_LABEL[r.tugasDilaksanakan] ?? r.tugasDilaksanakan}</td>
+                  <td className="border-b border-[var(--surface)] px-3 py-2 text-right">{r.kos.toLocaleString("en-US")}</td>
+                  <td className="border-b border-[var(--surface)] px-3 py-2">
                     <button onClick={() => startEdit(r)} className="mr-3 font-bold text-[#6d28d9] hover:underline">
                       Edit
                     </button>

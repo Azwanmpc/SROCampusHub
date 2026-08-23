@@ -152,7 +152,7 @@ export default function CalendarView({ facilities, defaultFacilityId }: { facili
             </div>
             <div className="grid grid-cols-7 gap-0.5 bg-[rgba(var(--ink-rgb),0.25)]">
               {gridDays.map((day, i) => {
-                if (!day) return <div key={i} className="min-h-[80px] bg-[#f8f4f4] sm:min-h-[104px]" />;
+                if (!day) return <div key={i} className="min-h-[80px] bg-[var(--surface)] sm:min-h-[104px]" />;
                 const key = toDateKey(day);
                 const dayBookings = bookingsByDay.get(key) ?? [];
                 const isToday = day.getTime() === today.getTime();
@@ -163,7 +163,7 @@ export default function CalendarView({ facilities, defaultFacilityId }: { facili
                       setSelectedDate(key);
                       setShowForm(true);
                     }}
-                    className={`min-h-[80px] p-1.5 text-left align-top sm:min-h-[104px] sm:p-2 ${dayBookings.length ? "bg-[var(--white)]" : "bg-[#f8f4f4]"} ${
+                    className={`min-h-[80px] p-1.5 text-left align-top sm:min-h-[104px] sm:p-2 ${dayBookings.length ? "bg-[var(--white)]" : "bg-[var(--surface)]"} ${
                       isToday ? "outline outline-2 -outline-offset-2 outline-[#6d28d9]" : ""
                     }`}
                   >

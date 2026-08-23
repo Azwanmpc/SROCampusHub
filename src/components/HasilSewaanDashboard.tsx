@@ -205,27 +205,27 @@ export default function HasilSewaanDashboard({ canEdit }: { canEdit: boolean }) 
           <div className="text-[11.5px] font-bold uppercase tracking-[0.04em] text-[rgba(var(--ink-rgb),0.5)]">
             Prestasi Keseluruhan Hasil Sewaan Fasiliti {prevYear}
           </div>
-          <div className="mt-1.5 text-[24px] font-extrabold text-[#1a1a1a]">{fmtRM(totalHasilPrevFullYear)}</div>
+          <div className="mt-1.5 text-[24px] font-extrabold text-[var(--ink)]">{fmtRM(totalHasilPrevFullYear)}</div>
         </div>
         <div className="border-l-4 border-[#1e3a5f] bg-[var(--white)] p-4 shadow-sm">
           <div className="text-[11.5px] font-bold uppercase tracking-[0.04em] text-[rgba(var(--ink-rgb),0.5)]">
             Hasil Sewaan Fasiliti Terkini {currYear}
           </div>
-          <div className="mt-1.5 text-[24px] font-extrabold text-[#1a1a1a]">{fmtRM(totalHasilCurrFullYear)}</div>
+          <div className="mt-1.5 text-[24px] font-extrabold text-[var(--ink)]">{fmtRM(totalHasilCurrFullYear)}</div>
           <div className="mt-1.5 inline-block rounded-full bg-[var(--success-bg)] px-2.5 py-0.5 text-[12px] font-bold text-[var(--success)]">
             ✓ Telah mencapai {pctHasilVsKeseluruhanPrev.toFixed(1)}% vs keseluruhan {prevYear}
           </div>
         </div>
         <div className="border-l-4 border-[#0d9488] bg-[var(--white)] p-4 shadow-sm">
           <div className="text-[11.5px] font-bold uppercase tracking-[0.04em] text-[rgba(var(--ink-rgb),0.5)]">Jumlah Peserta {currYear}</div>
-          <div className="mt-1.5 text-[24px] font-extrabold text-[#1a1a1a]">{fmtNum(totalPesertaCurr)}</div>
+          <div className="mt-1.5 text-[24px] font-extrabold text-[var(--ink)]">{fmtNum(totalPesertaCurr)}</div>
           <div className={`mt-1.5 inline-block rounded-full px-2.5 py-0.5 text-[12px] font-bold ${deltaPeserta >= 0 ? "bg-[var(--success-bg)] text-[var(--success)]" : "bg-[var(--danger-bg)] text-[var(--danger)]"}`}>
             {deltaPeserta >= 0 ? "▲" : "▼"} {Math.abs(deltaPeserta).toFixed(1)}% vs {prevYear}
           </div>
         </div>
         <div className="border-l-4 border-[#f59e0b] bg-[var(--white)] p-4 shadow-sm">
           <div className="text-[11.5px] font-bold uppercase tracking-[0.04em] text-[rgba(var(--ink-rgb),0.5)]">Bilangan Tempahan {currYear}</div>
-          <div className="mt-1.5 text-[24px] font-extrabold text-[#1a1a1a]">{fmtNum(totalBilCurr)}</div>
+          <div className="mt-1.5 text-[24px] font-extrabold text-[var(--ink)]">{fmtNum(totalBilCurr)}</div>
           <div className={`mt-1.5 inline-block rounded-full px-2.5 py-0.5 text-[12px] font-bold ${deltaBil >= 0 ? "bg-[var(--success-bg)] text-[var(--success)]" : "bg-[var(--danger-bg)] text-[var(--danger)]"}`}>
             {deltaBil >= 0 ? "▲" : "▼"} {Math.abs(deltaBil).toFixed(1)}% vs {prevYear}
           </div>
@@ -306,15 +306,15 @@ export default function HasilSewaanDashboard({ canEdit }: { canEdit: boolean }) 
                   const kCurr = sumOverMonths(currYear, monthsForCompare, j, "bilangan");
                   const diff = kCurr - kPrev;
                   return (
-                    <tr key={j} className="odd:bg-[var(--white)] even:bg-[#fafbfd]">
-                      <td className="border-b border-[#eef0f4] px-3 py-2">
+                    <tr key={j} className="odd:bg-[var(--white)] even:bg-[var(--surface)]">
+                      <td className="border-b border-[var(--surface)] px-3 py-2">
                         <span className="rounded-full px-2.5 py-0.5 text-[11px] font-bold text-white" style={{ background: JENIS_COLORS[j] || "#94a3b8" }}>
                           {j}
                         </span>
                       </td>
-                      <td className="border-b border-[#eef0f4] px-3 py-2">{fmtNum(kPrev)}</td>
-                      <td className="border-b border-[#eef0f4] px-3 py-2">{fmtNum(kCurr)}</td>
-                      <td className="border-b border-[#eef0f4] px-3 py-2">
+                      <td className="border-b border-[var(--surface)] px-3 py-2">{fmtNum(kPrev)}</td>
+                      <td className="border-b border-[var(--surface)] px-3 py-2">{fmtNum(kCurr)}</td>
+                      <td className="border-b border-[var(--surface)] px-3 py-2">
                         <span className={`rounded-full px-2 py-0.5 text-[12px] font-bold ${diff >= 0 ? "bg-[var(--success-bg)] text-[var(--success)]" : "bg-[var(--danger-bg)] text-[var(--danger)]"}`}>
                           {diff >= 0 ? "+" : ""}
                           {fmtNum(diff)}
@@ -332,7 +332,7 @@ export default function HasilSewaanDashboard({ canEdit }: { canEdit: boolean }) 
       <div className="border border-[rgba(var(--ink-rgb),0.2)] bg-[var(--white)] p-[18px]">
         <div className="mb-0.5 font-archivo text-[15px] font-extrabold">Butiran Terperinci Mengikut Bulan &amp; Jenis Sewaan</div>
         <div className="mb-3 text-xs text-[rgba(var(--ink-rgb),0.55)]">Gunakan penapis di atas untuk tumpuan data</div>
-        <div className="max-h-[380px] overflow-auto border border-[#eef0f4]">
+        <div className="max-h-[380px] overflow-auto border border-[var(--surface)]">
           <table className="w-full min-w-[720px] border-collapse text-[13px]">
             <thead>
               <tr className="sticky top-0 bg-[#1a1a1a] text-white">
@@ -348,19 +348,19 @@ export default function HasilSewaanDashboard({ canEdit }: { canEdit: boolean }) 
             </thead>
             <tbody>
               {rows.map((r, i) => (
-                <tr key={i} className="odd:bg-[var(--white)] even:bg-[#fafbfd]">
-                  <td className="border-b border-[#eef0f4] px-3 py-2">{r.m}</td>
-                  <td className="border-b border-[#eef0f4] px-3 py-2">
+                <tr key={i} className="odd:bg-[var(--white)] even:bg-[var(--surface)]">
+                  <td className="border-b border-[var(--surface)] px-3 py-2">{r.m}</td>
+                  <td className="border-b border-[var(--surface)] px-3 py-2">
                     <span className="rounded-full px-2.5 py-0.5 text-[11px] font-bold text-white" style={{ background: JENIS_COLORS[r.j] || "#94a3b8" }}>
                       {r.j}
                     </span>
                   </td>
-                  <td className="border-b border-[#eef0f4] px-3 py-2">{fmtRM(r.hPrev)}</td>
-                  <td className="border-b border-[#eef0f4] px-3 py-2">{fmtRM(r.hCurr)}</td>
-                  <td className="border-b border-[#eef0f4] px-3 py-2">{fmtNum(r.pPrev)}</td>
-                  <td className="border-b border-[#eef0f4] px-3 py-2">{fmtNum(r.pCurr)}</td>
-                  <td className="border-b border-[#eef0f4] px-3 py-2">{fmtNum(r.bPrev)}</td>
-                  <td className="border-b border-[#eef0f4] px-3 py-2">{fmtNum(r.bCurr)}</td>
+                  <td className="border-b border-[var(--surface)] px-3 py-2">{fmtRM(r.hPrev)}</td>
+                  <td className="border-b border-[var(--surface)] px-3 py-2">{fmtRM(r.hCurr)}</td>
+                  <td className="border-b border-[var(--surface)] px-3 py-2">{fmtNum(r.pPrev)}</td>
+                  <td className="border-b border-[var(--surface)] px-3 py-2">{fmtNum(r.pCurr)}</td>
+                  <td className="border-b border-[var(--surface)] px-3 py-2">{fmtNum(r.bPrev)}</td>
+                  <td className="border-b border-[var(--surface)] px-3 py-2">{fmtNum(r.bCurr)}</td>
                 </tr>
               ))}
               {rows.length === 0 && (

@@ -170,13 +170,13 @@ export default function KosPenyelenggaraanDashboard({ canEdit }: { canEdit: bool
           <div className="text-[11.5px] font-bold uppercase tracking-[0.04em] text-[rgba(var(--ink-rgb),0.5)]">
             Jumlah Kos Penyelenggaraan Tahun Semasa
           </div>
-          <div className="mt-1.5 text-[24px] font-extrabold text-[#1a1a1a]">{fmtRM(totalKosTahunSemasa)}</div>
+          <div className="mt-1.5 text-[24px] font-extrabold text-[var(--ink)]">{fmtRM(totalKosTahunSemasa)}</div>
         </div>
         <div className="border-l-4 border-[#1e3a5f] bg-[var(--white)] p-4 shadow-sm">
           <div className="text-[11.5px] font-bold uppercase tracking-[0.04em] text-[rgba(var(--ink-rgb),0.5)]">
             Jumlah Rekod Penyelenggaraan ({yearSel})
           </div>
-          <div className="mt-1.5 text-[24px] font-extrabold text-[#1a1a1a]">{jumlahRekod.toLocaleString("en-US")}</div>
+          <div className="mt-1.5 text-[24px] font-extrabold text-[var(--ink)]">{jumlahRekod.toLocaleString("en-US")}</div>
           <div className="mt-1.5 text-[12px] font-semibold text-[rgba(var(--ink-rgb),0.55)]">Jumlah kos: {fmtRM(jumlahKosTahunDipilih)}</div>
         </div>
       </div>
@@ -222,7 +222,7 @@ export default function KosPenyelenggaraanDashboard({ canEdit }: { canEdit: bool
       <div className="border border-[rgba(var(--ink-rgb),0.2)] bg-[var(--white)] p-[18px]">
         <div className="mb-0.5 font-archivo text-[15px] font-extrabold">Rekod Kos Penyelenggaraan ({yearSel})</div>
         <div className="mb-3 text-xs text-[rgba(var(--ink-rgb),0.55)]">Senarai penuh rekod bagi tahun dipilih</div>
-        <div className="max-h-[380px] overflow-auto border border-[#eef0f4]">
+        <div className="max-h-[380px] overflow-auto border border-[var(--surface)]">
           <table className="w-full min-w-[820px] border-collapse text-[13px]">
             <thead>
               <tr className="sticky top-0 bg-[#1a1a1a] text-white">
@@ -237,12 +237,12 @@ export default function KosPenyelenggaraanDashboard({ canEdit }: { canEdit: bool
               {[...recordsThisYear]
                 .sort((a, b) => new Date(b.tarikh).getTime() - new Date(a.tarikh).getTime())
                 .map((r) => (
-                  <tr key={r.id} className="odd:bg-[var(--white)] even:bg-[#fafbfd]">
-                    <td className="border-b border-[#eef0f4] px-3 py-2">{new Date(r.tarikh).toLocaleDateString("ms-MY")}</td>
-                    <td className="border-b border-[#eef0f4] px-3 py-2 font-bold">{KOS_LOKASI_LABEL[r.lokasi] ?? r.lokasi}</td>
-                    <td className="border-b border-[#eef0f4] px-3 py-2">{KOS_KATEGORI_LABEL[r.kategori] ?? r.kategori}</td>
-                    <td className="border-b border-[#eef0f4] px-3 py-2">{KOS_JENIS_LABEL[r.jenis] ?? r.jenis}</td>
-                    <td className="border-b border-[#eef0f4] px-3 py-2 text-right">{r.kos.toLocaleString("en-US")}</td>
+                  <tr key={r.id} className="odd:bg-[var(--white)] even:bg-[var(--surface)]">
+                    <td className="border-b border-[var(--surface)] px-3 py-2">{new Date(r.tarikh).toLocaleDateString("ms-MY")}</td>
+                    <td className="border-b border-[var(--surface)] px-3 py-2 font-bold">{KOS_LOKASI_LABEL[r.lokasi] ?? r.lokasi}</td>
+                    <td className="border-b border-[var(--surface)] px-3 py-2">{KOS_KATEGORI_LABEL[r.kategori] ?? r.kategori}</td>
+                    <td className="border-b border-[var(--surface)] px-3 py-2">{KOS_JENIS_LABEL[r.jenis] ?? r.jenis}</td>
+                    <td className="border-b border-[var(--surface)] px-3 py-2 text-right">{r.kos.toLocaleString("en-US")}</td>
                   </tr>
                 ))}
               {recordsThisYear.length === 0 && (

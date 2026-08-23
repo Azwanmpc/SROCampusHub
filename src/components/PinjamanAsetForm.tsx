@@ -150,7 +150,7 @@ export default function PinjamanAsetForm({ onDone }: { onDone?: () => void }) {
             results.map((a) => (
               <label
                 key={a.id}
-                className="flex cursor-pointer items-center justify-between gap-3 border-b border-[rgba(var(--ink-rgb),0.1)] px-3 py-2 text-[12.5px] last:border-b-0 hover:bg-[#f7f6f6]"
+                className="flex cursor-pointer items-center justify-between gap-3 border-b border-[rgba(var(--ink-rgb),0.1)] px-3 py-2 text-[12.5px] last:border-b-0 hover:bg-[var(--surface)]"
               >
                 <div className="flex items-center gap-2.5">
                   <input type="checkbox" checked={selectedIds.has(a.id)} onChange={() => toggleAsset(a.id)} />
@@ -181,7 +181,7 @@ export default function PinjamanAsetForm({ onDone }: { onDone?: () => void }) {
       )}
 
       {error && <div className="mb-3 bg-[var(--danger-bg)] px-3 py-2 text-sm text-[var(--danger)]">{error}</div>}
-      {success && <div className="mb-3 bg-[var(--success-bg)] px-3 py-2 text-sm text-[#1c5c37]">Permohonan pinjaman aset telah dihantar dan menunggu kelulusan.</div>}
+      {success && <div className="mb-3 bg-[var(--success-bg)] px-3 py-2 text-sm text-[var(--success)]">Permohonan pinjaman aset telah dihantar dan menunggu kelulusan.</div>}
 
       <button
         type="submit"

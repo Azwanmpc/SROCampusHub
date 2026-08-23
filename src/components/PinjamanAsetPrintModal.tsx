@@ -87,7 +87,7 @@ export default function PinjamanAsetPrintModal({ record, onClose }: { record: Pi
           <XCircle weight="duotone" />
         </button>
 
-        <div className="print-page-break bg-[var(--white)] p-4 font-archivo text-[#1a1a1a] sm:p-8">
+        <div className="print-page-break bg-white p-4 font-archivo text-[#1a1a1a] sm:p-8">
           <div className="mb-6 flex items-start justify-between text-[10.5px] sm:text-[11px]">
             <span>Pekeliling Perbendaharaan Malaysia AM 2.4 Lampiran A</span>
             <span className="text-right font-extrabold">
