@@ -181,7 +181,7 @@ export default function QuotationModal({ booking, onClose }: { booking: Booking;
 
         <div className="mb-1.5 text-center text-xs font-bold">Lampiran 1</div>
         <div className="mb-4 text-center font-archivo text-sm font-extrabold">KADAR HARGA</div>
-        <div className="mb-3.5 text-xs">
+        <div className="print-avoid-break mb-3.5 text-xs">
           <div>
             <span className="font-bold">Program:</span> {booking.purpose}
           </div>
@@ -191,7 +191,7 @@ export default function QuotationModal({ booking, onClose }: { booking: Booking;
           </div>
         </div>
 
-        <table className="mb-3.5 w-full border-collapse text-xs">
+        <table className="print-avoid-break mb-3.5 w-full border-collapse text-xs">
           <thead>
             <tr>
               <th className="border-b border-[rgba(32,30,29,0.3)] py-1.5 text-left text-[10px] uppercase text-[rgba(32,30,29,0.55)]">Fasiliti</th>
@@ -219,7 +219,7 @@ export default function QuotationModal({ booking, onClose }: { booking: Booking;
           </tbody>
         </table>
 
-        <div className="flex flex-col gap-2.5 border border-[rgba(32,30,29,0.3)] bg-[#f3f2f2] p-3.5">
+        <div className="print-avoid-break flex flex-col gap-2.5 border border-[rgba(32,30,29,0.3)] bg-[#f3f2f2] p-3.5">
           <div className="flex justify-between text-[13px]">
             <span>Anggaran Asal</span>
             <span className="font-bold">{fmtRM(booking.revenue)}</span>
@@ -302,7 +302,7 @@ export default function QuotationModal({ booking, onClose }: { booking: Booking;
           BORANG SETUJU TERIMA
         </div>
         <div className="mb-4.5 text-center text-[11.5px] font-bold">Lampiran 3</div>
-        <div className="mb-3.5 text-xs">
+        <div className="print-avoid-break mb-3.5 text-xs">
           <div>
             <span className="font-bold">Program:</span> {booking.purpose}
           </div>

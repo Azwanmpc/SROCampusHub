@@ -130,7 +130,8 @@ input[type="checkbox"] {
     position: absolute;
     left: 0;
     top: 0;
-    width: 100%;
+    width: 100% !important;
+    max-width: none !important;
     max-height: none !important;
     overflow: visible !important;
     box-shadow: none !important;
@@ -141,5 +142,8 @@ input[type="checkbox"] {
   }
   .print-page-break:last-child {
     break-after: auto;
+  }
+  .print-avoid-break {
+    break-inside: avoid;
   }
 }
