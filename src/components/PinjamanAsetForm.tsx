@@ -85,7 +85,7 @@ export default function PinjamanAsetForm({ onDone }: { onDone?: () => void }) {
             required
             value={form.jawatan}
             onChange={(e) => setForm((f) => ({ ...f, jawatan: e.target.value }))}
-            className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] px-2.5 py-1.5 text-sm"
+            className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] px-2.5 py-1.5 text-sm"
           />
         </div>
         <div>
@@ -95,7 +95,7 @@ export default function PinjamanAsetForm({ onDone }: { onDone?: () => void }) {
             required
             value={form.bahagian}
             onChange={(e) => setForm((f) => ({ ...f, bahagian: e.target.value }))}
-            className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] px-2.5 py-1.5 text-sm"
+            className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] px-2.5 py-1.5 text-sm"
           />
         </div>
         <div>
@@ -105,7 +105,7 @@ export default function PinjamanAsetForm({ onDone }: { onDone?: () => void }) {
             required
             value={form.tempatDigunakan}
             onChange={(e) => setForm((f) => ({ ...f, tempatDigunakan: e.target.value }))}
-            className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] px-2.5 py-1.5 text-sm"
+            className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] px-2.5 py-1.5 text-sm"
           />
         </div>
         <div>
@@ -115,7 +115,7 @@ export default function PinjamanAsetForm({ onDone }: { onDone?: () => void }) {
             required
             value={form.tarikhDijangkaPulang}
             onChange={(e) => setForm((f) => ({ ...f, tarikhDijangkaPulang: e.target.value }))}
-            className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] px-2.5 py-1.5 text-sm"
+            className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] px-2.5 py-1.5 text-sm"
           />
         </div>
         <div className="sm:col-span-2">

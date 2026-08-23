@@ -119,7 +119,7 @@ export default function HasilSewaanKemaskini() {
               required
               value={form.tarikh}
               onChange={(e) => setForm((f) => ({ ...f, tarikh: e.target.value }))}
-              className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] px-2.5 py-1.5 text-sm"
+              className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] px-2.5 py-1.5 text-sm"
             />
           </div>
           <div>
@@ -130,7 +130,7 @@ export default function HasilSewaanKemaskini() {
               value={form.organisasi}
               onChange={(e) => setForm((f) => ({ ...f, organisasi: e.target.value }))}
               placeholder="cth: Jabatan XYZ"
-              className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] px-2.5 py-1.5 text-sm"
+              className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] px-2.5 py-1.5 text-sm"
             />
           </div>
           <div>
@@ -142,7 +142,7 @@ export default function HasilSewaanKemaskini() {
               value={form.lokasi}
               onChange={(e) => setForm((f) => ({ ...f, lokasi: e.target.value.toUpperCase() }))}
               placeholder="cth: ICC"
-              className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] px-2.5 py-1.5 text-sm"
+              className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] px-2.5 py-1.5 text-sm"
             />
             <datalist id="lokasi-options">
               {lokasiOptions.map((j) => (
@@ -157,7 +157,7 @@ export default function HasilSewaanKemaskini() {
               step="0.01"
               value={form.bilanganPeserta}
               onChange={(e) => setForm((f) => ({ ...f, bilanganPeserta: e.target.value }))}
-              className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] px-2.5 py-1.5 text-sm"
+              className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] px-2.5 py-1.5 text-sm"
             />
           </div>
           <div>
@@ -167,7 +167,7 @@ export default function HasilSewaanKemaskini() {
               step="0.01"
               value={form.hasilTerimaan}
               onChange={(e) => setForm((f) => ({ ...f, hasilTerimaan: e.target.value }))}
-              className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] px-2.5 py-1.5 text-sm"
+              className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] px-2.5 py-1.5 text-sm"
             />
           </div>
         </div>
@@ -191,7 +191,7 @@ export default function HasilSewaanKemaskini() {
         <select
           value={yearFilter}
           onChange={(e) => setYearFilter(e.target.value === "ALL" ? "ALL" : Number(e.target.value))}
-          className="border border-[rgba(var(--ink-rgb),0.3)] px-3 py-1.5 text-sm font-semibold"
+          className="border border-[rgba(var(--ink-rgb),0.3)] bg-[var(--white)] px-3 py-1.5 text-sm font-semibold"
         >
           <option value="ALL">Semua Tahun</option>
           {years.map((y) => (

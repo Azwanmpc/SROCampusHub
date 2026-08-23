@@ -139,7 +139,7 @@ export default function KosPenyelenggaraanKemaskini() {
     load();
   }
 
-  const fieldClass = "min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] px-2.5 py-1.5 text-sm";
+  const fieldClass = "min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] px-2.5 py-1.5 text-sm";
   const labelClass = "mb-1 block text-xs text-[rgba(var(--ink-rgb),0.65)]";
 
   return (
@@ -258,7 +258,7 @@ export default function KosPenyelenggaraanKemaskini() {
         <select
           value={yearFilter}
           onChange={(e) => setYearFilter(e.target.value === "ALL" ? "ALL" : Number(e.target.value))}
-          className="border border-[rgba(var(--ink-rgb),0.3)] px-3 py-1.5 text-sm font-semibold"
+          className="border border-[rgba(var(--ink-rgb),0.3)] bg-[var(--white)] px-3 py-1.5 text-sm font-semibold"
         >
           <option value="ALL">Semua Tahun</option>
           {years.map((y) => (

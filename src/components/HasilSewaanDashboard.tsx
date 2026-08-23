@@ -251,7 +251,7 @@ export default function HasilSewaanDashboard({ canEdit }: { canEdit: boolean }) 
       <div className="mb-5 flex flex-wrap items-center gap-5 border border-[rgba(var(--ink-rgb),0.2)] bg-[var(--white)] p-4">
         <div>
           <label className="mr-2 text-[13px] font-bold text-[rgba(var(--ink-rgb),0.6)]">Tahun:</label>
-          <select value={yearSel} onChange={(e) => setYearSel(Number(e.target.value))} className="border border-[rgba(var(--ink-rgb),0.3)] px-3 py-1.5 text-sm font-semibold">
+          <select value={yearSel} onChange={(e) => setYearSel(Number(e.target.value))} className="border border-[rgba(var(--ink-rgb),0.3)] bg-[var(--white)] px-3 py-1.5 text-sm font-semibold">
             {yearOptions.map((y) => (
               <option key={y} value={y}>
                 {y}
@@ -261,7 +261,7 @@ export default function HasilSewaanDashboard({ canEdit }: { canEdit: boolean }) 
         </div>
         <div>
           <label className="mr-2 text-[13px] font-bold text-[rgba(var(--ink-rgb),0.6)]">Bulan:</label>
-          <select value={monthSel} onChange={(e) => setMonthSel(e.target.value)} className="border border-[rgba(var(--ink-rgb),0.3)] px-3 py-1.5 text-sm font-semibold">
+          <select value={monthSel} onChange={(e) => setMonthSel(e.target.value)} className="border border-[rgba(var(--ink-rgb),0.3)] bg-[var(--white)] px-3 py-1.5 text-sm font-semibold">
             <option value="ALL">Semua Bulan</option>
             {allMonths.map((m) => (
               <option key={m} value={m}>
@@ -272,7 +272,7 @@ export default function HasilSewaanDashboard({ canEdit }: { canEdit: boolean }) 
         </div>
         <div>
           <label className="mr-2 text-[13px] font-bold text-[rgba(var(--ink-rgb),0.6)]">Jenis Sewaan / Kemudahan:</label>
-          <select value={jenisSel} onChange={(e) => setJenisSel(e.target.value)} className="border border-[rgba(var(--ink-rgb),0.3)] px-3 py-1.5 text-sm font-semibold">
+          <select value={jenisSel} onChange={(e) => setJenisSel(e.target.value)} className="border border-[rgba(var(--ink-rgb),0.3)] bg-[var(--white)] px-3 py-1.5 text-sm font-semibold">
             <option value="ALL">Semua Jenis Sewaan</option>
             {jenisList.map((j) => (
               <option key={j} value={j}>

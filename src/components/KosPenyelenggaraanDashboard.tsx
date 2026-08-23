@@ -200,7 +200,7 @@ export default function KosPenyelenggaraanDashboard({ canEdit }: { canEdit: bool
       <div className="mb-5 flex flex-wrap items-center gap-5 border border-[rgba(var(--ink-rgb),0.2)] bg-[var(--white)] p-4">
         <div>
           <label className="mr-2 text-[13px] font-bold text-[rgba(var(--ink-rgb),0.6)]">Tahun:</label>
-          <select value={yearSel} onChange={(e) => setYearSel(Number(e.target.value))} className="border border-[rgba(var(--ink-rgb),0.3)] px-3 py-1.5 text-sm font-semibold">
+          <select value={yearSel} onChange={(e) => setYearSel(Number(e.target.value))} className="border border-[rgba(var(--ink-rgb),0.3)] bg-[var(--white)] px-3 py-1.5 text-sm font-semibold">
             {years.map((y) => (
               <option key={y} value={y}>
                 {y}

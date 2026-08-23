@@ -116,7 +116,7 @@ export default function AsetKemaskini() {
               value={form.namaAset}
               onChange={(e) => setForm((f) => ({ ...f, namaAset: e.target.value.toUpperCase() }))}
               placeholder="cth: KERUSI MESYUARAT"
-              className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] px-2.5 py-1.5 text-sm"
+              className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] px-2.5 py-1.5 text-sm"
             />
           </div>
           <div>
@@ -126,7 +126,7 @@ export default function AsetKemaskini() {
               value={form.noPendaftaran}
               onChange={(e) => setForm((f) => ({ ...f, noPendaftaran: e.target.value }))}
               placeholder="cth: NPC/WS/44/2003"
-              className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] px-2.5 py-1.5 text-sm"
+              className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] px-2.5 py-1.5 text-sm"
             />
           </div>
           <div>
@@ -136,7 +136,7 @@ export default function AsetKemaskini() {
               value={form.tahun}
               onChange={(e) => setForm((f) => ({ ...f, tahun: e.target.value }))}
               placeholder="cth: 2024"
-              className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] px-2.5 py-1.5 text-sm"
+              className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] px-2.5 py-1.5 text-sm"
             />
           </div>
           <div>
@@ -144,7 +144,7 @@ export default function AsetKemaskini() {
             <select
               value={form.status}
               onChange={(e) => setForm((f) => ({ ...f, status: e.target.value }))}
-              className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] px-2.5 py-1.5 text-sm"
+              className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] px-2.5 py-1.5 text-sm"
             >
               <option value="BAIK">Baik</option>
               <option value="ROSAK">Rosak</option>
@@ -159,7 +159,7 @@ export default function AsetKemaskini() {
               value={form.lokasi}
               onChange={(e) => setForm((f) => ({ ...f, lokasi: e.target.value }))}
               placeholder="cth: Bilik Kaizen"
-              className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] px-2.5 py-1.5 text-sm"
+              className="min-h-9 w-full border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] px-2.5 py-1.5 text-sm"
             />
             <datalist id="lokasi-options">
               {lokasiOptions.map((l) => (
@@ -186,7 +186,7 @@ export default function AsetKemaskini() {
       <div className="mb-3 flex flex-wrap items-center gap-3">
         <div>
           <label className="mr-1.5 text-[13px] font-bold text-[rgba(var(--ink-rgb),0.6)]">Lokasi:</label>
-          <select value={lokasiFilter} onChange={(e) => setLokasiFilter(e.target.value)} className="border border-[rgba(var(--ink-rgb),0.3)] px-3 py-1.5 text-sm font-semibold">
+          <select value={lokasiFilter} onChange={(e) => setLokasiFilter(e.target.value)} className="border border-[rgba(var(--ink-rgb),0.3)] bg-[var(--white)] px-3 py-1.5 text-sm font-semibold">
             <option value="ALL">Semua Lokasi</option>
             {lokasiOptions.map((l) => (
               <option key={l} value={l}>
@@ -197,7 +197,7 @@ export default function AsetKemaskini() {
         </div>
         <div>
           <label className="mr-1.5 text-[13px] font-bold text-[rgba(var(--ink-rgb),0.6)]">Status:</label>
-          <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="border border-[rgba(var(--ink-rgb),0.3)] px-3 py-1.5 text-sm font-semibold">
+          <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="border border-[rgba(var(--ink-rgb),0.3)] bg-[var(--white)] px-3 py-1.5 text-sm font-semibold">
             <option value="ALL">Semua Status</option>
             <option value="BAIK">Baik</option>
             <option value="ROSAK">Rosak</option>
