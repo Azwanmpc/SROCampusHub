@@ -6,6 +6,7 @@ import { Chart, registerables } from "chart.js";
 import { WarningCircle } from "@phosphor-icons/react";
 import KewPa7Modal from "@/components/KewPa7Modal";
 import KewPa14Modal from "@/components/KewPa14Modal";
+import { getChartColors } from "@/lib/chartTheme";
 
 Chart.register(...registerables);
 
@@ -28,6 +29,7 @@ export default function AsetDashboard({ canEdit }: { canEdit: boolean }) {
   const donutRef = useRef<HTMLCanvasElement>(null);
   const barChart = useRef<any>(null);
   const donutChart = useRef<any>(null);
+  const [themeTick, setThemeTick] = useState(0);
 
   function load() {
     fetch("/api/aset")
@@ -36,6 +38,12 @@ export default function AsetDashboard({ canEdit }: { canEdit: boolean }) {
   }
 
   useEffect(load, []);
+
+  useEffect(() => {
+    const onThemeChange = () => setThemeTick((t) => t + 1);
+    window.addEventListener("sro-theme-change", onThemeChange);
+    return () => window.removeEventListener("sro-theme-change", onThemeChange);
+  }, []);
 
   const lokasiList = useMemo(() => {
     const set = new Set<string>();
@@ -70,6 +78,8 @@ export default function AsetDashboard({ canEdit }: { canEdit: boolean }) {
     if (barChart.current) barChart.current.destroy();
     if (donutChart.current) donutChart.current.destroy();
 
+    const { text: chartText, grid: chartGrid } = getChartColors();
+
     const topLokasi = Array.from(byLokasi.entries())
       .sort((a, b) => b[1].jumlah - a[1].jumlah)
       .slice(0, 10);
@@ -88,8 +98,11 @@ export default function AsetDashboard({ canEdit }: { canEdit: boolean }) {
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          plugins: { legend: { position: "top" } },
-          scales: { x: { stacked: true }, y: { stacked: true, ticks: { precision: 0 } } },
+          plugins: { legend: { position: "top", labels: { color: chartText } } },
+          scales: {
+            x: { stacked: true, ticks: { color: chartText }, grid: { color: chartGrid } },
+            y: { stacked: true, ticks: { color: chartText, precision: 0 }, grid: { color: chartGrid } },
+          },
         },
       });
     }
@@ -105,12 +118,12 @@ export default function AsetDashboard({ canEdit }: { canEdit: boolean }) {
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          plugins: { legend: { position: "bottom" } },
+          plugins: { legend: { position: "bottom", labels: { color: chartText } } },
         },
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [records]);
+  }, [records, themeTick]);
 
   if (!records) return <p className="text-sm text-[rgba(var(--ink-rgb),0.5)]">Memuatkan dashboard...</p>;
 

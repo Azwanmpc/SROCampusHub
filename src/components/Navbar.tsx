@@ -23,6 +23,7 @@ export default function Navbar({
     if (saved === "dark") {
       setDark(true);
       document.documentElement.setAttribute("data-theme", "dark");
+      window.dispatchEvent(new Event("sro-theme-change"));
     }
   }, []);
 
@@ -31,6 +32,7 @@ export default function Navbar({
     setDark(next);
     document.documentElement.setAttribute("data-theme", next ? "dark" : "light");
     localStorage.setItem("sro-theme", next ? "dark" : "light");
+    window.dispatchEvent(new Event("sro-theme-change"));
   }
 
   async function handleLogout() {

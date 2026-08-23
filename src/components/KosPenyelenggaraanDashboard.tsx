@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { Chart, registerables } from "chart.js";
 import { KOS_LOKASI_LABEL, KOS_JENIS_LABEL, KOS_KATEGORI_LABEL } from "@/lib/constants";
+import { getChartColors } from "@/lib/chartTheme";
 
 Chart.register(...registerables);
 
@@ -36,11 +37,18 @@ export default function KosPenyelenggaraanDashboard({ canEdit }: { canEdit: bool
   const monthlyChart = useRef<any>(null);
   const lokasiChart = useRef<any>(null);
   const kategoriChart = useRef<any>(null);
+  const [themeTick, setThemeTick] = useState(0);
 
   useEffect(() => {
     fetch("/api/kos-penyelenggaraan")
       .then((r) => r.json())
       .then(setRecords);
+  }, []);
+
+  useEffect(() => {
+    const onThemeChange = () => setThemeTick((t) => t + 1);
+    window.addEventListener("sro-theme-change", onThemeChange);
+    return () => window.removeEventListener("sro-theme-change", onThemeChange);
   }, []);
 
   const years = useMemo(() => {
@@ -88,6 +96,8 @@ export default function KosPenyelenggaraanDashboard({ canEdit }: { canEdit: bool
     if (lokasiChart.current) lokasiChart.current.destroy();
     if (kategoriChart.current) kategoriChart.current.destroy();
 
+    const { text: chartText, grid: chartGrid } = getChartColors();
+
     const ctxM = monthlyRef.current?.getContext("2d");
     if (ctxM) {
       monthlyChart.current = new Chart(ctxM, {
@@ -102,8 +112,14 @@ export default function KosPenyelenggaraanDashboard({ canEdit }: { canEdit: bool
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: (ctx: any) => ` ${ctx.dataset.label}: ${fmtRM(ctx.raw)}` } } },
-          scales: { x: { stacked: true }, y: { stacked: true, ticks: { callback: (v: any) => "RM " + Number(v).toLocaleString("en-US") } } },
+          plugins: {
+            legend: { position: "top", labels: { color: chartText } },
+            tooltip: { callbacks: { label: (ctx: any) => ` ${ctx.dataset.label}: ${fmtRM(ctx.raw)}` } },
+          },
+          scales: {
+            x: { stacked: true, ticks: { color: chartText }, grid: { color: chartGrid } },
+            y: { stacked: true, ticks: { color: chartText, callback: (v: any) => "RM " + Number(v).toLocaleString("en-US") }, grid: { color: chartGrid } },
+          },
         },
       });
     }
@@ -121,7 +137,7 @@ export default function KosPenyelenggaraanDashboard({ canEdit }: { canEdit: bool
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
-            legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 11 } } },
+            legend: { position: "bottom", labels: { color: chartText, boxWidth: 12, font: { size: 11 } } },
             tooltip: { callbacks: { label: (ctx: any) => ` ${ctx.label}: ${fmtRM(ctx.raw)}` } },
           },
         },
@@ -141,14 +157,14 @@ export default function KosPenyelenggaraanDashboard({ canEdit }: { canEdit: bool
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
-            legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 11 } } },
+            legend: { position: "bottom", labels: { color: chartText, boxWidth: 12, font: { size: 11 } } },
             tooltip: { callbacks: { label: (ctx: any) => ` ${ctx.label}: ${fmtRM(ctx.raw)}` } },
           },
         },
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [records, yearSel]);
+  }, [records, yearSel, themeTick]);
 
   if (!records) return <p className="text-sm text-[rgba(var(--ink-rgb),0.5)]">Memuatkan dashboard...</p>;
 

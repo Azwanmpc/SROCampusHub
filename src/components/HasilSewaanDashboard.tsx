@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { Chart, registerables } from "chart.js";
+import { getChartColors } from "@/lib/chartTheme";
 
 Chart.register(...registerables);
 
@@ -38,11 +39,18 @@ export default function HasilSewaanDashboard({ canEdit }: { canEdit: boolean }) 
   const donutRef = useRef<HTMLCanvasElement>(null);
   const barChart = useRef<any>(null);
   const donutChart = useRef<any>(null);
+  const [themeTick, setThemeTick] = useState(0);
 
   useEffect(() => {
     fetch("/api/hasil-sewaan")
       .then((r) => r.json())
       .then(setRecords);
+  }, []);
+
+  useEffect(() => {
+    const onThemeChange = () => setThemeTick((t) => t + 1);
+    window.addEventListener("sro-theme-change", onThemeChange);
+    return () => window.removeEventListener("sro-theme-change", onThemeChange);
   }, []);
 
   const years = useMemo<Record<string, Record<string, Record<string, Agg>>>>(() => {
@@ -121,6 +129,8 @@ export default function HasilSewaanDashboard({ canEdit }: { canEdit: boolean }) 
     if (barChart.current) barChart.current.destroy();
     if (donutChart.current) donutChart.current.destroy();
 
+    const { text: chartText, grid: chartGrid } = getChartColors();
+
     const ctxH = barRef.current?.getContext("2d");
     if (ctxH) {
       barChart.current = new Chart(ctxH, {
@@ -135,8 +145,14 @@ export default function HasilSewaanDashboard({ canEdit }: { canEdit: boolean }) 
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          plugins: { legend: { position: "top" }, tooltip: { callbacks: { label: (ctx: any) => ` ${ctx.dataset.label}: ${fmtRM(ctx.raw)}` } } },
-          scales: { y: { ticks: { callback: (v: any) => "RM " + Number(v).toLocaleString("en-US") } } },
+          plugins: {
+            legend: { position: "top", labels: { color: chartText } },
+            tooltip: { callbacks: { label: (ctx: any) => ` ${ctx.dataset.label}: ${fmtRM(ctx.raw)}` } },
+          },
+          scales: {
+            x: { ticks: { color: chartText }, grid: { color: chartGrid } },
+            y: { ticks: { color: chartText, callback: (v: any) => "RM " + Number(v).toLocaleString("en-US") }, grid: { color: chartGrid } },
+          },
         },
       });
     }
@@ -158,14 +174,14 @@ export default function HasilSewaanDashboard({ canEdit }: { canEdit: boolean }) 
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
-            legend: { position: "bottom", labels: { boxWidth: 12, font: { size: 11 } } },
+            legend: { position: "bottom", labels: { color: chartText, boxWidth: 12, font: { size: 11 } } },
             tooltip: { callbacks: { label: (ctx: any) => ` ${ctx.label}: ${fmtRM(ctx.raw)}` } },
           },
         },
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [records, monthSel, jenisSel, yearSel]);
+  }, [records, monthSel, jenisSel, yearSel, themeTick]);
 
   const rows = useMemo(() => {
     const out: { m: string; j: string; hPrev: number; hCurr: number; pPrev: number; pCurr: number; bPrev: number; bCurr: number }[] = [];
