@@ -130,13 +130,13 @@ export default function QuotationModal({ booking, onClose }: { booking: Booking;
         </button>
 
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/assets/mpc-letterhead.png" alt="Letterhead MPC" className="mb-4 w-full" />
-        <div className="mb-[22px] h-0.5 bg-[#201e1d]" />
+        <img src="/assets/mpc-letterhead.png" alt="Letterhead MPC" className="mb-3 w-full" />
+        <div className="mb-4 h-0.5 bg-[#201e1d]" />
 
-        <div className="mb-4 text-[12.5px]">
+        <div className="mb-3 text-[12.5px]">
           Bil (&nbsp;&nbsp;){noSebutharga} &nbsp;&nbsp;&nbsp; {tarikhSebutharga}
         </div>
-        <div className="mb-4 text-[12.5px]">
+        <div className="mb-3 text-[12.5px]">
           {booking.organisasi || booking.sebutNama || booking.user.name}
           <br />
           Tel: {booking.sebutTel || "—"}
@@ -154,22 +154,21 @@ export default function QuotationModal({ booking, onClose }: { booking: Booking;
           Sila sahkan tempahan Tuan dengan menandatangani dan mengembalikan surat setuju (Lampiran 3) selewat-lewatnya 7 hari dari
           tarikh surat ini.
         </div>
-        <div className="mb-5 text-[12.5px]">
+        <div className="mb-4 text-[12.5px]">
           Perbadanan Produktiviti Malaysia (MPC) Pejabat Wilayah Selatan mengalu-alukan kedatangan pihak Tuan bersama
           peserta-peserta program ke kompleks kami. Kami berharap agar pihak Tuan berpuas hati dengan perkhidmatan yang kami
           berikan.
         </div>
-        <div className="mb-6.5 text-[12.5px]">Sekian, terima kasih.</div>
+        <div className="mb-4 text-[12.5px]">Sekian, terima kasih.</div>
 
-        <div className="mb-6.5 text-[11.5px] font-bold leading-[1.6]">
+        <div className="mb-4 text-[11.5px] font-bold leading-[1.6]">
           &ldquo;BERKHIDMAT UNTUK NEGARA&rdquo;
           <br />
           &ldquo;MEMACU PRODUKTIVITI NEGARA&rdquo;
         </div>
 
-        <div className="mb-6.5 text-[12.5px]">
+        <div className="mb-4 text-[12.5px]">
           Saya yang menurut perintah,
-          <br />
           <br />
           <span className="font-extrabold">Mohd Hykal Mohd Halim</span>
           <br />
@@ -178,7 +177,7 @@ export default function QuotationModal({ booking, onClose }: { booking: Booking;
           Perbadanan Produktiviti Malaysia (MPC) Wilayah Selatan
         </div>
 
-        <div className="mb-6.5 text-[12.5px]">S.k. Fail Timbul</div>
+        <div className="mb-4 text-[12.5px]">S.k. Fail Timbul</div>
 
         <div className="mb-1.5 text-center text-xs font-bold" style={{ breakBefore: "page" }}>
           Lampiran 1
