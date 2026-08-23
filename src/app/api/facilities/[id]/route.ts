@@ -4,7 +4,7 @@ import { getSession } from "@/lib/auth";
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const session = await getSession();
-  if (!session || (session.role !== "SUPERADMIN" && session.role !== "ADMIN" && session.role !== "STAFF_MPC")) {
+  if (!session || (session.role !== "SUPERADMIN" && session.role !== "ADMIN")) {
     return NextResponse.json({ error: "Tiada kebenaran" }, { status: 403 });
   }
   const { id } = await params;

@@ -4,7 +4,7 @@ import FacilityCard from "@/components/FacilityCard";
 
 export default async function FasilitiPage() {
   const session = await getSession();
-  const isStaff = session?.role === "SUPERADMIN" || session?.role === "ADMIN" || session?.role === "STAFF_MPC";
+  const isStaff = session?.role === "SUPERADMIN" || session?.role === "ADMIN";
   const facilities = await prisma.facility.findMany({ orderBy: { name: "asc" } });
 
   return (
@@ -37,7 +37,6 @@ export default async function FasilitiPage() {
             <div><strong>Surau Al-Firdaus</strong> — Ruang solat, kapasiti 100 jemaah</div>
             <div><strong>Kemudahan Parking</strong> — 117 lot tersedia</div>
             <div><strong>Kemudahan Riadah</strong> — Ruang aktiviti luar/gelanggang</div>
-            <div><strong>Khidmat Katering</strong> — Wajib guna katering berdaftar MPC; tempahan melalui pihak MPC</div>
           </div>
         </div>
         <div className="bg-white p-[18px]">
