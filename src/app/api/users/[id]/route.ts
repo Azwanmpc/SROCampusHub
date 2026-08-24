@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { getSession } from "@/lib/auth";
+import { getSession, hashPassword } from "@/lib/auth";
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const session = await getSession();
@@ -9,12 +9,21 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   }
   const { id } = await params;
   const body = await req.json();
+
+  if (body.password !== undefined) {
+    if (typeof body.password !== "string" || body.password.length < 6) {
+      return NextResponse.json({ error: "Kata laluan sekurang-kurangnya 6 aksara" }, { status: 400 });
+    }
+  }
+  const passwordHash = body.password ? await hashPassword(body.password) : undefined;
+
   const updated = await prisma.user.update({
     where: { id },
     data: {
       ...(body.role !== undefined ? { role: body.role } : {}),
       ...(body.active !== undefined ? { active: body.active } : {}),
       ...(body.jawatan !== undefined ? { jawatan: body.jawatan?.trim() || null } : {}),
+      ...(passwordHash ? { passwordHash } : {}),
     },
     select: {
       id: true,

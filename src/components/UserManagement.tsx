@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Trash } from "@phosphor-icons/react";
+import { Trash, Key } from "@phosphor-icons/react";
 import { ROLE_LABEL } from "@/lib/constants";
 
 type User = {
@@ -40,6 +40,12 @@ export default function UserManagement({ users }: { users: User[] }) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [deleteError, setDeleteError] = useState("");
+  const [resetUserId, setResetUserId] = useState<string | null>(null);
+  const [resetPassword, setResetPassword] = useState("");
+  const [resetConfirm, setResetConfirm] = useState("");
+  const [resetError, setResetError] = useState("");
+  const [resetLoading, setResetLoading] = useState(false);
+  const [resetSuccessId, setResetSuccessId] = useState<string | null>(null);
 
   const fieldClass = "border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] px-2.5 py-1.5 text-sm outline-none";
 
@@ -50,6 +56,45 @@ export default function UserManagement({ users }: { users: User[] }) {
       body: JSON.stringify(patch),
     });
     router.refresh();
+  }
+
+  function toggleReset(id: string) {
+    setResetUserId((cur) => (cur === id ? null : id));
+    setResetPassword("");
+    setResetConfirm("");
+    setResetError("");
+  }
+
+  async function handleResetPassword(id: string) {
+    setResetError("");
+    if (resetPassword.length < 6) {
+      setResetError("Kata laluan sekurang-kurangnya 6 aksara");
+      return;
+    }
+    if (resetPassword !== resetConfirm) {
+      setResetError("Kata laluan tidak sepadan");
+      return;
+    }
+    setResetLoading(true);
+    try {
+      const res = await fetch(`/api/users/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: resetPassword }),
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        setResetError(data.error ?? "Gagal set semula kata laluan");
+        return;
+      }
+      setResetUserId(null);
+      setResetPassword("");
+      setResetConfirm("");
+      setResetSuccessId(id);
+      setTimeout(() => setResetSuccessId((cur) => (cur === id ? null : cur)), 3000);
+    } finally {
+      setResetLoading(false);
+    }
   }
 
   async function handleDelete(u: User) {
@@ -93,7 +138,7 @@ export default function UserManagement({ users }: { users: User[] }) {
         <div className="font-archivo text-sm font-extrabold">Senarai Pengguna ({users.length})</div>
         <button
           onClick={() => setShowForm((s) => !s)}
-          className="bg-[#6d28d9] px-3.5 py-2 font-archivo text-xs font-extrabold text-[#f3f2f2]"
+          className="bg-[var(--accent)] px-3.5 py-2 font-archivo text-xs font-extrabold text-[#f3f2f2]"
         >
           {showForm ? "Tutup" : "+ Tambah Pengguna"}
         </button>
@@ -118,7 +163,7 @@ export default function UserManagement({ users }: { users: User[] }) {
           <button
             type="submit"
             disabled={loading}
-            className="col-span-2 bg-[#6d28d9] py-2.5 font-archivo text-sm font-extrabold text-[#f3f2f2] disabled:opacity-60"
+            className="col-span-2 bg-[var(--accent)] py-2.5 font-archivo text-sm font-extrabold text-[#f3f2f2] disabled:opacity-60"
           >
             {loading ? "Mencipta..." : "Cipta Pengguna"}
           </button>
@@ -129,49 +174,96 @@ export default function UserManagement({ users }: { users: User[] }) {
 
       <div className="border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)]">
         {users.map((u) => (
-          <div key={u.id} className="flex flex-wrap items-center gap-3.5 border-b border-[rgba(var(--ink-rgb),0.2)] p-3.5 last:border-0">
-            <div className="flex h-[38px] w-[38px] flex-none items-center justify-center bg-[#201e1d] text-xs font-bold text-[#f3f2f2]">
-              {initials(u.name)}
+          <div key={u.id} className="border-b border-[rgba(var(--ink-rgb),0.2)] last:border-0">
+            <div className="flex flex-wrap items-center gap-3.5 p-3.5">
+              <div className="flex h-[38px] w-[38px] flex-none items-center justify-center bg-[#201e1d] text-xs font-bold text-[#f3f2f2]">
+                {initials(u.name)}
+              </div>
+              <div className="min-w-[150px] flex-1">
+                <div className="text-[13.5px] font-bold">{u.name}</div>
+                <div className="text-xs text-[rgba(var(--ink-rgb),0.6)]">{u.email}</div>
+              </div>
+              <input
+                key={u.jawatan ?? ""}
+                defaultValue={u.jawatan ?? ""}
+                placeholder="Jawatan"
+                onBlur={(e) => {
+                  if (e.target.value !== (u.jawatan ?? "")) updateUser(u.id, { jawatan: e.target.value });
+                }}
+                className="w-[140px] border border-[rgba(var(--ink-rgb),0.3)] bg-[var(--white)] px-2 py-1 text-xs outline-none"
+              />
+              <select
+                value={u.role}
+                onChange={(e) => updateUser(u.id, { role: e.target.value })}
+                className="border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] px-2 py-1 text-xs font-bold"
+              >
+                {Object.entries(ROLE_LABEL).map(([key, label]) => (
+                  <option key={key} value={key}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+              <button
+                onClick={() => updateUser(u.id, { active: !u.active })}
+                className={`px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.03em] ${
+                  u.active ? "bg-[var(--success-bg)] text-[var(--success)]" : "bg-[#eae7e7] text-[#605d5d]"
+                }`}
+              >
+                {u.active ? "Aktif" : "Tidak Aktif"}
+              </button>
+              <button
+                onClick={() => toggleReset(u.id)}
+                title="Set semula kata laluan"
+                className="flex items-center gap-1 border border-[var(--accent)] px-2.5 py-1 text-[11px] font-bold text-[var(--accent)] hover:bg-[var(--accent)] hover:text-white"
+              >
+                <Key weight="duotone" size={13} /> Reset Kata Laluan
+              </button>
+              <button
+                onClick={() => handleDelete(u)}
+                title="Padam akaun"
+                className="flex items-center gap-1 border border-[#7c1405] px-2.5 py-1 text-[11px] font-bold text-[var(--danger)] hover:bg-[var(--danger-bg)]"
+              >
+                <Trash weight="duotone" size={13} /> Padam
+              </button>
+              {resetSuccessId === u.id && (
+                <div className="w-full bg-[var(--success-bg)] px-3 py-1.5 text-xs font-bold text-[var(--success)]">
+                  Kata laluan {u.name} berjaya ditetapkan semula.
+                </div>
+              )}
             </div>
-            <div className="min-w-[150px] flex-1">
-              <div className="text-[13.5px] font-bold">{u.name}</div>
-              <div className="text-xs text-[rgba(var(--ink-rgb),0.6)]">{u.email}</div>
-            </div>
-            <input
-              key={u.jawatan ?? ""}
-              defaultValue={u.jawatan ?? ""}
-              placeholder="Jawatan"
-              onBlur={(e) => {
-                if (e.target.value !== (u.jawatan ?? "")) updateUser(u.id, { jawatan: e.target.value });
-              }}
-              className="w-[140px] border border-[rgba(var(--ink-rgb),0.3)] bg-[var(--white)] px-2 py-1 text-xs outline-none"
-            />
-            <select
-              value={u.role}
-              onChange={(e) => updateUser(u.id, { role: e.target.value })}
-              className="border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] px-2 py-1 text-xs font-bold"
-            >
-              {Object.entries(ROLE_LABEL).map(([key, label]) => (
-                <option key={key} value={key}>
-                  {label}
-                </option>
-              ))}
-            </select>
-            <button
-              onClick={() => updateUser(u.id, { active: !u.active })}
-              className={`px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.03em] ${
-                u.active ? "bg-[var(--success-bg)] text-[var(--success)]" : "bg-[#eae7e7] text-[#605d5d]"
-              }`}
-            >
-              {u.active ? "Aktif" : "Tidak Aktif"}
-            </button>
-            <button
-              onClick={() => handleDelete(u)}
-              title="Padam akaun"
-              className="flex items-center gap-1 border border-[#7c1405] px-2.5 py-1 text-[11px] font-bold text-[var(--danger)] hover:bg-[var(--danger-bg)]"
-            >
-              <Trash weight="duotone" size={13} /> Padam
-            </button>
+
+            {resetUserId === u.id && (
+              <div className="border-t border-[rgba(var(--ink-rgb),0.2)] bg-[var(--surface)] p-3.5">
+                <div className="mb-2.5 text-xs font-bold">Set semula kata laluan untuk {u.name}</div>
+                <div className="flex flex-wrap items-start gap-2.5">
+                  <input
+                    type="password"
+                    placeholder="Kata Laluan Baharu"
+                    value={resetPassword}
+                    onChange={(e) => setResetPassword(e.target.value)}
+                    className={fieldClass}
+                  />
+                  <input
+                    type="password"
+                    placeholder="Sahkan Kata Laluan"
+                    value={resetConfirm}
+                    onChange={(e) => setResetConfirm(e.target.value)}
+                    className={fieldClass}
+                  />
+                  <button
+                    onClick={() => handleResetPassword(u.id)}
+                    disabled={resetLoading}
+                    className="bg-[var(--accent)] px-3.5 py-1.5 font-archivo text-xs font-extrabold text-white disabled:opacity-60"
+                  >
+                    {resetLoading ? "Menyimpan..." : "Simpan"}
+                  </button>
+                  <button onClick={() => toggleReset(u.id)} className="border border-[rgba(var(--ink-rgb),0.4)] px-3.5 py-1.5 font-archivo text-xs font-extrabold text-[var(--ink)]">
+                    Batal
+                  </button>
+                </div>
+                {resetError && <div className="mt-2.5 bg-[var(--danger-bg)] px-3 py-1.5 text-xs text-[var(--danger)]">{resetError}</div>}
+              </div>
+            )}
           </div>
         ))}
       </div>
