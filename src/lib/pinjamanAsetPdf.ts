@@ -36,6 +36,10 @@ export function generateKewPa9(record: PinjamanAset) {
   const penerimaNamaFixed = isDiterima ? PENGELUAR_NAMA_TETAP : "";
   const penerimaJawatanFixed = isDiterima ? PENGELUAR_JAWATAN_TETAP : "";
 
+  const isPulang = !!record.tarikhDipulangkan;
+  const pemulangNama = isPulang ? record.pemohon.name : "";
+  const pemulangJawatan = isPulang ? record.jawatan : "";
+
   const doc = new jsPDF();
   let y = 14;
 
@@ -146,7 +150,7 @@ export function generateKewPa9(record: PinjamanAset) {
   const sigs = [
     { title: "(Tandatangan Peminjam)", nama: record.pemohon.name, jawatan: record.jawatan, jawatanLabel: "Jawatan", tarikh: fmtTarikh(record.createdAt) },
     { title: "(Tandatangan Pelulus)", nama: pelulusNamaFixed, jawatan: pelulusJawatanFixed, jawatanLabel: "Pelulus (Pegawai Aset)", tarikh: fmtTarikh(record.tarikhLulus) },
-    { title: "(Tandatangan Pemulang)", nama: record.pemulangNama ?? "", jawatan: record.pemulangJawatan ?? "", jawatanLabel: "Jawatan", tarikh: fmtTarikh(record.tarikhDipulangkan) },
+    { title: "(Tandatangan Pemulang)", nama: pemulangNama, jawatan: pemulangJawatan, jawatanLabel: "Jawatan", tarikh: fmtTarikh(record.tarikhDipulangkan) },
     { title: "(Tandatangan Penerima)", nama: penerimaNamaFixed, jawatan: penerimaJawatanFixed, jawatanLabel: "Jawatan", tarikh: fmtTarikh(record.tarikhDiterima) },
   ];
 
