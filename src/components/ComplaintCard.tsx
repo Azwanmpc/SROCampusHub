@@ -40,10 +40,10 @@ const STATUS_ICON: Record<string, typeof WarningCircle> = {
 };
 
 const STATUS_ICON_COLOR: Record<string, string> = {
-  BARU: "#4a72a8",
-  DALAM_TINDAKAN: "#4a3800",
-  MENUNGGU_PENGESAHAN: "#a34e00",
-  SELESAI: "#003d0f",
+  BARU: "var(--info)",
+  DALAM_TINDAKAN: "var(--warning)",
+  MENUNGGU_PENGESAHAN: "var(--danger)",
+  SELESAI: "var(--success)",
 };
 
 export default function ComplaintCard({
