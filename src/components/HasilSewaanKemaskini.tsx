@@ -175,7 +175,7 @@ export default function HasilSewaanKemaskini() {
         {error && <div className="mt-3 bg-[var(--danger-bg)] px-3 py-2 text-sm text-[var(--danger)]">{error}</div>}
 
         <div className="mt-4 flex gap-2.5">
-          <button type="submit" disabled={saving} className="bg-[#6d28d9] px-5 py-2.5 font-archivo text-[13px] font-extrabold text-white hover:bg-[#4c1d95] disabled:opacity-60">
+          <button type="submit" disabled={saving} className="bg-[var(--accent)] px-5 py-2.5 font-archivo text-[13px] font-extrabold text-white hover:bg-[var(--accent-dark)] disabled:opacity-60">
             {saving ? "Menyimpan..." : editingId ? "Kemaskini" : "Simpan Rekod"}
           </button>
           {editingId && (
@@ -226,7 +226,7 @@ export default function HasilSewaanKemaskini() {
                   <td className="border-b border-[var(--surface)] px-3 py-2 text-right">{r.bilanganPeserta.toLocaleString("en-US")}</td>
                   <td className="border-b border-[var(--surface)] px-3 py-2 text-right">{r.hasilTerimaan.toLocaleString("en-US")}</td>
                   <td className="border-b border-[var(--surface)] px-3 py-2">
-                    <button onClick={() => startEdit(r)} className="mr-3 font-bold text-[#6d28d9] hover:underline">
+                    <button onClick={() => startEdit(r)} className="mr-3 font-bold text-[var(--accent)] hover:underline">
                       Edit
                     </button>
                     <button onClick={() => handleDelete(r.id)} className="font-bold text-[var(--danger)] hover:underline">

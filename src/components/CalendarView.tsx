@@ -136,7 +136,7 @@ export default function CalendarView({ facilities, defaultFacilityId }: { facili
                 setSelectedDate(undefined);
                 setShowForm(true);
               }}
-              className="flex items-center gap-1.5 bg-[#6d28d9] px-4 py-2 font-archivo text-[13.5px] font-extrabold text-[#f3f2f2]"
+              className="flex items-center gap-1.5 bg-[var(--accent)] px-4 py-2 font-archivo text-[13.5px] font-extrabold text-[#f3f2f2]"
             >
               <PlusCircle weight="duotone" /> Tempah Fasiliti
             </button>
@@ -164,7 +164,7 @@ export default function CalendarView({ facilities, defaultFacilityId }: { facili
                       setShowForm(true);
                     }}
                     className={`min-h-[80px] p-1.5 text-left align-top sm:min-h-[104px] sm:p-2 ${dayBookings.length ? "bg-[var(--white)]" : "bg-[var(--surface)]"} ${
-                      isToday ? "outline outline-2 -outline-offset-2 outline-[#6d28d9]" : ""
+                      isToday ? "outline outline-2 -outline-offset-2 outline-[var(--accent)]" : ""
                     }`}
                   >
                     <div className="mb-1 text-xs font-bold">{day.getDate()}</div>

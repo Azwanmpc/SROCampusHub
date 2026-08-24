@@ -88,7 +88,7 @@ export default function ComplaintList({
                 key={f.key}
                 onClick={() => setFilter(f.key)}
                 className={`flex-none whitespace-nowrap border-r border-[rgba(var(--ink-rgb),0.4)] px-4 py-2 text-[12.5px] font-bold last:border-r-0 ${
-                  filter === f.key ? "bg-[#6d28d9] text-[#f3f2f2]" : "bg-[var(--surface)] text-[var(--ink)]"
+                  filter === f.key ? "bg-[var(--accent)] text-[#f3f2f2]" : "bg-[var(--surface)] text-[var(--ink)]"
                 }`}
               >
                 {f.label}

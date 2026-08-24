@@ -14,7 +14,7 @@ export default async function AduanAwamPage() {
           </div>
           <div className="font-archivo text-[17px] font-extrabold leading-none tracking-[-0.01em]">CampusHub</div>
         </Link>
-        <Link href="/" className="text-[13px] font-bold text-[#6d28d9] hover:underline">
+        <Link href="/" className="text-[13px] font-bold text-[var(--accent)] hover:underline">
           Kembali ke Laman Utama
         </Link>
       </div>

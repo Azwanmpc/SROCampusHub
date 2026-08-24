@@ -181,7 +181,7 @@ export default function ComplaintForm({
       <button
         type="submit"
         disabled={loading}
-        className="bg-[#6d28d9] py-3 text-left font-archivo text-sm font-extrabold text-[#f3f2f2] hover:bg-[#4c1d95] disabled:opacity-60"
+        className="bg-[var(--accent)] py-3 text-left font-archivo text-sm font-extrabold text-[#f3f2f2] hover:bg-[var(--accent-dark)] disabled:opacity-60"
       >
         {loading ? "Menghantar..." : "Hantar Aduan"}
       </button>

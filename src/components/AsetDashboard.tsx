@@ -133,7 +133,7 @@ export default function AsetDashboard({ canEdit }: { canEdit: boolean }) {
         <div className="mb-4 flex justify-end">
           <Link
             href="/aset/kemaskini"
-            className="bg-[#6d28d9] px-4 py-2 font-archivo text-[13px] font-extrabold text-white hover:bg-[#4c1d95]"
+            className="bg-[var(--accent)] px-4 py-2 font-archivo text-[13px] font-extrabold text-white hover:bg-[var(--accent-dark)]"
           >
             Kemaskini Data
           </Link>

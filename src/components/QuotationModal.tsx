@@ -354,7 +354,7 @@ export default function QuotationModal({ booking, onClose }: { booking: Booking;
           </button>
           <button
             onClick={handleEmail}
-            className="flex flex-1 items-center justify-center gap-2 bg-[#6d28d9] py-3 font-archivo text-[13.5px] font-extrabold text-[#f3f2f2]"
+            className="flex flex-1 items-center justify-center gap-2 bg-[var(--accent)] py-3 font-archivo text-[13.5px] font-extrabold text-[#f3f2f2]"
           >
             <EnvelopeSimple weight="duotone" /> Hantar Emel
           </button>

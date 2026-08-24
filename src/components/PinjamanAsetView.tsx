@@ -45,7 +45,7 @@ export default function PinjamanAsetView({ userId, role }: { userId: string; rol
               key={f.key}
               onClick={() => setFilter(f.key)}
               className={`flex-none whitespace-nowrap border-r border-[rgba(var(--ink-rgb),0.4)] px-4 py-2 text-[12.5px] font-bold last:border-r-0 ${
-                filter === f.key ? "bg-[#6d28d9] text-[#f3f2f2]" : "bg-[var(--surface)] text-[var(--ink)]"
+                filter === f.key ? "bg-[var(--accent)] text-[#f3f2f2]" : "bg-[var(--surface)] text-[var(--ink)]"
               }`}
             >
               {f.label}
@@ -71,7 +71,7 @@ export default function PinjamanAsetView({ userId, role }: { userId: string; rol
       <div className="mb-4 flex justify-end">
         <button
           onClick={() => setShowForm((v) => !v)}
-          className="flex items-center gap-1.5 bg-[#6d28d9] px-4 py-2 font-archivo text-[13px] font-extrabold text-white hover:bg-[#4c1d95]"
+          className="flex items-center gap-1.5 bg-[var(--accent)] px-4 py-2 font-archivo text-[13px] font-extrabold text-white hover:bg-[var(--accent-dark)]"
         >
           <Plus weight="bold" /> {showForm ? "Tutup Borang" : "Borang Pinjaman Baharu"}
         </button>

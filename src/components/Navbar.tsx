@@ -58,7 +58,7 @@ export default function Navbar({
         >
           <List weight="bold" size={18} />
         </button>
-        <div className="flex h-8 w-8 flex-none items-center justify-center bg-[#6d28d9] font-archivo text-xs font-extrabold text-[#f3f2f2]">
+        <div className="flex h-8 w-8 flex-none items-center justify-center bg-[var(--accent)] font-archivo text-xs font-extrabold text-[#f3f2f2]">
           SRO
         </div>
         <div className="font-archivo text-[17px] font-extrabold leading-none tracking-[-0.01em]">CampusHub</div>
@@ -94,7 +94,7 @@ export default function Navbar({
               </div>
               <button
                 onClick={handleLogout}
-                className="flex w-full items-center gap-2 px-3.5 py-2.5 text-left text-[13.5px] font-bold text-[#6d28d9]"
+                className="flex w-full items-center gap-2 px-3.5 py-2.5 text-left text-[13.5px] font-bold text-[var(--accent)]"
               >
                 <SignOut weight="duotone" />
                 Log Keluar

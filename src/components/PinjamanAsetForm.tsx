@@ -186,7 +186,7 @@ export default function PinjamanAsetForm({ onDone }: { onDone?: () => void }) {
       <button
         type="submit"
         disabled={saving}
-        className="bg-[#6d28d9] px-5 py-2.5 font-archivo text-[13px] font-extrabold text-white hover:bg-[#4c1d95] disabled:opacity-60"
+        className="bg-[var(--accent)] px-5 py-2.5 font-archivo text-[13px] font-extrabold text-white hover:bg-[var(--accent-dark)] disabled:opacity-60"
       >
         {saving ? "Menghantar..." : "Hantar Permohonan"}
       </button>

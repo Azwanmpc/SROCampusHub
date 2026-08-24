@@ -201,7 +201,7 @@ export default function FacilityEditModal({
           <button
             onClick={handleSave}
             disabled={saving || uploading}
-            className="bg-[#6d28d9] px-4 py-2 text-[13px] font-extrabold text-white hover:bg-[#4c1d95] disabled:opacity-60"
+            className="bg-[var(--accent)] px-4 py-2 text-[13px] font-extrabold text-white hover:bg-[var(--accent-dark)] disabled:opacity-60"
           >
             {saving ? "Menyimpan..." : "Simpan"}
           </button>

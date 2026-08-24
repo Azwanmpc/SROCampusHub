@@ -65,7 +65,7 @@ export default function PinjamanAsetCard({
   return (
     <div className="bg-[var(--white)] p-4">
       <div className="flex flex-wrap items-start gap-3.5">
-        <Package weight="duotone" size={22} className="flex-none text-[#6d28d9]" />
+        <Package weight="duotone" size={22} className="flex-none text-[var(--accent)]" />
         <div className="min-w-[220px] flex-1">
           <div className="text-[14.5px] font-bold">{record.pemohon.name}</div>
           <div className="mt-0.5 text-[12.5px] text-[rgba(var(--ink-rgb),0.6)]">
@@ -120,7 +120,7 @@ export default function PinjamanAsetCard({
           <button
             onClick={() => callAction("TANDA_DIPULANGKAN")}
             disabled={loading}
-            className="flex items-center gap-1.5 bg-[#6d28d9] px-3.5 py-2 font-archivo text-[12.5px] font-extrabold text-[#f3f2f2] disabled:opacity-60"
+            className="flex items-center gap-1.5 bg-[var(--accent)] px-3.5 py-2 font-archivo text-[12.5px] font-extrabold text-[#f3f2f2] disabled:opacity-60"
           >
             <ArrowBendUpLeft weight="duotone" /> Tandakan Dipulangkan
           </button>

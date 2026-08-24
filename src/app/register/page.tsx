@@ -51,7 +51,7 @@ export default function RegisterPage() {
     <div className="flex min-h-screen items-center justify-center bg-[#201e1d] p-4 sm:p-6">
       <div className="w-full max-w-[420px] bg-[#f3f2f2] p-6 px-5 sm:p-10 sm:px-[34px]">
         <div className="mb-2 flex items-center gap-2.5">
-          <div className="flex h-[38px] w-[38px] flex-none items-center justify-center bg-[#6d28d9] font-archivo text-sm font-extrabold text-[#f3f2f2]">
+          <div className="flex h-[38px] w-[38px] flex-none items-center justify-center bg-[var(--accent)] font-archivo text-sm font-extrabold text-[#f3f2f2]">
             SRO
           </div>
           <div className="font-archivo text-[13px] font-extrabold leading-[1.3] tracking-[-0.005em]">
@@ -69,7 +69,7 @@ export default function RegisterPage() {
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
               <label
                 className={`flex cursor-pointer items-start gap-2 border p-2.5 text-xs ${
-                  form.role === "PEMOHON" ? "border-[#6d28d9] bg-white" : "border-[rgba(32,30,29,0.3)]"
+                  form.role === "PEMOHON" ? "border-[var(--accent)] bg-white" : "border-[rgba(32,30,29,0.3)]"
                 }`}
               >
                 <input type="radio" name="role" checked={form.role === "PEMOHON"} onChange={() => update("role", "PEMOHON")} className="mt-0.5" />
@@ -144,25 +144,25 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={loading}
-            className="mt-1.5 bg-[#6d28d9] py-[11px] text-left font-archivo text-sm font-extrabold text-[#f3f2f2] hover:bg-[#4c1d95] disabled:opacity-60"
+            className="mt-1.5 bg-[var(--accent)] py-[11px] text-left font-archivo text-sm font-extrabold text-[#f3f2f2] hover:bg-[var(--accent-dark)] disabled:opacity-60"
           >
             {loading ? "Mendaftar..." : "Daftar"}
           </button>
 
           <div className="text-[13px] text-[rgba(32,30,29,0.7)]">
             Sudah ada akaun?{" "}
-            <Link href="/login" className="font-bold text-[#6d28d9] hover:underline">
+            <Link href="/login" className="font-bold text-[var(--accent)] hover:underline">
               Log Masuk
             </Link>
           </div>
           <div className="text-[13px] text-[rgba(32,30,29,0.7)]">
             Nak buat aduan kerosakan sahaja?{" "}
-            <Link href="/aduan-awam" className="font-bold text-[#6d28d9] hover:underline">
+            <Link href="/aduan-awam" className="font-bold text-[var(--accent)] hover:underline">
               Tiada perlu daftar
             </Link>
           </div>
           <div className="text-[13px] text-[rgba(32,30,29,0.7)]">
-            <Link href="/" className="font-bold text-[#6d28d9] hover:underline">
+            <Link href="/" className="font-bold text-[var(--accent)] hover:underline">
               Kembali ke Laman Utama
             </Link>
           </div>

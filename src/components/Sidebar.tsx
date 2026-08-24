@@ -127,7 +127,7 @@ export default function Sidebar({
                       href={item.href}
                       onClick={onClose}
                       className={`flex items-center gap-2.5 px-[18px] py-2.5 text-[13.5px] font-bold ${
-                        active ? "bg-[var(--surface)] text-[#6d28d9]" : "text-[var(--ink)] hover:bg-[var(--surface)]"
+                        active ? "bg-[var(--surface)] text-[var(--accent)]" : "text-[var(--ink)] hover:bg-[var(--surface)]"
                       }`}
                     >
                       <Icon weight="duotone" size={18} className="flex-none" />
@@ -147,7 +147,7 @@ export default function Sidebar({
           </div>
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2.5 py-3 text-[13.5px] font-bold text-[#6d28d9]"
+            className="flex items-center gap-2.5 py-3 text-[13.5px] font-bold text-[var(--accent)]"
           >
             <SignOut weight="duotone" size={18} />
             <span>Log Keluar</span>

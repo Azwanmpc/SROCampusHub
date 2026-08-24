@@ -264,14 +264,14 @@ export default function BookingForm({
           <button
             type="button"
             onClick={() => setRateType("HALF")}
-            className={`flex-1 border py-2 text-xs font-bold ${rateType === "HALF" ? "border-[#6d28d9] bg-[#6d28d9] text-white" : "border-[rgba(var(--ink-rgb),0.3)] bg-[var(--white)]"}`}
+            className={`flex-1 border py-2 text-xs font-bold ${rateType === "HALF" ? "border-[var(--accent)] bg-[var(--accent)] text-white" : "border-[rgba(var(--ink-rgb),0.3)] bg-[var(--white)]"}`}
           >
             Separuh Hari ({fmtRM(selectedFacility.halfDayRate)})
           </button>
           <button
             type="button"
             onClick={() => setRateType("FULL")}
-            className={`flex-1 border py-2 text-xs font-bold ${rateType === "FULL" ? "border-[#6d28d9] bg-[#6d28d9] text-white" : "border-[rgba(var(--ink-rgb),0.3)] bg-[var(--white)]"}`}
+            className={`flex-1 border py-2 text-xs font-bold ${rateType === "FULL" ? "border-[var(--accent)] bg-[var(--accent)] text-white" : "border-[rgba(var(--ink-rgb),0.3)] bg-[var(--white)]"}`}
           >
             Satu Hari ({fmtRM(selectedFacility.fullDayRate ?? selectedFacility.costPerUse)})
           </button>
@@ -484,7 +484,7 @@ export default function BookingForm({
       <button
         type="submit"
         disabled={loading}
-        className="mt-1 bg-[#6d28d9] py-3 font-archivo text-sm font-extrabold text-[#f3f2f2] hover:bg-[#4c1d95] disabled:opacity-60"
+        className="mt-1 bg-[var(--accent)] py-3 font-archivo text-sm font-extrabold text-[#f3f2f2] hover:bg-[var(--accent-dark)] disabled:opacity-60"
       >
         {loading ? "Menghantar..." : "Hantar Permohonan Tempahan"}
       </button>

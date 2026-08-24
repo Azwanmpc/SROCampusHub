@@ -91,7 +91,7 @@ export default function BookingCard({
             {" · "}Anggaran hasil RM {booking.revenue.toLocaleString("ms-MY")}
           </div>
           {hasAddons && (
-            <div className="mt-1 text-xs font-bold text-[#6d28d9]">
+            <div className="mt-1 text-xs font-bold text-[var(--accent)]">
               {booking.addOnProjector > 0 && `${booking.addOnProjector}x LCD Projektor `}
               {booking.addOnTv100 > 0 && `${booking.addOnTv100}x TV LCD 100"`}
             </div>
@@ -194,7 +194,7 @@ export default function BookingCard({
               <button
                 onClick={() => callAction("CHECK_IN")}
                 disabled={loading}
-                className="bg-[#6d28d9] px-3.5 py-2 font-archivo text-[13px] font-extrabold text-[#f3f2f2] disabled:opacity-60"
+                className="bg-[var(--accent)] px-3.5 py-2 font-archivo text-[13px] font-extrabold text-[#f3f2f2] disabled:opacity-60"
               >
                 Check-In
               </button>
@@ -212,7 +212,7 @@ export default function BookingCard({
               <span className="self-center text-xs text-[rgba(var(--ink-rgb),0.5)]">Selesai Check-Out</span>
             )}
           </div>
-          <button onClick={handleDelete} className="flex items-center gap-1.5 border border-[#6d28d9] px-3 py-1.5 text-xs font-bold text-[#6d28d9]">
+          <button onClick={handleDelete} className="flex items-center gap-1.5 border border-[var(--accent)] px-3 py-1.5 text-xs font-bold text-[var(--accent)]">
             <Trash weight="duotone" /> Padam
           </button>
         </div>

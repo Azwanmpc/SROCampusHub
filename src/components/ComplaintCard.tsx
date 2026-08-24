@@ -111,7 +111,7 @@ export default function ComplaintCard({
         <div className="flex flex-col items-end gap-1.5">
           <StatusBadgeInline status={complaint.status} />
           {complaint.status !== "SELESAI" && (
-            <div className="text-[11px] font-bold text-[#6d28d9]">{hariPending} hari pending</div>
+            <div className="text-[11px] font-bold text-[var(--accent)]">{hariPending} hari pending</div>
           )}
         </div>
       </div>
@@ -131,7 +131,7 @@ export default function ComplaintCard({
             <button
               onClick={() => callAction("TANDAKAN_SIAP")}
               disabled={loading}
-              className="mt-3 flex items-center gap-1.5 bg-[#6d28d9] px-3.5 py-2 font-archivo text-[12.5px] font-extrabold text-[#f3f2f2] disabled:opacity-60"
+              className="mt-3 flex items-center gap-1.5 bg-[var(--accent)] px-3.5 py-2 font-archivo text-[12.5px] font-extrabold text-[#f3f2f2] disabled:opacity-60"
             >
               <CheckCircle weight="duotone" /> Tandakan Siap
             </button>
@@ -196,7 +196,7 @@ export default function ComplaintCard({
         <div className="mt-2.5 flex justify-end">
           <button
             onClick={() => onDelete(complaint.id)}
-            className="flex items-center gap-1.5 border border-[#6d28d9] px-3 py-1.5 text-xs font-bold text-[#6d28d9]"
+            className="flex items-center gap-1.5 border border-[var(--accent)] px-3 py-1.5 text-xs font-bold text-[var(--accent)]"
           >
             <Trash weight="duotone" /> Padam
           </button>

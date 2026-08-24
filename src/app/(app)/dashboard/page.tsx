@@ -101,7 +101,7 @@ export default async function DashboardPage() {
           <div className="bg-[var(--white)] p-[18px]">
             <div className="mb-3 flex items-center justify-between">
               <div className="font-archivo text-sm font-extrabold">Tempahan Menunggu Kelulusan</div>
-              <Link href="/kelulusan" className="text-xs font-bold text-[#6d28d9] hover:underline">
+              <Link href="/kelulusan" className="text-xs font-bold text-[var(--accent)] hover:underline">
                 Lihat semua
               </Link>
             </div>
@@ -124,7 +124,7 @@ export default async function DashboardPage() {
           <div className="bg-[var(--white)] p-[18px]">
             <div className="mb-3 flex items-center justify-between">
               <div className="font-archivo text-sm font-extrabold">Aduan Terkini</div>
-              <Link href="/aduan" className="text-xs font-bold text-[#6d28d9] hover:underline">
+              <Link href="/aduan" className="text-xs font-bold text-[var(--accent)] hover:underline">
                 Lihat semua
               </Link>
             </div>
@@ -146,7 +146,7 @@ export default async function DashboardPage() {
         </div>
 
         <div className="mt-3.5 text-right">
-          <Link href="/laporan" className="text-xs font-bold text-[#6d28d9] hover:underline">
+          <Link href="/laporan" className="text-xs font-bold text-[var(--accent)] hover:underline">
             Lihat laporan &amp; analitik penuh →
           </Link>
         </div>
@@ -193,7 +193,7 @@ export default async function DashboardPage() {
         <div className="border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] p-[18px]">
           <div className="mb-3 flex items-center justify-between">
             <div className="font-archivo text-sm font-extrabold">Senarai Tempahan Saya</div>
-            <Link href="/tempahan-saya" className="text-xs font-bold text-[#6d28d9] hover:underline">
+            <Link href="/tempahan-saya" className="text-xs font-bold text-[var(--accent)] hover:underline">
               Lihat semua
             </Link>
           </div>
@@ -201,7 +201,7 @@ export default async function DashboardPage() {
             {bookings.length === 0 && (
               <p className="py-2 text-sm text-[rgba(var(--ink-rgb),0.5)]">
                 Belum ada tempahan.{" "}
-                <Link href="/kalendar" className="font-bold text-[#6d28d9] hover:underline">
+                <Link href="/kalendar" className="font-bold text-[var(--accent)] hover:underline">
                   Buat tempahan
                 </Link>
               </p>
@@ -253,7 +253,7 @@ export default async function DashboardPage() {
         <div className="border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] p-[18px]">
           <div className="mb-3 flex items-center justify-between">
             <div className="font-archivo text-sm font-extrabold">Aduan Terkini</div>
-            <Link href="/aduan" className="text-xs font-bold text-[#6d28d9] hover:underline">
+            <Link href="/aduan" className="text-xs font-bold text-[var(--accent)] hover:underline">
               Urus semua aduan
             </Link>
           </div>

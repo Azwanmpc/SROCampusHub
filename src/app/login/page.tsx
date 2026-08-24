@@ -52,7 +52,7 @@ export default function LoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-[#201e1d] p-4 sm:p-6">
       <div className="relative w-full max-w-[420px] bg-[#f3f2f2] p-6 px-5 sm:p-10 sm:px-[34px]">
         <div className="mb-2 flex items-center gap-2.5">
-          <div className="flex h-[38px] w-[38px] flex-none items-center justify-center bg-[#6d28d9] font-archivo text-sm font-extrabold text-[#f3f2f2]">
+          <div className="flex h-[38px] w-[38px] flex-none items-center justify-center bg-[var(--accent)] font-archivo text-sm font-extrabold text-[#f3f2f2]">
             SRO
           </div>
           <div className="font-archivo text-[13px] font-extrabold leading-[1.3] tracking-[-0.005em]">
@@ -95,7 +95,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="mt-1.5 bg-[#6d28d9] py-[11px] text-left font-archivo text-sm font-extrabold text-[#f3f2f2] transition hover:bg-[#4c1d95] disabled:opacity-60"
+            className="mt-1.5 bg-[var(--accent)] py-[11px] text-left font-archivo text-sm font-extrabold text-[#f3f2f2] transition hover:bg-[var(--accent-dark)] disabled:opacity-60"
           >
             {loading ? "Log masuk..." : "Log Masuk"}
           </button>
@@ -108,7 +108,7 @@ export default function LoginPage() {
             <button
               type="button"
               onClick={() => setForgotOpen(true)}
-              className="font-bold text-[#6d28d9] hover:underline"
+              className="font-bold text-[var(--accent)] hover:underline"
             >
               Lupa Kata Laluan?
             </button>
@@ -116,7 +116,7 @@ export default function LoginPage() {
 
           <div className="mt-0.5 text-[13px] text-[rgba(32,30,29,0.7)]">
             Belum ada akaun?{" "}
-            <Link href="/register" className="font-bold text-[#6d28d9] hover:underline">
+            <Link href="/register" className="font-bold text-[var(--accent)] hover:underline">
               Daftar
             </Link>
           </div>
@@ -142,7 +142,7 @@ export default function LoginPage() {
                 <div className="flex gap-2.5">
                   <button
                     type="submit"
-                    className="flex-1 bg-[#6d28d9] py-[11px] font-archivo text-[13.5px] font-extrabold text-[#f3f2f2]"
+                    className="flex-1 bg-[var(--accent)] py-[11px] font-archivo text-[13.5px] font-extrabold text-[#f3f2f2]"
                   >
                     Hantar Pautan
                   </button>
@@ -166,7 +166,7 @@ export default function LoginPage() {
                     setForgotSent(false);
                     setForgotEmail("");
                   }}
-                  className="w-full bg-[#6d28d9] py-[11px] font-archivo text-[13.5px] font-extrabold text-[#f3f2f2]"
+                  className="w-full bg-[var(--accent)] py-[11px] font-archivo text-[13.5px] font-extrabold text-[#f3f2f2]"
                 >
                   OK
                 </button>
@@ -176,11 +176,11 @@ export default function LoginPage() {
         )}
 
         <div className="mt-6 text-center text-[12.5px] text-[rgba(32,30,29,0.6)]">
-          <Link href="/" className="font-bold text-[#6d28d9] hover:underline">
+          <Link href="/" className="font-bold text-[var(--accent)] hover:underline">
             Kembali ke Laman Utama
           </Link>
           {" · "}
-          <Link href="/aduan-awam" className="font-bold text-[#6d28d9] hover:underline">
+          <Link href="/aduan-awam" className="font-bold text-[var(--accent)] hover:underline">
             Buat Aduan Tanpa Log Masuk
           </Link>
         </div>
