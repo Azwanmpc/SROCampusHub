@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { WarningCircle, CheckCircle, Trash } from "@phosphor-icons/react";
+import { WarningCircle, Wrench, Hourglass, CheckCircle, Trash } from "@phosphor-icons/react";
 import {
   COMPLAINT_STATUS_LABEL,
   COMPLAINT_STATUS_COLOR,
@@ -32,6 +32,20 @@ function daysBetween(a: Date, b: Date) {
   return Math.max(0, Math.round((b.getTime() - a.getTime()) / 86400000));
 }
 
+const STATUS_ICON: Record<string, typeof WarningCircle> = {
+  BARU: WarningCircle,
+  DALAM_TINDAKAN: Wrench,
+  MENUNGGU_PENGESAHAN: Hourglass,
+  SELESAI: CheckCircle,
+};
+
+const STATUS_ICON_COLOR: Record<string, string> = {
+  BARU: "#4a72a8",
+  DALAM_TINDAKAN: "#4a3800",
+  MENUNGGU_PENGESAHAN: "#a34e00",
+  SELESAI: "#003d0f",
+};
+
 export default function ComplaintCard({
   complaint,
   role,
@@ -50,6 +64,7 @@ export default function ComplaintCard({
   const isStaffWorker = role === "TEKNIKAL" || canApprove;
   const isPengadu = role === "PENGADU";
   const hariPending = daysBetween(new Date(complaint.createdAt), new Date());
+  const StatusIcon = STATUS_ICON[complaint.status] ?? WarningCircle;
 
   async function callAction(action: string, extra?: Record<string, unknown>) {
     setLoading(true);
@@ -82,7 +97,7 @@ export default function ComplaintCard({
   return (
     <div className="bg-[var(--white)] p-4">
       <div className="flex flex-wrap items-start gap-3.5">
-        <WarningCircle weight="duotone" size={22} className="flex-none text-[var(--danger)]" />
+        <StatusIcon weight="duotone" size={22} className="flex-none" style={{ color: STATUS_ICON_COLOR[complaint.status] ?? STATUS_ICON_COLOR.BARU }} />
         <div className="min-w-[220px] flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <div className="text-[14.5px] font-bold">{complaint.location}</div>
