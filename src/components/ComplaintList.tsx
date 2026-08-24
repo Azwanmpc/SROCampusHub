@@ -37,9 +37,6 @@ const STATUS_ORDER: Record<string, number> = {
 
 const SORT_OPTIONS = [
   { key: "TARIKH", label: "Semua" },
-  { key: "BARU", label: "Baru" },
-  { key: "DALAM_TINDAKAN", label: "Belum Selesai" },
-  { key: "SELESAI", label: "Selesai" },
   { key: "JENIS_DALAMAN", label: "Tindakan Dalaman" },
   { key: "JENIS_KONTRAKTOR", label: "Kontraktor Luar" },
 ];
@@ -61,14 +58,9 @@ export default function ComplaintList({
   const filtered = useMemo(() => {
     const base = filter === "SEMUA" ? complaints : complaints.filter((c) => c.status === filter);
     if (!canApprove || filter !== "SEMUA" || sort === "TARIKH") return base;
-    if (sort === "JENIS_DALAMAN" || sort === "JENIS_KONTRAKTOR") {
-      const wanted = sort === "JENIS_DALAMAN" ? "DALAMAN" : "KONTRAKTOR";
-      return [...base].sort(
-        (a, b) => (a.repairType === wanted ? 0 : 1) - (b.repairType === wanted ? 0 : 1) || STATUS_ORDER[a.status] - STATUS_ORDER[b.status]
-      );
-    }
+    const wanted = sort === "JENIS_DALAMAN" ? "DALAMAN" : "KONTRAKTOR";
     return [...base].sort(
-      (a, b) => (a.status === sort ? 0 : 1) - (b.status === sort ? 0 : 1) || STATUS_ORDER[a.status] - STATUS_ORDER[b.status]
+      (a, b) => (a.repairType === wanted ? 0 : 1) - (b.repairType === wanted ? 0 : 1) || STATUS_ORDER[a.status] - STATUS_ORDER[b.status]
     );
   }, [complaints, filter, sort, canApprove]);
 
