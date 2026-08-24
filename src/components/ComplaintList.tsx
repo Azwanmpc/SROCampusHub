@@ -111,7 +111,7 @@ export default function ComplaintList({
           <div className="bg-[var(--white)] p-4 text-sm text-[rgba(var(--ink-rgb),0.5)]">Tiada aduan.</div>
         )}
         {filtered.map((c) => (
-          <ComplaintCard key={c.id} complaint={c} role={role} onDelete={role === "PENGADU" ? handleDelete : undefined} />
+          <ComplaintCard key={c.id} complaint={c} role={role} onDelete={role === "PENGADU" || canApprove ? handleDelete : undefined} />
         ))}
       </div>
     </div>

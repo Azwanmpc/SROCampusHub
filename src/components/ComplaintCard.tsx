@@ -192,7 +192,7 @@ export default function ComplaintCard({
         </div>
       )}
 
-      {isPengadu && onDelete && (
+      {(isPengadu || canApprove) && onDelete && (
         <div className="mt-2.5 flex justify-end">
           <button
             onClick={() => onDelete(complaint.id)}
