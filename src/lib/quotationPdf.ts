@@ -124,15 +124,6 @@ export async function generateQuotationPdf(b: QuotationBooking) {
   y += 4;
   doc.line(marginL, y, marginR, y);
   y += 8;
-  doc.text("Anggaran Asal", marginL, y);
-  doc.text(fmtRM(b.kos), marginR, y, { align: "right" });
-  y += 7;
-  const diskaun = b.kos - b.finalPrice;
-  if (diskaun > 0) {
-    doc.text("Diskaun Diberikan", marginL, y);
-    doc.text(fmtRM(diskaun), marginR, y, { align: "right" });
-    y += 7;
-  }
   doc.setFont("helvetica", "bold");
   doc.setFontSize(12);
   doc.text("Jumlah Akhir", marginL, y);
