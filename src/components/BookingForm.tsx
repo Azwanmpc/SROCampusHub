@@ -3,12 +3,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Clock } from "@phosphor-icons/react";
-import { ARRANGEMENT_LABEL } from "@/lib/constants";
+import { ARRANGEMENT_LABEL, FACILITY_STATUS_LABEL } from "@/lib/constants";
 
 const ARRANGEMENT_ELIGIBLE_FACILITIES = ["Bilik ICC", "Bilik TQM", "Dewan Produktiviti"];
 
+const ADDON_MAX_QTY: Record<string, number> = { "tv-lcd": 2, "lcd-projektor": 2 };
+
 type AsramaRoomType = { id: string; key: string; label: string; rate: number; bilikTersedia: number };
-type EquipmentAddon = { id: string; key: string; label: string; appliesTo: string[]; half: number; full: number };
+type EquipmentAddon = { id: string; key: string; label: string; appliesTo: string[]; half: number; full: number; status: string };
 
 type Facility = {
   id: string;
@@ -313,10 +315,12 @@ export default function BookingForm({
                   type="number"
                   min={0}
                   max={available}
-                  value={roomQtys[rt.key] ?? 0}
-                  onChange={(e) =>
-                    setRoomQtys((prev) => ({ ...prev, [rt.key]: Math.min(Number(e.target.value), available) }))
-                  }
+                  placeholder="0"
+                  value={roomQtys[rt.key] || ""}
+                  onChange={(e) => {
+                    const raw = e.target.value;
+                    setRoomQtys((prev) => ({ ...prev, [rt.key]: raw === "" ? 0 : Math.min(Number(raw), available) }));
+                  }}
                   className="w-16 border border-[rgba(var(--ink-rgb),0.4)] px-2 py-1 text-sm"
                 />
               </div>
@@ -375,31 +379,52 @@ export default function BookingForm({
         <div className="flex flex-col gap-2.5 border border-[rgba(var(--ink-rgb),0.3)] bg-[var(--surface)] p-3">
           {availableAddons.map((a) => {
             const st = addons[a.key] ?? { checked: false, qty: 1, rateType: "FULL" as const };
+            const unavailable = a.status !== "TERSEDIA";
+            const maxQty = ADDON_MAX_QTY[a.key] ?? 99;
             return (
               <div key={a.key}>
                 <div className="flex flex-wrap items-center gap-2.5">
-                  <input type="checkbox" checked={st.checked} onChange={() => toggleAddon(a.key)} className="h-[17px] w-[17px] flex-none" />
-                  <div className="min-w-[80px] flex-1 text-[13px] font-semibold">{a.label}</div>
+                  <input
+                    type="checkbox"
+                    checked={st.checked}
+                    disabled={unavailable}
+                    onChange={() => toggleAddon(a.key)}
+                    className="h-[17px] w-[17px] flex-none disabled:opacity-50"
+                  />
+                  <div className="min-w-[80px] flex-1 text-[13px] font-semibold">
+                    {a.label}
+                    {unavailable && (
+                      <span className="ml-1.5 text-[10.5px] font-bold uppercase text-[var(--danger)]">
+                        ({FACILITY_STATUS_LABEL[a.status]})
+                      </span>
+                    )}
+                  </div>
                   <button
                     type="button"
+                    disabled={unavailable}
                     onClick={() => setAddons((p) => ({ ...p, [a.key]: { ...st, checked: true, rateType: "HALF" } }))}
-                    className={`flex-none border px-2 py-1 text-[10.5px] font-bold ${st.checked && st.rateType === "HALF" ? "border-[var(--accent)] bg-[var(--accent)] text-white" : "border-[rgba(var(--ink-rgb),0.3)] bg-[var(--white)]"}`}
+                    className={`flex-none border px-2 py-1 text-[10.5px] font-bold disabled:cursor-not-allowed disabled:opacity-50 ${st.checked && st.rateType === "HALF" ? "border-[var(--accent)] bg-[var(--accent)] text-white" : "border-[rgba(var(--ink-rgb),0.3)] bg-[var(--white)]"}`}
                   >
                     Separuh ({fmtRM(a.half)})
                   </button>
                   <button
                     type="button"
+                    disabled={unavailable}
                     onClick={() => setAddons((p) => ({ ...p, [a.key]: { ...st, checked: true, rateType: "FULL" } }))}
-                    className={`flex-none border px-2 py-1 text-[10.5px] font-bold ${st.checked && st.rateType === "FULL" ? "border-[var(--accent)] bg-[var(--accent)] text-white" : "border-[rgba(var(--ink-rgb),0.3)] bg-[var(--white)]"}`}
+                    className={`flex-none border px-2 py-1 text-[10.5px] font-bold disabled:cursor-not-allowed disabled:opacity-50 ${st.checked && st.rateType === "FULL" ? "border-[var(--accent)] bg-[var(--accent)] text-white" : "border-[rgba(var(--ink-rgb),0.3)] bg-[var(--white)]"}`}
                   >
                     1 Hari ({fmtRM(a.full)})
                   </button>
                   <input
                     type="number"
                     min={1}
+                    max={maxQty}
+                    disabled={unavailable}
                     value={st.qty}
-                    onChange={(e) => setAddons((p) => ({ ...p, [a.key]: { ...st, qty: Number(e.target.value) } }))}
-                    className="w-[50px] flex-none border border-[rgba(var(--ink-rgb),0.4)] px-2 py-1.5"
+                    onChange={(e) =>
+                      setAddons((p) => ({ ...p, [a.key]: { ...st, qty: Math.min(Number(e.target.value) || 1, maxQty) } }))
+                    }
+                    className="w-[50px] flex-none border border-[rgba(var(--ink-rgb),0.4)] px-2 py-1.5 disabled:opacity-50"
                   />
                 </div>
                 {st.checked && (

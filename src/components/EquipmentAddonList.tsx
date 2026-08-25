@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { PencilSimple } from "@phosphor-icons/react";
+import { FACILITY_STATUS_LABEL, FACILITY_STATUS_COLOR } from "@/lib/constants";
 
-type Addon = { id: string; key: string; label: string; appliesTo: string[]; half: number; full: number };
+type Addon = { id: string; key: string; label: string; appliesTo: string[]; half: number; full: number; status: string };
 
 function fmtRM(n: number) {
   return `RM ${n.toLocaleString("ms-MY")}`;
@@ -16,6 +17,7 @@ export default function EquipmentAddonList({ addons, isStaff }: { addons: Addon[
   const [half, setHalf] = useState("");
   const [full, setFull] = useState("");
   const [saving, setSaving] = useState(false);
+  const [statusSaving, setStatusSaving] = useState<string | null>(null);
 
   function startEdit(a: Addon) {
     setEditingId(a.id);
@@ -42,6 +44,20 @@ export default function EquipmentAddonList({ addons, isStaff }: { addons: Addon[
     }
   }
 
+  async function handleStatusChange(id: string, status: string) {
+    setStatusSaving(id);
+    try {
+      await fetch(`/api/equipment-addons/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status }),
+      });
+      router.refresh();
+    } finally {
+      setStatusSaving(null);
+    }
+  }
+
   return (
     <div className="flex flex-col gap-px border border-[rgba(var(--ink-rgb),0.2)] bg-[rgba(var(--ink-rgb),0.2)]">
       {addons.map((a) => (
@@ -57,6 +73,24 @@ export default function EquipmentAddonList({ addons, isStaff }: { addons: Addon[
             <div className="text-[12.5px] font-semibold">
               1 Hari: <span className="font-bold text-[var(--accent)]">{fmtRM(a.full)}</span>
             </div>
+            {isStaff ? (
+              <select
+                value={a.status}
+                disabled={statusSaving === a.id}
+                onChange={(e) => handleStatusChange(a.id, e.target.value)}
+                className={`border border-[rgba(var(--ink-rgb),0.4)] px-2 py-1 text-[11px] font-bold uppercase tracking-[0.03em] focus:outline-none disabled:opacity-60 ${FACILITY_STATUS_COLOR[a.status]}`}
+              >
+                {Object.entries(FACILITY_STATUS_LABEL).map(([key, label]) => (
+                  <option key={key} value={key}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <span className={`px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.03em] ${FACILITY_STATUS_COLOR[a.status]}`}>
+                {FACILITY_STATUS_LABEL[a.status]}
+              </span>
+            )}
             {isStaff && editingId !== a.id && (
               <button
                 onClick={() => startEdit(a)}

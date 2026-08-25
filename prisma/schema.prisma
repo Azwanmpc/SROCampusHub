@@ -65,6 +65,7 @@ model AsramaRoomType {
 }
 
 // key: tv-lcd | led-skrin | lcd-projektor · appliesTo: JSON-encoded array of facility names
+// status: TERSEDIA | PENYELENGGARAAN
 model EquipmentAddon {
   id        String   @id @default(cuid())
   key       String   @unique
@@ -72,6 +73,7 @@ model EquipmentAddon {
   appliesTo String
   half      Float
   full      Float
+  status    String   @default("TERSEDIA")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
