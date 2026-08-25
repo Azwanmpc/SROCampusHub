@@ -51,6 +51,8 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#201e1d] p-4 sm:p-6">
       <div className="relative w-full max-w-[420px] bg-[#f3f2f2] p-6 px-5 sm:p-10 sm:px-[34px]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/assets/mpc-logo.png" alt="Perbadanan Produktiviti Malaysia" className="mx-auto mb-4 h-auto w-[190px]" />
         <div className="mb-2 flex items-center gap-2.5">
           <div className="flex h-[38px] w-[38px] flex-none items-center justify-center bg-[var(--accent)] font-archivo text-sm font-extrabold text-[#f3f2f2]">
             SRO
@@ -184,8 +186,8 @@ export default function LoginPage() {
             Buat Aduan Tanpa Log Masuk
           </Link>
         </div>
+        <div className="absolute bottom-2 right-2.5 text-[11.5px] text-[rgba(32,30,29,0.45)]">❤️ SRO</div>
       </div>
-      <div className="fixed bottom-4 left-4 text-[11.5px] text-[rgba(243,242,242,0.45)]">❤️ SRO</div>
     </div>
   );
 }
