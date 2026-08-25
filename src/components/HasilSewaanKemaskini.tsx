@@ -154,7 +154,7 @@ export default function HasilSewaanKemaskini() {
           <UploadSimple weight="duotone" /> {uploading ? "Memuat naik..." : "Muat Naik Fail"}
         </button>
         <input ref={fileInputRef} type="file" accept=".xlsx,.xls,.csv" onChange={handleFileUpload} className="hidden" />
-        <Link href="/hasil-sewaan" className="border border-[rgba(var(--ink-rgb),0.4)] px-4 py-2 font-archivo text-[13px] font-extrabold text-[var(--ink)] hover:bg-[var(--surface)]">
+        <Link href="/hasil-sewaan" className="bg-[var(--accent)] px-4 py-2 font-archivo text-[13px] font-extrabold text-white hover:bg-[var(--accent-dark)]">
           Kembali ke Dashboard
         </Link>
       </div>
