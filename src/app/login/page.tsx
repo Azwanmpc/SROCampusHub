@@ -3,6 +3,7 @@
 import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Heart } from "@phosphor-icons/react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -53,18 +54,9 @@ export default function LoginPage() {
       <div className="relative w-full max-w-[420px] bg-[#f3f2f2] p-6 px-5 sm:p-10 sm:px-[34px]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/assets/mpc-logo.png" alt="Perbadanan Produktiviti Malaysia" className="mx-auto mb-4 h-auto w-[190px]" />
-        <div className="mb-2 flex items-center gap-2.5">
-          <div className="flex h-[38px] w-[38px] flex-none items-center justify-center bg-[var(--accent)] font-archivo text-sm font-extrabold text-[#f3f2f2]">
-            SRO
-          </div>
-          <div className="font-archivo text-[13px] font-extrabold leading-[1.3] tracking-[-0.005em]">
-            PERBADANAN PRODUKTIVITI MALAYSIA
-            <br />
-            WILAYAH SELATAN
-          </div>
-        </div>
-        <div className="mb-2 text-[13px] text-[rgba(32,30,29,0.6)]">
-          Sistem Pengurusan Penempahan Fasiliti &amp; Penyelenggaraan Kampus
+        <div className="mb-2 text-balance text-center text-[11.5px] leading-[1.5] text-[rgba(32,30,29,0.6)]">
+          SRO CampusHub ialah ekosistem digital bersepadu untuk mengurus tempahan fasiliti, aset, penyelenggaraan,
+          hasil dan pelaporan secara sistematik.
         </div>
         <div className="mb-[26px] h-0.5 bg-[rgba(32,30,29,0.4)]" />
 
@@ -186,7 +178,9 @@ export default function LoginPage() {
             Buat Aduan Tanpa Log Masuk
           </Link>
         </div>
-        <div className="absolute bottom-2 right-2.5 text-[11.5px] text-[rgba(32,30,29,0.45)]">❤️ SRO</div>
+        <div className="absolute bottom-2 right-2.5 flex items-center gap-1 text-[11.5px] text-[rgba(32,30,29,0.45)]">
+          <Heart weight="fill" size={12} color="#ff3b30" /> SRO
+        </div>
       </div>
     </div>
   );
