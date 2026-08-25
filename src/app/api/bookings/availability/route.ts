@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
-import { ASRAMA_ROOM_TYPES } from "@/lib/facilityRates";
 
 export async function GET(req: NextRequest) {
   const session = await getSession();
@@ -41,8 +40,9 @@ export async function GET(req: NextRequest) {
     }
   }
 
+  const asramaRoomTypes = await prisma.asramaRoomType.findMany();
   const availability = Object.fromEntries(
-    ASRAMA_ROOM_TYPES.map((rt) => [rt.key, Math.max(0, rt.bilikTersedia - (booked[rt.key] ?? 0))])
+    asramaRoomTypes.map((rt) => [rt.key, Math.max(0, rt.bilikTersedia - (booked[rt.key] ?? 0))])
   );
 
   return NextResponse.json(availability);

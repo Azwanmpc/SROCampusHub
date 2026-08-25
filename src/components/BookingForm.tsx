@@ -4,9 +4,11 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Clock } from "@phosphor-icons/react";
 import { ARRANGEMENT_LABEL } from "@/lib/constants";
-import { ASRAMA_ROOM_TYPES, addonsForFacility } from "@/lib/facilityRates";
 
 const ARRANGEMENT_ELIGIBLE_FACILITIES = ["Bilik ICC", "Bilik TQM", "Dewan Produktiviti"];
+
+type AsramaRoomType = { id: string; key: string; label: string; rate: number; bilikTersedia: number };
+type EquipmentAddon = { id: string; key: string; label: string; appliesTo: string[]; half: number; full: number };
 
 type Facility = {
   id: string;
@@ -64,8 +66,19 @@ export default function BookingForm({
     selectedFacility?.name?.includes("Dewan") ||
     selectedFacility?.name?.includes("ICC") ||
     selectedFacility?.name?.includes("TQM");
-  const availableAddons = selectedFacility ? addonsForFacility(selectedFacility.name) : [];
+  const [asramaRoomTypes, setAsramaRoomTypes] = useState<AsramaRoomType[]>([]);
+  const [equipmentAddons, setEquipmentAddons] = useState<EquipmentAddon[]>([]);
+  const availableAddons = selectedFacility ? equipmentAddons.filter((a) => a.appliesTo.includes(selectedFacility.name)) : [];
   const [asramaAvailability, setAsramaAvailability] = useState<Record<string, number> | null>(null);
+
+  useEffect(() => {
+    fetch("/api/asrama-room-types")
+      .then((r) => r.json())
+      .then((data) => setAsramaRoomTypes(Array.isArray(data) ? data : []));
+    fetch("/api/equipment-addons")
+      .then((r) => r.json())
+      .then((data) => setEquipmentAddons(Array.isArray(data) ? data : []));
+  }, []);
 
   useEffect(() => {
     if (!arrangementEligible) setArrangement("TIADA");
@@ -110,14 +123,14 @@ export default function BookingForm({
   const facilityPrice = useMemo(() => {
     if (!selectedFacility) return 0;
     if (isAsrama) {
-      return ASRAMA_ROOM_TYPES.reduce((sum, rt) => sum + rt.rate * (roomQtys[rt.key] || 0), 0) * dayCount;
+      return asramaRoomTypes.reduce((sum, rt) => sum + rt.rate * (roomQtys[rt.key] || 0), 0) * dayCount;
     }
     const rate =
       rateType === "HALF" && selectedFacility.halfDayRate != null
         ? selectedFacility.halfDayRate
         : selectedFacility.fullDayRate ?? selectedFacility.costPerUse;
     return rate * dayCount;
-  }, [selectedFacility, isAsrama, roomQtys, dayCount, rateType]);
+  }, [selectedFacility, isAsrama, roomQtys, dayCount, rateType, asramaRoomTypes]);
 
   const addonsBreakdown = useMemo(
     () =>
@@ -157,7 +170,7 @@ export default function BookingForm({
       return;
     }
     if (isAsrama && asramaAvailability) {
-      const overRequested = ASRAMA_ROOM_TYPES.find(
+      const overRequested = asramaRoomTypes.find(
         (rt) => (roomQtys[rt.key] ?? 0) > (asramaAvailability[rt.key] ?? 0)
       );
       if (overRequested) {
@@ -169,7 +182,7 @@ export default function BookingForm({
     setLoading(true);
     try {
       const asramaRoomsBreakdown = isAsrama
-        ? ASRAMA_ROOM_TYPES.filter((rt) => roomQtys[rt.key] > 0).map((rt) => ({
+        ? asramaRoomTypes.filter((rt) => roomQtys[rt.key] > 0).map((rt) => ({
             key: rt.key,
             label: rt.label,
             qty: roomQtys[rt.key],
@@ -193,7 +206,7 @@ export default function BookingForm({
           earlyAccess,
           earlyAccessMinutes: earlyAccess ? earlyAccessMinutes : 0,
           roomNumber: isAsrama
-            ? ASRAMA_ROOM_TYPES.filter((rt) => roomQtys[rt.key] > 0)
+            ? asramaRoomTypes.filter((rt) => roomQtys[rt.key] > 0)
                 .map((rt) => `${rt.label} x${roomQtys[rt.key]}`)
                 .join(", ")
             : undefined,
@@ -286,7 +299,7 @@ export default function BookingForm({
               Pilih tarikh mula &amp; tamat untuk lihat bilangan bilik yang masih tersedia.
             </div>
           )}
-          {ASRAMA_ROOM_TYPES.map((rt) => {
+          {asramaRoomTypes.map((rt) => {
             const available = asramaAvailability ? (asramaAvailability[rt.key] ?? 0) : rt.bilikTersedia;
             return (
               <div key={rt.key} className="flex items-center gap-2.5 bg-[var(--white)] px-2.5 py-1.5">
@@ -370,14 +383,14 @@ export default function BookingForm({
                   <button
                     type="button"
                     onClick={() => setAddons((p) => ({ ...p, [a.key]: { ...st, checked: true, rateType: "HALF" } }))}
-                    className="flex-none border border-[rgba(var(--ink-rgb),0.3)] bg-[var(--white)] px-2 py-1 text-[10.5px] font-bold"
+                    className={`flex-none border px-2 py-1 text-[10.5px] font-bold ${st.checked && st.rateType === "HALF" ? "border-[var(--accent)] bg-[var(--accent)] text-white" : "border-[rgba(var(--ink-rgb),0.3)] bg-[var(--white)]"}`}
                   >
                     Separuh ({fmtRM(a.half)})
                   </button>
                   <button
                     type="button"
                     onClick={() => setAddons((p) => ({ ...p, [a.key]: { ...st, checked: true, rateType: "FULL" } }))}
-                    className="flex-none border border-[rgba(var(--ink-rgb),0.3)] bg-[var(--white)] px-2 py-1 text-[10.5px] font-bold"
+                    className={`flex-none border px-2 py-1 text-[10.5px] font-bold ${st.checked && st.rateType === "FULL" ? "border-[var(--accent)] bg-[var(--accent)] text-white" : "border-[rgba(var(--ink-rgb),0.3)] bg-[var(--white)]"}`}
                   >
                     1 Hari ({fmtRM(a.full)})
                   </button>
@@ -390,7 +403,7 @@ export default function BookingForm({
                   />
                 </div>
                 {st.checked && (
-                  <div className="ml-[27px] mt-1 text-[11px] text-[rgba(var(--ink-rgb),0.6)]">
+                  <div className="ml-[27px] mt-1 text-[12px] font-bold text-[var(--accent)]">
                     {fmtRM(st.rateType === "HALF" ? a.half : a.full)} × {st.qty} = {fmtRM((st.rateType === "HALF" ? a.half : a.full) * st.qty)}
                   </div>
                 )}

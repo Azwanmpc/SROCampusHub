@@ -20,7 +20,17 @@ type Facility = {
   imageUrl: string | null;
 };
 
-export default function FacilityCard({ facility: f, isStaff }: { facility: Facility; isStaff: boolean }) {
+type AsramaRoomType = { id: string; label: string; rate: number };
+
+export default function FacilityCard({
+  facility: f,
+  isStaff,
+  asramaRoomTypes = [],
+}: {
+  facility: Facility;
+  isStaff: boolean;
+  asramaRoomTypes?: AsramaRoomType[];
+}) {
   const [editing, setEditing] = useState(false);
   const isAsrama = f.type === "Asrama";
 
@@ -51,7 +61,7 @@ export default function FacilityCard({ facility: f, isStaff }: { facility: Facil
               Kadar Bilik
             </div>
             <div className="mt-0.5 text-xs">
-              Suit Eksekutif: RM150/malam · Bilik Biasa: RM70/malam · Dorm: RM150/malam
+              {asramaRoomTypes.map((rt) => `${rt.label}: RM${rt.rate}/malam`).join(" · ")}
             </div>
           </div>
         ) : f.halfDayRate != null ? (

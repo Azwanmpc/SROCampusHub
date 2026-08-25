@@ -1,11 +1,15 @@
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
 import FacilityCard from "@/components/FacilityCard";
+import EquipmentAddonList from "@/components/EquipmentAddonList";
 
 export default async function FasilitiPage() {
   const session = await getSession();
   const isStaff = session?.role === "SUPERADMIN" || session?.role === "ADMIN";
   const facilities = await prisma.facility.findMany({ orderBy: { name: "asc" } });
+  const asramaRoomTypes = await prisma.asramaRoomType.findMany({ orderBy: { key: "asc" } });
+  const equipmentAddonsRaw = await prisma.equipmentAddon.findMany({ orderBy: { key: "asc" } });
+  const equipmentAddons = equipmentAddonsRaw.map((a) => ({ ...a, appliesTo: JSON.parse(a.appliesTo) as string[] }));
 
   return (
     <div>
@@ -26,8 +30,18 @@ export default async function FasilitiPage() {
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {facilities.map((f) => (
-          <FacilityCard key={f.id} facility={f} isStaff={isStaff} />
+          <FacilityCard
+            key={f.id}
+            facility={f}
+            isStaff={isStaff}
+            asramaRoomTypes={f.type === "Asrama" ? asramaRoomTypes : undefined}
+          />
         ))}
+      </div>
+
+      <div className="mt-[18px] border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] p-[18px]">
+        <div className="mb-3 font-archivo text-sm font-extrabold">Add-On Peralatan</div>
+        <EquipmentAddonList addons={equipmentAddons} isStaff={isStaff} />
       </div>
 
       <div className="mt-[18px] grid grid-cols-1 gap-px border border-[rgba(var(--ink-rgb),0.4)] bg-[rgba(var(--ink-rgb),0.3)] md:grid-cols-2">

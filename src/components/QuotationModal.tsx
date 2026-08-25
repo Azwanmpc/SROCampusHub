@@ -5,7 +5,6 @@ import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { XCircle, Printer, DownloadSimple, EnvelopeSimple } from "@phosphor-icons/react";
 import { generateQuotationPdf } from "@/lib/quotationPdf";
-import { ASRAMA_ROOM_TYPES } from "@/lib/facilityRates";
 
 type Booking = {
   id: string;
@@ -55,7 +54,7 @@ export default function QuotationModal({ booking, onClose }: { booking: Booking;
   const facilityItems: { nama: string; rateLabel: string; price: number }[] =
     booking.facility.type === "Asrama" && asramaRooms.length > 0
       ? asramaRooms.map((r) => {
-          const rate = ASRAMA_ROOM_TYPES.find((rt) => rt.key === r.key)?.rate ?? Math.round(r.price / r.qty / dayCount);
+          const rate = Math.round(r.price / r.qty / dayCount);
           return {
             nama: r.label,
             rateLabel: `${fmtRM(rate)}/malam × ${r.qty} bilik × ${dayCount} malam`,

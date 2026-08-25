@@ -1,9 +1,11 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { X, Image as ImageIcon } from "@phosphor-icons/react/dist/ssr";
 import { FACILITY_STATUS_LABEL } from "@/lib/constants";
+
+type AsramaRoomType = { id: string; key: string; label: string; rate: number };
 
 type Facility = {
   id: string;
@@ -36,6 +38,20 @@ export default function FacilityEditModal({
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState("");
   const [saving, setSaving] = useState(false);
+
+  const isAsrama = facility.type === "Asrama";
+  const [asramaRoomTypes, setAsramaRoomTypes] = useState<AsramaRoomType[]>([]);
+  const [asramaRates, setAsramaRates] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    if (!isAsrama) return;
+    fetch("/api/asrama-room-types")
+      .then((r) => r.json())
+      .then((data: AsramaRoomType[]) => {
+        setAsramaRoomTypes(data);
+        setAsramaRates(Object.fromEntries(data.map((rt) => [rt.id, String(rt.rate)])));
+      });
+  }, [isAsrama]);
 
   async function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -73,6 +89,17 @@ export default function FacilityEditModal({
           imageUrl: imageUrl === "" ? null : imageUrl,
         }),
       });
+      if (isAsrama) {
+        await Promise.all(
+          asramaRoomTypes.map((rt) =>
+            fetch(`/api/asrama-room-types/${rt.id}`, {
+              method: "PATCH",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ rate: Number(asramaRates[rt.id]) || 0 }),
+            })
+          )
+        );
+      }
       router.refresh();
       onClose();
     } finally {
@@ -151,44 +178,67 @@ export default function FacilityEditModal({
             </select>
           </div>
 
-          <div>
-            <label className="mb-1 block text-[11px] font-extrabold uppercase tracking-[0.05em] text-[rgba(var(--ink-rgb),0.55)]">
-              Kadar (RM)
-            </label>
-            <input
-              type="number"
-              value={costPerUse}
-              onChange={(e) => setCostPerUse(e.target.value)}
-              className="w-full border border-[rgba(var(--ink-rgb),0.4)] px-3 py-2 text-sm focus:outline-none"
-            />
-          </div>
+          {isAsrama ? (
+            <div>
+              <label className="mb-1 block text-[11px] font-extrabold uppercase tracking-[0.05em] text-[rgba(var(--ink-rgb),0.55)]">
+                Kadar Bilik (RM/malam)
+              </label>
+              <div className="flex flex-col gap-2.5">
+                {asramaRoomTypes.map((rt) => (
+                  <div key={rt.id} className="flex items-center gap-2.5">
+                    <div className="flex-1 text-sm font-semibold">{rt.label}</div>
+                    <input
+                      type="number"
+                      value={asramaRates[rt.id] ?? ""}
+                      onChange={(e) => setAsramaRates((p) => ({ ...p, [rt.id]: e.target.value }))}
+                      className="w-28 border border-[rgba(var(--ink-rgb),0.4)] px-3 py-2 text-sm focus:outline-none"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <>
+              <div>
+                <label className="mb-1 block text-[11px] font-extrabold uppercase tracking-[0.05em] text-[rgba(var(--ink-rgb),0.55)]">
+                  Kadar (RM)
+                </label>
+                <input
+                  type="number"
+                  value={costPerUse}
+                  onChange={(e) => setCostPerUse(e.target.value)}
+                  className="w-full border border-[rgba(var(--ink-rgb),0.4)] px-3 py-2 text-sm focus:outline-none"
+                />
+              </div>
 
-          <div className="flex gap-3">
-            <div className="flex-1">
-              <label className="mb-1 block text-[11px] font-extrabold uppercase tracking-[0.05em] text-[rgba(var(--ink-rgb),0.55)]">
-                Separuh Hari (RM)
-              </label>
-              <input
-                type="number"
-                value={halfDayRate}
-                onChange={(e) => setHalfDayRate(e.target.value)}
-                placeholder="—"
-                className="w-full border border-[rgba(var(--ink-rgb),0.4)] px-3 py-2 text-sm focus:outline-none"
-              />
-            </div>
-            <div className="flex-1">
-              <label className="mb-1 block text-[11px] font-extrabold uppercase tracking-[0.05em] text-[rgba(var(--ink-rgb),0.55)]">
-                Satu Hari (RM)
-              </label>
-              <input
-                type="number"
-                value={fullDayRate}
-                onChange={(e) => setFullDayRate(e.target.value)}
-                placeholder="—"
-                className="w-full border border-[rgba(var(--ink-rgb),0.4)] px-3 py-2 text-sm focus:outline-none"
-              />
-            </div>
-          </div>
+              <div className="flex gap-3">
+                <div className="flex-1">
+                  <label className="mb-1 block text-[11px] font-extrabold uppercase tracking-[0.05em] text-[rgba(var(--ink-rgb),0.55)]">
+                    Separuh Hari (RM)
+                  </label>
+                  <input
+                    type="number"
+                    value={halfDayRate}
+                    onChange={(e) => setHalfDayRate(e.target.value)}
+                    placeholder="—"
+                    className="w-full border border-[rgba(var(--ink-rgb),0.4)] px-3 py-2 text-sm focus:outline-none"
+                  />
+                </div>
+                <div className="flex-1">
+                  <label className="mb-1 block text-[11px] font-extrabold uppercase tracking-[0.05em] text-[rgba(var(--ink-rgb),0.55)]">
+                    Satu Hari (RM)
+                  </label>
+                  <input
+                    type="number"
+                    value={fullDayRate}
+                    onChange={(e) => setFullDayRate(e.target.value)}
+                    placeholder="—"
+                    className="w-full border border-[rgba(var(--ink-rgb),0.4)] px-3 py-2 text-sm focus:outline-none"
+                  />
+                </div>
+              </div>
+            </>
+          )}
         </div>
 
         <div className="flex justify-end gap-2 border-t-2 border-[rgba(var(--ink-rgb),0.4)] px-5 py-4">

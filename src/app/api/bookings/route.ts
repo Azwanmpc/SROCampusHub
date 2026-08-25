@@ -3,7 +3,6 @@ import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
 import { bookingSchema } from "@/lib/validation";
 import { sendWhatsAppNotification } from "@/lib/whatsapp";
-import { ASRAMA_ROOM_TYPES } from "@/lib/facilityRates";
 
 export async function GET(req: NextRequest) {
   const session = await getSession();
@@ -61,6 +60,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Fasiliti sedang dalam penyelenggaraan" }, { status: 400 });
   }
 
+  const asramaRoomTypes = facility.type === "Asrama" ? await prisma.asramaRoomType.findMany() : [];
+
   if (facility.type === "Asrama") {
     const requestedRooms = data.asramaRoomsJson
       ? (JSON.parse(data.asramaRoomsJson) as { key: string; qty: number }[])
@@ -84,7 +85,7 @@ export async function POST(req: NextRequest) {
         // ignore malformed data
       }
     }
-    for (const rt of ASRAMA_ROOM_TYPES) {
+    for (const rt of asramaRoomTypes) {
       const requestedQty = requestedRooms.find((r) => r.key === rt.key)?.qty ?? 0;
       const alreadyBooked = booked[rt.key] ?? 0;
       if (requestedQty > 0 && alreadyBooked + requestedQty > rt.bilikTersedia) {
@@ -108,22 +109,40 @@ export async function POST(req: NextRequest) {
     }
   }
 
+  const dayCount = Math.max(1, Math.round((end.getTime() - start.getTime()) / 86400000) + 1);
+
+  // Re-price add-ons and Asrama rooms server-side from the DB's current rates,
+  // rather than trusting whatever price the browser sent, so a booking's stored
+  // revenue always matches the admin-set rates in effect at booking time.
   let addonsTotal = 0;
+  let repricedAddonsJson = data.addonsJson;
   if (data.addonsJson) {
     try {
-      const items = JSON.parse(data.addonsJson) as { price: number }[];
-      addonsTotal = items.reduce((sum, it) => sum + (Number(it.price) || 0), 0);
+      const requested = JSON.parse(data.addonsJson) as { key: string; label: string; qty: number; rateType: "HALF" | "FULL" }[];
+      const equipmentAddons = await prisma.equipmentAddon.findMany();
+      const repriced = requested.map((it) => {
+        const def = equipmentAddons.find((a) => a.key === it.key);
+        const unit = def ? (it.rateType === "HALF" ? def.half : def.full) : 0;
+        return { ...it, price: unit * it.qty };
+      });
+      addonsTotal = repriced.reduce((sum, it) => sum + it.price, 0);
+      repricedAddonsJson = JSON.stringify(repriced);
     } catch {
       addonsTotal = 0;
     }
   }
-  const dayCount = Math.max(1, Math.round((end.getTime() - start.getTime()) / 86400000) + 1);
 
   let facilityPrice: number;
-  if (data.asramaRoomsJson) {
-    const rooms = JSON.parse(data.asramaRoomsJson) as { price: number }[];
-    facilityPrice = rooms.reduce((sum, r) => sum + (Number(r.price) || 0), 0);
+  let repricedAsramaRoomsJson = data.asramaRoomsJson;
+  if (facility.type === "Asrama" && data.asramaRoomsJson) {
+    const requested = JSON.parse(data.asramaRoomsJson) as { key: string; label: string; qty: number }[];
+    const repriced = requested.map((r) => {
+      const def = asramaRoomTypes.find((rt) => rt.key === r.key);
+      return { ...r, price: (def?.rate ?? 0) * r.qty * dayCount };
+    });
+    facilityPrice = repriced.reduce((sum, r) => sum + r.price, 0);
     if (facilityPrice <= 0) facilityPrice = facility.costPerUse;
+    repricedAsramaRoomsJson = JSON.stringify(repriced);
   } else {
     const dayRate =
       data.rateType === "HALF" && facility.halfDayRate != null
@@ -151,8 +170,8 @@ export async function POST(req: NextRequest) {
       sebutNama: data.sebutNama,
       sebutTel: data.sebutTel,
       sebutEmel: data.sebutEmel,
-      addonsJson: data.addonsJson,
-      asramaRoomsJson: data.asramaRoomsJson,
+      addonsJson: repricedAddonsJson,
+      asramaRoomsJson: repricedAsramaRoomsJson,
       revenue: facilityPrice + addonsTotal,
     },
     include: { facility: true, user: true },
