@@ -78,7 +78,7 @@ export default function BookingCard({
   return (
     <div className="bg-[var(--white)] p-4">
       <div className="flex flex-wrap items-start gap-3.5">
-        <Buildings weight="duotone" size={22} className="flex-none text-[#4a72a8]" />
+        <Buildings weight="duotone" size={22} className="flex-none text-[var(--info)]" />
         <div className="min-w-[220px] flex-1">
           <div className="text-[14.5px] font-bold">
             {booking.facility.name} — {booking.purpose}
@@ -173,7 +173,7 @@ export default function BookingCard({
             <button
               onClick={() => callAction("APPROVE")}
               disabled={loading}
-              className="flex w-full items-center justify-center gap-1.5 border border-[#4a72a8] bg-[var(--surface)] py-2 font-archivo text-[13px] font-extrabold text-[#4a72a8] disabled:opacity-60"
+              className="flex w-full items-center justify-center gap-1.5 border border-[var(--info)] bg-[var(--surface)] py-2 font-archivo text-[13px] font-extrabold text-[var(--info)] disabled:opacity-60"
             >
               <ArrowCounterClockwise weight="duotone" /> Pulihkan ke Menunggu
             </button>
