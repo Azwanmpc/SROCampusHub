@@ -93,7 +93,7 @@ export default function BookingCard({
           {hasAddons && (
             <div className="mt-1 text-xs font-bold text-[var(--accent)]">
               {booking.addOnProjector > 0 && `${booking.addOnProjector}x LCD Projektor `}
-              {booking.addOnTv100 > 0 && `${booking.addOnTv100}x TV LCD 100"`}
+              {booking.addOnTv100 > 0 && `${booking.addOnTv100}x SMART LED TV 100"`}
             </div>
           )}
           {booking.earlyAccess && (

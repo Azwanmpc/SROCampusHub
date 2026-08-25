@@ -10,7 +10,7 @@ async function main() {
     await prisma.asramaRoomType.upsert({ where: { key: r.key }, update: {}, create: r });
   }
   const addons = [
-    { key: "tv-lcd", label: 'TV LCD 100"', appliesTo: JSON.stringify(["Bilik ICC", "Bilik TQM"]), half: 100, full: 200 },
+    { key: "tv-lcd", label: 'SMART LED TV 100"', appliesTo: JSON.stringify(["Bilik ICC", "Bilik TQM"]), half: 100, full: 200 },
     { key: "led-skrin", label: "LED Skrin", appliesTo: JSON.stringify(["Dewan Produktiviti"]), half: 400, full: 700 },
     { key: "lcd-projektor", label: "LCD Projektor", appliesTo: JSON.stringify(["Dewan Produktiviti", "Bilik ICC", "Bilik TQM"]), half: 200, full: 300 },
   ];
