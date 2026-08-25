@@ -185,6 +185,7 @@ export default function LoginPage() {
           </Link>
         </div>
       </div>
+      <div className="fixed bottom-4 left-4 text-[11.5px] text-[rgba(243,242,242,0.45)]">❤️ SRO</div>
     </div>
   );
 }
