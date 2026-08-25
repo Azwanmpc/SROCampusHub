@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { DownloadSimple, UploadSimple } from "@phosphor-icons/react";
+import { downloadTemplate, parseUploadedFile, type BulkUploadResult } from "@/lib/bulkUpload";
 
 type Aset = { id: string; namaAset: string; noPendaftaran: string; tahun: string | null; lokasi: string; status: string };
 
@@ -17,6 +19,9 @@ export default function AsetKemaskini() {
   const [lokasiFilter, setLokasiFilter] = useState("ALL");
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [search, setSearch] = useState("");
+  const [uploading, setUploading] = useState(false);
+  const [uploadResult, setUploadResult] = useState<BulkUploadResult | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   function load() {
     setLoading(true);
@@ -90,6 +95,37 @@ export default function AsetKemaskini() {
     }
   }
 
+  function handleTemplateDownload() {
+    downloadTemplate(
+      ["Nama Aset", "No. Pendaftaran", "Tahun", "Lokasi", "Status"],
+      ["KERUSI MESYUARAT", "NPC/WS/44/2003", "2024", "Bilik Kaizen", "BAIK"],
+      "Templat-Aset.xlsx"
+    );
+  }
+
+  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    setUploadResult(null);
+    try {
+      const rows = await parseUploadedFile(file);
+      const res = await fetch("/api/aset/bulk", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ rows }),
+      });
+      const data = await res.json();
+      setUploadResult(data);
+      load();
+    } catch {
+      setUploadResult({ success: 0, errors: [{ row: 0, message: "Gagal membaca fail. Pastikan format .xlsx atau .csv" }] });
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  }
+
   async function handleDelete(id: string) {
     if (!confirm("Padam rekod aset ini?")) return;
     await fetch(`/api/aset/${id}`, { method: "DELETE" });
@@ -99,11 +135,41 @@ export default function AsetKemaskini() {
 
   return (
     <div>
-      <div className="mb-4 flex justify-end">
+      <div className="mb-4 flex flex-wrap justify-end gap-2.5">
+        <button
+          onClick={handleTemplateDownload}
+          className="flex items-center gap-1.5 border border-[rgba(var(--ink-rgb),0.4)] px-4 py-2 font-archivo text-[13px] font-extrabold text-[var(--ink)] hover:bg-[var(--surface)]"
+        >
+          <DownloadSimple weight="duotone" /> Muat Turun Templat
+        </button>
+        <button
+          onClick={() => fileInputRef.current?.click()}
+          disabled={uploading}
+          className="flex items-center gap-1.5 border border-[rgba(var(--ink-rgb),0.4)] px-4 py-2 font-archivo text-[13px] font-extrabold text-[var(--ink)] hover:bg-[var(--surface)] disabled:opacity-60"
+        >
+          <UploadSimple weight="duotone" /> {uploading ? "Memuat naik..." : "Muat Naik Fail"}
+        </button>
+        <input ref={fileInputRef} type="file" accept=".xlsx,.xls,.csv" onChange={handleFileUpload} className="hidden" />
         <Link href="/aset" className="border border-[rgba(var(--ink-rgb),0.4)] px-4 py-2 font-archivo text-[13px] font-extrabold text-[var(--ink)] hover:bg-[var(--surface)]">
           Kembali ke Dashboard
         </Link>
       </div>
+
+      {uploadResult && (
+        <div className="mb-4 border border-[rgba(var(--ink-rgb),0.3)] bg-[var(--surface)] p-3.5 text-sm">
+          <div className="font-bold text-[var(--success)]">{uploadResult.success} rekod berjaya ditambah.</div>
+          {uploadResult.errors.length > 0 && (
+            <div className="mt-2">
+              <div className="font-bold text-[var(--danger)]">{uploadResult.errors.length} baris gagal:</div>
+              <ul className="mt-1 list-disc pl-5 text-[rgba(var(--ink-rgb),0.7)]">
+                {uploadResult.errors.slice(0, 20).map((err, i) => (
+                  <li key={i}>Baris {err.row}: {err.message}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
 
       <form onSubmit={handleSubmit} className="mb-6 border border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] p-5">
         <div className="mb-3 font-archivo text-sm font-extrabold">{editingId ? "Kemaskini Rekod Aset" : "Tambah Rekod Aset"}</div>
