@@ -8,16 +8,21 @@ export default async function AduanAwamPage() {
 
   return (
     <div className="min-h-screen bg-[var(--surface)]">
-      <div className="flex h-16 items-center justify-between border-b-2 border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] px-6">
-        <Link href="/" className="flex items-center gap-2.5">
+      <div className="flex min-h-16 flex-wrap items-center justify-between gap-3 border-b-2 border-[rgba(var(--ink-rgb),0.4)] bg-[var(--white)] px-4 py-3 sm:px-6">
+        <Link href="/" className="flex items-center gap-2 sm:gap-2.5">
           <div className="flex h-8 w-8 flex-none items-center justify-center bg-[#e0342a] font-archivo text-xs font-extrabold text-white">
             SRO
           </div>
-          <div className="font-archivo text-[17px] font-extrabold leading-none tracking-[-0.01em]">CampusHub</div>
+          <div className="font-archivo text-[17px] font-extrabold leading-none tracking-[-0.01em]">
+            CampusHub
+          </div>
         </Link>
-        <div className="flex items-center gap-3">
-          <ThemeToggle />
-          <Link href="/" className="text-[13px] font-bold text-[var(--accent)] hover:underline">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <ThemeToggle small />
+          <Link
+            href="/"
+            className="whitespace-nowrap bg-[var(--accent)] px-2.5 py-2 text-[11px] font-bold text-white hover:bg-[var(--accent-dark)] sm:px-3.5 sm:text-[13px]"
+          >
             Kembali ke Laman Utama
           </Link>
         </div>
