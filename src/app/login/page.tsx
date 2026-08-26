@@ -55,8 +55,8 @@ export default function LoginPage() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/assets/mpc-logo.png" alt="Perbadanan Produktiviti Malaysia" className="mx-auto mb-4 h-auto w-[190px]" />
         <div className="mb-2 text-balance text-center text-[11.5px] leading-[1.5] text-[rgba(32,30,29,0.6)]">
-          SRO CampusHub ialah ekosistem digital bersepadu untuk mengurus tempahan fasiliti, aset, penyelenggaraan,
-          hasil dan pelaporan secara sistematik.
+          SRO CampusHub merupakan ekosistem digital bersepadu untuk mengurus tempahan fasiliti, aset, penyelenggaraan,
+          hasil dan pelaporan secara sistematik
         </div>
         <div className="mb-[26px] h-0.5 bg-[rgba(32,30,29,0.4)]" />
 
